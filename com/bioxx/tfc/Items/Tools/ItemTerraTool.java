@@ -82,60 +82,93 @@
 /*     */   }
 /*     */ 
 /*     */   
+/*     */   public boolean func_77630_h(ItemStack itemStack) {
+/*  86 */     return false;
+/*     */   }
+/*     */ 
+/*     */ 
+/*     */   
+/*     */   public boolean func_77651_p() {
+/*  92 */     return true;
+/*     */   }
+/*     */ 
+/*     */ 
+/*     */   
+/*     */   public ItemStack getContainerItem(ItemStack itemStack) {
+/*  98 */     ItemStack container = itemStack.func_77946_l();
+/*  99 */     container.func_77964_b(container.func_77960_j() + 1);
+/* 100 */     container.field_77994_a = 1;
+/* 101 */     return container;
+/*     */   }
+/*     */ 
+/*     */ 
+/*     */   
+/*     */   public boolean hasContainerItem(ItemStack stack) {
+/* 107 */     return true;
+/*     */   }
+/*     */ 
+/*     */ 
+/*     */   
+/*     */   public boolean isRepairable() {
+/* 113 */     return false;
+/*     */   }
+/*     */ 
+/*     */ 
+/*     */   
 /*     */   public EnumItemReach getReach(ItemStack is) {
-/*  86 */     return EnumItemReach.SHORT;
+/* 119 */     return EnumItemReach.SHORT;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public EnumSize getSize(ItemStack is) {
-/*  92 */     return EnumSize.LARGE;
+/* 125 */     return EnumSize.LARGE;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean canStack() {
-/*  98 */     return false;
+/* 131 */     return false;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public EnumWeight getWeight(ItemStack is) {
-/* 104 */     return EnumWeight.MEDIUM;
+/* 137 */     return EnumWeight.MEDIUM;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public int getMaxDamage(ItemStack stack) {
-/* 110 */     return (int)(func_77612_l() + func_77612_l() * AnvilManager.getDurabilityBuff(stack));
+/* 143 */     return (int)(func_77612_l() + func_77612_l() * AnvilManager.getDurabilityBuff(stack));
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public float getDigSpeed(ItemStack stack, Block block, int meta) {
-/* 116 */     float digSpeed = super.getDigSpeed(stack, block, meta);
+/* 149 */     float digSpeed = super.getDigSpeed(stack, block, meta);
 /*     */     
-/* 118 */     if (ForgeHooks.isToolEffective(stack, block, meta))
+/* 151 */     if (ForgeHooks.isToolEffective(stack, block, meta))
 /*     */     {
-/* 120 */       return digSpeed + digSpeed * AnvilManager.getDurabilityBuff(stack);
+/* 153 */       return digSpeed + digSpeed * AnvilManager.getDurabilityBuff(stack);
 /*     */     }
-/* 122 */     return digSpeed;
+/* 155 */     return digSpeed;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean func_77623_v() {
-/* 128 */     return true;
+/* 161 */     return true;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public IIcon getIcon(ItemStack stack, int pass) {
-/* 134 */     NBTTagCompound nbt = stack.func_77978_p();
-/* 135 */     if (pass == 1 && nbt != null && nbt.func_74764_b("broken")) {
-/* 136 */       return TFC_Textures.brokenItem;
+/* 167 */     NBTTagCompound nbt = stack.func_77978_p();
+/* 168 */     if (pass == 1 && nbt != null && nbt.func_74764_b("broken")) {
+/* 169 */       return TFC_Textures.brokenItem;
 /*     */     }
-/* 138 */     return func_77618_c(stack.func_77960_j(), pass);
+/* 171 */     return func_77618_c(stack.func_77960_j(), pass);
 /*     */   }
 /*     */ }
 

@@ -184,52 +184,56 @@
 /* 184 */           this.waterLevel -= 1.0F + tempWaterMod / 2.0F;
 /* 185 */           if (this.waterLevel < 0.0F)
 /* 186 */             this.waterLevel = 0.0F; 
-/* 187 */           if (!TFC_Core.isPlayerInDebugMode(player) && this.waterLevel == 0.0F && temp > 35.0F) {
-/* 188 */             player.func_70097_a((new DamageSource("heatStroke")).func_76348_h().func_151518_m(), 2.0F);
+/* 187 */           if (!TFC_Core.isPlayerInDebugMode(player) && this.waterLevel == 0.0F && temp > 35.0F)
+/*     */           {
+/*     */             
+/* 190 */             player.func_70097_a((new DamageSource("heatStroke")).func_76348_h().func_151518_m(), 2.0F);
 /*     */           }
 /*     */         } 
 /*     */       }
 /*     */     } 
 /*     */   }
+/*     */ 
+/*     */ 
 /*     */   
 /*     */   public void clientUpdate() {
-/* 196 */     if ((Minecraft.func_71410_x()).field_71460_t instanceof EntityRendererTFC) {
+/* 200 */     if ((Minecraft.func_71410_x()).field_71460_t instanceof EntityRendererTFC) {
 /*     */       
-/* 198 */       EntityRendererTFC erTFC = (EntityRendererTFC)(Minecraft.func_71410_x()).field_71460_t;
-/* 199 */       if ((erTFC.getCurrentShaderLocation() == null || !erTFC.getCurrentShaderLocation().equals(this.wastedBlur)) && this.soberTime > TFC_Time.getTotalTicks() + 8000L) {
+/* 202 */       EntityRendererTFC erTFC = (EntityRendererTFC)(Minecraft.func_71410_x()).field_71460_t;
+/* 203 */       if ((erTFC.getCurrentShaderLocation() == null || !erTFC.getCurrentShaderLocation().equals(this.wastedBlur)) && this.soberTime > TFC_Time.getTotalTicks() + 8000L) {
 /*     */         
-/* 201 */         erTFC.setManualShader(this.wastedBlur);
+/* 205 */         erTFC.setManualShader(this.wastedBlur);
 /*     */       }
-/* 203 */       else if ((erTFC.getCurrentShaderLocation() == null || !erTFC.getCurrentShaderLocation().equals(this.drunkBlur)) && this.soberTime > TFC_Time.getTotalTicks() + 4000L && this.soberTime <= TFC_Time.getTotalTicks() + 8000L) {
+/* 207 */       else if ((erTFC.getCurrentShaderLocation() == null || !erTFC.getCurrentShaderLocation().equals(this.drunkBlur)) && this.soberTime > TFC_Time.getTotalTicks() + 4000L && this.soberTime <= TFC_Time.getTotalTicks() + 8000L) {
 /*     */         
-/* 205 */         erTFC.setManualShader(this.drunkBlur);
+/* 209 */         erTFC.setManualShader(this.drunkBlur);
 /*     */       }
-/* 207 */       else if (erTFC.getManualShaderBeingUsed() && this.soberTime <= TFC_Time.getTotalTicks() + 4000L) {
+/* 211 */       else if (erTFC.getManualShaderBeingUsed() && this.soberTime <= TFC_Time.getTotalTicks() + 4000L) {
 /*     */         
-/* 209 */         erTFC.deactivateManualShader();
+/* 213 */         erTFC.deactivateManualShader();
 /*     */       } 
 /*     */     } 
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   protected void reduceNutrition(float amount) {
-/* 216 */     this.nutrFruit = Math.max(this.nutrFruit - amount + this.foodExhaustionLevel, 0.0F);
-/* 217 */     this.nutrVeg = Math.max(this.nutrVeg - amount + this.foodExhaustionLevel, 0.0F);
-/* 218 */     this.nutrGrain = Math.max(this.nutrGrain - amount + this.foodExhaustionLevel, 0.0F);
-/* 219 */     this.nutrProtein = Math.max(this.nutrProtein - amount + this.foodExhaustionLevel, 0.0F);
-/* 220 */     this.nutrDairy = Math.max(this.nutrDairy - amount + this.foodExhaustionLevel, 0.0F);
+/* 220 */     this.nutrFruit = Math.max(this.nutrFruit - amount + this.foodExhaustionLevel, 0.0F);
+/* 221 */     this.nutrVeg = Math.max(this.nutrVeg - amount + this.foodExhaustionLevel, 0.0F);
+/* 222 */     this.nutrGrain = Math.max(this.nutrGrain - amount + this.foodExhaustionLevel, 0.0F);
+/* 223 */     this.nutrProtein = Math.max(this.nutrProtein - amount + this.foodExhaustionLevel, 0.0F);
+/* 224 */     this.nutrDairy = Math.max(this.nutrDairy - amount + this.foodExhaustionLevel, 0.0F);
 /*     */     
-/* 222 */     this.sendUpdate = true;
+/* 226 */     this.sendUpdate = true;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public int getMaxWater(EntityPlayer player) {
-/* 227 */     return 48000 + 200 * player.field_71068_ca;
+/* 231 */     return 48000 + 200 * player.field_71068_ca;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public float getMaxStomach(EntityPlayer player) {
-/* 232 */     return this.stomachMax;
+/* 236 */     return this.stomachMax;
 /*     */   }
 /*     */ 
 /*     */ 
@@ -237,13 +241,13 @@
 /*     */ 
 /*     */   
 /*     */   public float getFoodLevel() {
-/* 240 */     return this.stomachLevel;
+/* 244 */     return this.stomachLevel;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   @SideOnly(Side.CLIENT)
 /*     */   public float getPrevFoodLevel() {
-/* 246 */     return this.prevFoodLevel;
+/* 250 */     return this.prevFoodLevel;
 /*     */   }
 /*     */ 
 /*     */ 
@@ -251,12 +255,12 @@
 /*     */ 
 /*     */   
 /*     */   public boolean needFood() {
-/* 254 */     return (this.stomachLevel < getMaxStomach(this.player) && (getMaxStomach(this.player) - this.stomachLevel) > 0.1D);
+/* 258 */     return (this.stomachLevel < getMaxStomach(this.player) && (getMaxStomach(this.player) - this.stomachLevel) > 0.1D);
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public boolean needDrink() {
-/* 259 */     return (this.waterLevel < (getMaxWater(this.player) - 500));
+/* 263 */     return (this.waterLevel < (getMaxWater(this.player) - 500));
 /*     */   }
 /*     */ 
 /*     */ 
@@ -264,28 +268,28 @@
 /*     */ 
 /*     */   
 /*     */   public void readNBT(NBTTagCompound par1NBTTagCompound) {
-/* 267 */     if (par1NBTTagCompound.func_74764_b("foodCompound")) {
+/* 271 */     if (par1NBTTagCompound.func_74764_b("foodCompound")) {
 /*     */       
-/* 269 */       NBTTagCompound foodCompound = par1NBTTagCompound.func_74775_l("foodCompound");
-/* 270 */       this.waterLevel = foodCompound.func_74760_g("waterLevel");
-/* 271 */       this.stomachLevel = foodCompound.func_74760_g("foodLevel");
-/* 272 */       this.foodTimer = foodCompound.func_74763_f("foodTickTimer");
-/* 273 */       this.foodHealTimer = foodCompound.func_74763_f("foodHealTimer");
-/* 274 */       this.waterTimer = foodCompound.func_74763_f("waterTimer");
-/* 275 */       this.soberTime = foodCompound.func_74763_f("soberTime");
-/* 276 */       this.satisfaction = foodCompound.func_74760_g("foodSaturationLevel");
-/* 277 */       this.foodExhaustionLevel = foodCompound.func_74760_g("foodExhaustionLevel");
-/* 278 */       this.nutrFruit = foodCompound.func_74760_g("nutrFruit");
-/* 279 */       this.nutrVeg = foodCompound.func_74760_g("nutrVeg");
-/* 280 */       this.nutrGrain = foodCompound.func_74760_g("nutrGrain");
-/* 281 */       this.nutrProtein = foodCompound.func_74760_g("nutrProtein");
-/* 282 */       this.nutrDairy = foodCompound.func_74760_g("nutrDairy");
-/* 283 */       this.sendUpdate = foodCompound.func_74767_n("shouldSendUpdate");
-/* 284 */       this.satFruit = foodCompound.func_74767_n("satFruit");
-/* 285 */       this.satVeg = foodCompound.func_74767_n("satVeg");
-/* 286 */       this.satGrain = foodCompound.func_74767_n("satGrain");
-/* 287 */       this.satProtein = foodCompound.func_74767_n("satProtein");
-/* 288 */       this.satDairy = foodCompound.func_74767_n("satDairy");
+/* 273 */       NBTTagCompound foodCompound = par1NBTTagCompound.func_74775_l("foodCompound");
+/* 274 */       this.waterLevel = foodCompound.func_74760_g("waterLevel");
+/* 275 */       this.stomachLevel = foodCompound.func_74760_g("foodLevel");
+/* 276 */       this.foodTimer = foodCompound.func_74763_f("foodTickTimer");
+/* 277 */       this.foodHealTimer = foodCompound.func_74763_f("foodHealTimer");
+/* 278 */       this.waterTimer = foodCompound.func_74763_f("waterTimer");
+/* 279 */       this.soberTime = foodCompound.func_74763_f("soberTime");
+/* 280 */       this.satisfaction = foodCompound.func_74760_g("foodSaturationLevel");
+/* 281 */       this.foodExhaustionLevel = foodCompound.func_74760_g("foodExhaustionLevel");
+/* 282 */       this.nutrFruit = foodCompound.func_74760_g("nutrFruit");
+/* 283 */       this.nutrVeg = foodCompound.func_74760_g("nutrVeg");
+/* 284 */       this.nutrGrain = foodCompound.func_74760_g("nutrGrain");
+/* 285 */       this.nutrProtein = foodCompound.func_74760_g("nutrProtein");
+/* 286 */       this.nutrDairy = foodCompound.func_74760_g("nutrDairy");
+/* 287 */       this.sendUpdate = foodCompound.func_74767_n("shouldSendUpdate");
+/* 288 */       this.satFruit = foodCompound.func_74767_n("satFruit");
+/* 289 */       this.satVeg = foodCompound.func_74767_n("satVeg");
+/* 290 */       this.satGrain = foodCompound.func_74767_n("satGrain");
+/* 291 */       this.satProtein = foodCompound.func_74767_n("satProtein");
+/* 292 */       this.satDairy = foodCompound.func_74767_n("satDairy");
 /*     */     } 
 /*     */   }
 /*     */ 
@@ -294,32 +298,32 @@
 /*     */ 
 /*     */   
 /*     */   public void writeNBT(NBTTagCompound nbt) {
-/* 297 */     NBTTagCompound foodNBT = new NBTTagCompound();
-/* 298 */     foodNBT.func_74776_a("waterLevel", this.waterLevel);
-/* 299 */     foodNBT.func_74776_a("foodLevel", this.stomachLevel);
-/* 300 */     foodNBT.func_74772_a("foodTickTimer", this.foodTimer);
-/* 301 */     foodNBT.func_74772_a("foodHealTimer", this.foodHealTimer);
-/* 302 */     foodNBT.func_74772_a("waterTimer", this.waterTimer);
-/* 303 */     foodNBT.func_74772_a("soberTime", this.soberTime);
-/* 304 */     foodNBT.func_74776_a("foodSaturationLevel", this.satisfaction);
-/* 305 */     foodNBT.func_74776_a("foodExhaustionLevel", this.foodExhaustionLevel);
-/* 306 */     foodNBT.func_74776_a("nutrFruit", this.nutrFruit);
-/* 307 */     foodNBT.func_74776_a("nutrVeg", this.nutrVeg);
-/* 308 */     foodNBT.func_74776_a("nutrGrain", this.nutrGrain);
-/* 309 */     foodNBT.func_74776_a("nutrProtein", this.nutrProtein);
-/* 310 */     foodNBT.func_74776_a("nutrDairy", this.nutrDairy);
-/* 311 */     foodNBT.func_74757_a("shouldSendUpdate", this.sendUpdate);
-/* 312 */     foodNBT.func_74757_a("satFruit", this.satFruit);
-/* 313 */     foodNBT.func_74757_a("satVeg", this.satVeg);
-/* 314 */     foodNBT.func_74757_a("satGrain", this.satGrain);
-/* 315 */     foodNBT.func_74757_a("satProtein", this.satProtein);
-/* 316 */     foodNBT.func_74757_a("satDairy", this.satDairy);
-/* 317 */     nbt.func_74782_a("foodCompound", (NBTBase)foodNBT);
+/* 301 */     NBTTagCompound foodNBT = new NBTTagCompound();
+/* 302 */     foodNBT.func_74776_a("waterLevel", this.waterLevel);
+/* 303 */     foodNBT.func_74776_a("foodLevel", this.stomachLevel);
+/* 304 */     foodNBT.func_74772_a("foodTickTimer", this.foodTimer);
+/* 305 */     foodNBT.func_74772_a("foodHealTimer", this.foodHealTimer);
+/* 306 */     foodNBT.func_74772_a("waterTimer", this.waterTimer);
+/* 307 */     foodNBT.func_74772_a("soberTime", this.soberTime);
+/* 308 */     foodNBT.func_74776_a("foodSaturationLevel", this.satisfaction);
+/* 309 */     foodNBT.func_74776_a("foodExhaustionLevel", this.foodExhaustionLevel);
+/* 310 */     foodNBT.func_74776_a("nutrFruit", this.nutrFruit);
+/* 311 */     foodNBT.func_74776_a("nutrVeg", this.nutrVeg);
+/* 312 */     foodNBT.func_74776_a("nutrGrain", this.nutrGrain);
+/* 313 */     foodNBT.func_74776_a("nutrProtein", this.nutrProtein);
+/* 314 */     foodNBT.func_74776_a("nutrDairy", this.nutrDairy);
+/* 315 */     foodNBT.func_74757_a("shouldSendUpdate", this.sendUpdate);
+/* 316 */     foodNBT.func_74757_a("satFruit", this.satFruit);
+/* 317 */     foodNBT.func_74757_a("satVeg", this.satVeg);
+/* 318 */     foodNBT.func_74757_a("satGrain", this.satGrain);
+/* 319 */     foodNBT.func_74757_a("satProtein", this.satProtein);
+/* 320 */     foodNBT.func_74757_a("satDairy", this.satDairy);
+/* 321 */     nbt.func_74782_a("foodCompound", (NBTBase)foodNBT);
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void addFoodExhaustion(float par1) {
-/* 322 */     this.foodExhaustionLevel = par1;
+/* 326 */     this.foodExhaustionLevel = par1;
 /*     */   }
 /*     */ 
 /*     */ 
@@ -329,32 +333,32 @@
 /*     */ 
 /*     */   
 /*     */   public float getSatisfaction() {
-/* 332 */     return this.satisfaction;
+/* 336 */     return this.satisfaction;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void setFoodLevel(float par1) {
-/* 337 */     if (par1 != this.stomachLevel)
-/* 338 */       this.sendUpdate = true; 
-/* 339 */     this.stomachLevel = par1;
+/* 341 */     if (par1 != this.stomachLevel)
+/* 342 */       this.sendUpdate = true; 
+/* 343 */     this.stomachLevel = par1;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void setSatisfaction(float par1, int[] fg) {
-/* 345 */     this.satisfaction = Math.min(par1, 10.0F);
-/* 346 */     for (int i = 0; i < fg.length; i++) {
+/* 349 */     this.satisfaction = Math.min(par1, 10.0F);
+/* 350 */     for (int i = 0; i < fg.length; i++) {
 /*     */       
-/* 348 */       if (fg[i] != -1) {
+/* 352 */       if (fg[i] != -1) {
 /*     */         
-/* 350 */         EnumFoodGroup efg = FoodRegistry.getInstance().getFoodGroup(fg[i]);
-/* 351 */         switch (efg) {
+/* 354 */         EnumFoodGroup efg = FoodRegistry.getInstance().getFoodGroup(fg[i]);
+/* 355 */         switch (efg) {
 /*     */           case Protein:
-/* 353 */             this.satProtein = true; break;
-/* 354 */           case Grain: this.satGrain = true; break;
-/* 355 */           case Fruit: this.satFruit = true; break;
-/* 356 */           case Vegetable: this.satVeg = true; break;
-/* 357 */           case Dairy: this.satDairy = true;
+/* 357 */             this.satProtein = true; break;
+/* 358 */           case Grain: this.satGrain = true; break;
+/* 359 */           case Fruit: this.satFruit = true; break;
+/* 360 */           case Vegetable: this.satVeg = true; break;
+/* 361 */           case Dairy: this.satDairy = true;
 /*     */             break;
 /*     */         } 
 /*     */       } 
@@ -364,15 +368,15 @@
 /*     */ 
 /*     */   
 /*     */   public long getPlayerFoodSeed() {
-/* 367 */     if (this.nameSeed == Long.MIN_VALUE) {
+/* 371 */     if (this.nameSeed == Long.MIN_VALUE) {
 /*     */       
-/* 369 */       long seed = 0L;
-/* 370 */       byte[] nameBytes = this.player.func_70005_c_().getBytes();
-/* 371 */       for (byte b : nameBytes)
-/* 372 */         seed += b; 
-/* 373 */       this.nameSeed = seed + this.player.field_70170_p.func_72905_C();
+/* 373 */       long seed = 0L;
+/* 374 */       byte[] nameBytes = this.player.func_70005_c_().getBytes();
+/* 375 */       for (byte b : nameBytes)
+/* 376 */         seed += b; 
+/* 377 */       this.nameSeed = seed + this.player.field_70170_p.func_72905_C();
 /*     */     } 
-/* 375 */     return this.nameSeed;
+/* 379 */     return this.nameSeed;
 /*     */   }
 /*     */ 
 /*     */ 
@@ -380,49 +384,49 @@
 /*     */ 
 /*     */   
 /*     */   public int[] getPrefTaste() {
-/* 383 */     Random r = new Random(getPlayerFoodSeed());
-/* 384 */     return new int[] { 20 + r
-/* 385 */         .nextInt(70), 20 + r.nextInt(70), 20 + r.nextInt(70), 20 + r.nextInt(70), 20 + r.nextInt(70) };
+/* 387 */     Random r = new Random(getPlayerFoodSeed());
+/* 388 */     return new int[] { 20 + r
+/* 389 */         .nextInt(70), 20 + r.nextInt(70), 20 + r.nextInt(70), 20 + r.nextInt(70), 20 + r.nextInt(70) };
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public float getTasteFactor(ItemStack food) {
-/* 391 */     float tasteFactor = 0.85F;
-/* 392 */     int[] tastePref = getPrefTaste();
+/* 395 */     float tasteFactor = 0.85F;
+/* 396 */     int[] tastePref = getPrefTaste();
 /*     */     
-/* 394 */     tasteFactor += getTasteDistanceFactor(tastePref[0], ((IFood)food.func_77973_b()).getTasteSweet(food));
-/* 395 */     tasteFactor += getTasteDistanceFactor(tastePref[1], ((IFood)food.func_77973_b()).getTasteSour(food));
-/* 396 */     tasteFactor += getTasteDistanceFactor(tastePref[2], ((IFood)food.func_77973_b()).getTasteSalty(food));
-/* 397 */     tasteFactor += getTasteDistanceFactor(tastePref[3], ((IFood)food.func_77973_b()).getTasteBitter(food));
-/* 398 */     tasteFactor += getTasteDistanceFactor(tastePref[4], ((IFood)food.func_77973_b()).getTasteSavory(food));
+/* 398 */     tasteFactor += getTasteDistanceFactor(tastePref[0], ((IFood)food.func_77973_b()).getTasteSweet(food));
+/* 399 */     tasteFactor += getTasteDistanceFactor(tastePref[1], ((IFood)food.func_77973_b()).getTasteSour(food));
+/* 400 */     tasteFactor += getTasteDistanceFactor(tastePref[2], ((IFood)food.func_77973_b()).getTasteSalty(food));
+/* 401 */     tasteFactor += getTasteDistanceFactor(tastePref[3], ((IFood)food.func_77973_b()).getTasteBitter(food));
+/* 402 */     tasteFactor += getTasteDistanceFactor(tastePref[4], ((IFood)food.func_77973_b()).getTasteSavory(food));
 /*     */     
-/* 400 */     return tasteFactor;
+/* 404 */     return tasteFactor;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public float getTasteDistanceFactor(int pref, int val) {
-/* 405 */     int abs = Math.abs(pref - val);
-/* 406 */     if (abs < 11)
-/* 407 */       return (10 - abs) * 0.01F; 
-/* 408 */     return 0.0F;
+/* 409 */     int abs = Math.abs(pref - val);
+/* 410 */     if (abs < 11)
+/* 411 */       return (10 - abs) * 0.01F; 
+/* 412 */     return 0.0F;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public float getNutritionHealthModifier() {
-/* 413 */     float nMod = 0.0F;
-/* 414 */     nMod += 0.2F * this.nutrFruit;
-/* 415 */     nMod += 0.2F * this.nutrVeg;
-/* 416 */     nMod += 0.2F * this.nutrGrain;
-/* 417 */     nMod += 0.2F * this.nutrProtein;
-/* 418 */     nMod += 0.2F * this.nutrDairy;
-/* 419 */     return Math.max(nMod, 0.05F);
+/* 417 */     float nMod = 0.0F;
+/* 418 */     nMod += 0.2F * this.nutrFruit;
+/* 419 */     nMod += 0.2F * this.nutrVeg;
+/* 420 */     nMod += 0.2F * this.nutrGrain;
+/* 421 */     nMod += 0.2F * this.nutrProtein;
+/* 422 */     nMod += 0.2F * this.nutrDairy;
+/* 423 */     return Math.max(nMod, 0.05F);
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public static int getMaxHealth(EntityPlayer player) {
-/* 424 */     return 
-/* 425 */       (int)(Math.min(1000 + player.field_71068_ca * TFCOptions.healthGainRate, TFCOptions.healthGainCap) * TFC_Core.getPlayerFoodStats(player).getNutritionHealthModifier());
+/* 428 */     return 
+/* 429 */       (int)(Math.min(1000 + player.field_71068_ca * TFCOptions.healthGainRate, TFCOptions.healthGainCap) * TFC_Core.getPlayerFoodStats(player).getNutritionHealthModifier());
 /*     */   }
 /*     */ 
 /*     */ 
@@ -431,48 +435,48 @@
 /*     */ 
 /*     */   
 /*     */   public static boolean reduceFood(ItemStack is, float amount) {
-/* 434 */     if (is.func_77942_o()) {
+/* 438 */     if (is.func_77942_o()) {
 /*     */       
-/* 436 */       float weight = Food.getWeight(is);
-/* 437 */       float decay = Food.getDecay(is);
-/* 438 */       if (decay >= 0.0F && weight - decay - amount <= 0.0F)
-/* 439 */         return true; 
-/* 440 */       if (decay <= 0.0F && weight - amount <= 0.0F) {
-/* 441 */         return true;
+/* 440 */       float weight = Food.getWeight(is);
+/* 441 */       float decay = Food.getDecay(is);
+/* 442 */       if (decay >= 0.0F && weight - decay - amount <= 0.0F)
+/* 443 */         return true; 
+/* 444 */       if (decay <= 0.0F && weight - amount <= 0.0F) {
+/* 445 */         return true;
 /*     */       }
 /*     */       
-/* 444 */       Food.setWeight(is, weight - amount);
+/* 448 */       Food.setWeight(is, weight - amount);
 /*     */     } 
 /*     */     
-/* 447 */     return false;
+/* 451 */     return false;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void addNutrition(EnumFoodGroup fg, float foodAmt) {
-/* 452 */     addNutrition(fg, foodAmt, true);
+/* 456 */     addNutrition(fg, foodAmt, true);
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void addNutrition(EnumFoodGroup fg, float foodAmt, boolean shouldDoMath) {
-/* 457 */     float amount = foodAmt;
-/* 458 */     if (shouldDoMath)
-/* 459 */       amount = foodAmt / 5.0F / 50.0F; 
-/* 460 */     switch (fg) {
+/* 461 */     float amount = foodAmt;
+/* 462 */     if (shouldDoMath)
+/* 463 */       amount = foodAmt / 5.0F / 50.0F; 
+/* 464 */     switch (fg) {
 /*     */       
 /*     */       case Dairy:
-/* 463 */         this.nutrDairy = Math.min(this.nutrDairy + amount, 1.0F);
+/* 467 */         this.nutrDairy = Math.min(this.nutrDairy + amount, 1.0F);
 /*     */         break;
 /*     */       case Fruit:
-/* 466 */         this.nutrFruit = Math.min(this.nutrFruit + amount, 1.0F);
+/* 470 */         this.nutrFruit = Math.min(this.nutrFruit + amount, 1.0F);
 /*     */         break;
 /*     */       case Grain:
-/* 469 */         this.nutrGrain = Math.min(this.nutrGrain + amount, 1.0F);
+/* 473 */         this.nutrGrain = Math.min(this.nutrGrain + amount, 1.0F);
 /*     */         break;
 /*     */       case Protein:
-/* 472 */         this.nutrProtein = Math.min(this.nutrProtein + amount, 1.0F);
+/* 476 */         this.nutrProtein = Math.min(this.nutrProtein + amount, 1.0F);
 /*     */         break;
 /*     */       case Vegetable:
-/* 475 */         this.nutrVeg = Math.min(this.nutrVeg + amount, 1.0F);
+/* 479 */         this.nutrVeg = Math.min(this.nutrVeg + amount, 1.0F);
 /*     */         break;
 /*     */     } 
 /*     */   }
@@ -481,31 +485,31 @@
 /*     */ 
 /*     */   
 /*     */   public boolean shouldSendUpdate() {
-/* 484 */     return this.sendUpdate;
+/* 488 */     return this.sendUpdate;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void restoreWater(EntityPlayer player, int w) {
-/* 489 */     this.waterLevel = Math.min(this.waterLevel + w, getMaxWater(player));
-/* 490 */     this.sendUpdate = true;
-/* 491 */     writeNBT(player.getEntityData());
+/* 493 */     this.waterLevel = Math.min(this.waterLevel + w, getMaxWater(player));
+/* 494 */     this.sendUpdate = true;
+/* 495 */     writeNBT(player.getEntityData());
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void resetTimers() {
-/* 496 */     this.waterTimer = TFC_Time.getTotalTicks();
-/* 497 */     this.foodTimer = TFC_Time.getTotalTicks();
-/* 498 */     this.foodHealTimer = TFC_Time.getTotalTicks();
+/* 500 */     this.waterTimer = TFC_Time.getTotalTicks();
+/* 501 */     this.foodTimer = TFC_Time.getTotalTicks();
+/* 502 */     this.foodHealTimer = TFC_Time.getTotalTicks();
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void consumeAlcohol() {
-/* 504 */     if (this.soberTime <= TFC_Time.getTotalTicks()) {
-/* 505 */       this.soberTime = TFC_Time.getTotalTicks() + this.player.field_70170_p.field_73012_v.nextInt(1000) + 400L;
+/* 508 */     if (this.soberTime <= TFC_Time.getTotalTicks()) {
+/* 509 */       this.soberTime = TFC_Time.getTotalTicks() + this.player.field_70170_p.field_73012_v.nextInt(1000) + 400L;
 /*     */     } else {
-/* 507 */       this.soberTime += (this.player.field_70170_p.field_73012_v.nextInt(1000) + 400);
-/* 508 */     }  this.sendUpdate = true;
+/* 511 */       this.soberTime += (this.player.field_70170_p.field_73012_v.nextInt(1000) + 400);
+/* 512 */     }  this.sendUpdate = true;
 /*     */   }
 /*     */ }
 

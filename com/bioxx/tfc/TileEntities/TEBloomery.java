@@ -279,7 +279,7 @@
 /* 279 */               int c = (entity.func_92059_d()).field_77994_a;
 /* 280 */               while (c > 0) {
 /*     */                 
-/* 282 */                 if (this.charcoalCount + this.oreCount < 2 * maxCount && this.oreCount < maxCount && this.outCount < 1000)
+/* 282 */                 if (this.charcoalCount + this.oreCount < 2 * maxCount && this.oreCount < maxCount && this.outCount < 2000)
 /*     */                 {
 /* 284 */                   if (addOreToFire(new ItemStack(entity.func_92059_d().func_77973_b(), 1, entity.func_92059_d().func_77960_j()))) {
 /*     */                     

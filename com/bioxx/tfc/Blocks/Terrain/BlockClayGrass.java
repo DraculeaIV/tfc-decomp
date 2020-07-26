@@ -70,14 +70,13 @@
 /*    */   
 /*    */   public void func_149674_a(World world, int x, int y, int z, Random rand) {
 /* 72 */     if (world.func_147439_a(x, y + 1, z).isSideSolid((IBlockAccess)world, x, y + 1, z, ForgeDirection.DOWN)) {
+/* 73 */       world.func_147465_d(x, y, z, TFC_Core.getTypeForClay(world.func_72805_g(x, y, z) + this.textureOffset), world.func_72805_g(x, y, z), 2);
+/* 74 */     } else if (world.func_72937_j(x, y + 1, z)) {
 /*    */       
-/* 74 */       world.func_147465_d(x, y, z, TFC_Core.getTypeForClay(world.func_72805_g(x, y, z) + this.textureOffset), world.func_72805_g(x, y, z), 2);
-/*    */     }
-/* 76 */     else if (world.func_72937_j(x, y + 1, z)) {
-/*    */       
-/* 78 */       spreadGrass(world, x, y, z, rand);
+/* 76 */       spreadGrass(world, x, y, z, rand);
 /*    */     } 
-/* 80 */     world.func_147471_g(x, y, z);
+/*    */     
+/* 79 */     world.func_147471_g(x, y, z);
 /*    */   }
 /*    */ }
 

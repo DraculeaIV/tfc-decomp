@@ -41,7 +41,7 @@
 /*     */ import org.apache.logging.log4j.LogManager;
 /*     */ import org.apache.logging.log4j.Logger;
 /*     */ 
-/*     */ @Mod(modid = "terrafirmacraft", name = "TerraFirmaCraft", version = "0.79.37TFR", dependencies = "required-after:tfc_coremod", guiFactory = "com.bioxx.tfc.Core.Config.TFC_GuiFactory")
+/*     */ @Mod(modid = "terrafirmacraft", name = "TerraFirmaCraft", version = "0.79.36", dependencies = "required-after:tfc_coremod", guiFactory = "com.bioxx.tfc.Core.Config.TFC_GuiFactory")
 /*     */ public class TerraFirmaCraft {
 /*  46 */   public static final Logger LOG = LogManager.getLogger("TerraFirmaCraft");
 /*     */ 

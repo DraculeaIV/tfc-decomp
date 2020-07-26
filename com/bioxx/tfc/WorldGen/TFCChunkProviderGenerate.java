@@ -10,8 +10,10 @@
 /*     */ import com.bioxx.tfc.Entities.Mobs.EntityCowTFC;
 /*     */ import com.bioxx.tfc.Entities.Mobs.EntityDeer;
 /*     */ import com.bioxx.tfc.Entities.Mobs.EntityHorseTFC;
+/*     */ import com.bioxx.tfc.Entities.Mobs.EntityOcelotTFC;
 /*     */ import com.bioxx.tfc.Entities.Mobs.EntityPheasantTFC;
 /*     */ import com.bioxx.tfc.Entities.Mobs.EntityPigTFC;
+/*     */ import com.bioxx.tfc.Entities.Mobs.EntityPolarBear;
 /*     */ import com.bioxx.tfc.Entities.Mobs.EntitySheepTFC;
 /*     */ import com.bioxx.tfc.Entities.Mobs.EntityWolfTFC;
 /*     */ import com.bioxx.tfc.WorldGen.MapGen.MapGenCavesTFC;
@@ -37,8 +39,6 @@
 /*     */ import net.minecraft.world.gen.NoiseGeneratorOctaves;
 /*     */ import net.minecraftforge.common.MinecraftForge;
 /*     */ import net.minecraftforge.event.terraingen.PopulateChunkEvent;
-/*     */ 
-/*     */ 
 /*     */ 
 /*     */ 
 /*     */ 
@@ -321,97 +321,105 @@
 /*     */       
 /* 322 */       spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityPigTFC.class, 2 + mountainousAreaModifier, 2 + mountainousAreaModifier, 4 + mountainousAreaModifier));
 /* 323 */       spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityChickenTFC.class, 3 + mountainousAreaModifier, 1, 4 + mountainousAreaModifier));
+/* 324 */       spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityOcelotTFC.class, 5, 1, 1));
 /*     */     } 
 /*     */     
-/* 326 */     if (TFC_Climate.isSwamp(world, x, 150, z)) {
+/* 327 */     if (TFC_Climate.isSwamp(world, x, 150, z)) {
 /*     */       
-/* 328 */       spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityPigTFC.class, 1, 1, 2));
-/* 329 */       spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityPheasantTFC.class, 1 + mountainousAreaModifier, 1, 1));
+/* 329 */       spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityPigTFC.class, 1, 1, 2));
+/* 330 */       spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityPheasantTFC.class, 1 + mountainousAreaModifier, 1, 1));
+/* 331 */       spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityOcelotTFC.class, 5, 1, 1));
 /*     */     } 
-/* 331 */     return spawnableCreatureList;
+/*     */     
+/* 334 */     if (temp <= -10.0F) {
+/*     */       
+/* 336 */       spawnableCreatureList.clear();
+/* 337 */       spawnableCreatureList.add(new BiomeGenBase.SpawnListEntry(EntityPolarBear.class, 1, 1, 2));
+/*     */     } 
+/* 339 */     return spawnableCreatureList;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public boolean canSnowAt(World world, int x, int y, int z) {
-/* 336 */     float var5 = TFC_Climate.getHeightAdjustedTemp(world, x, y, z);
-/* 337 */     if (var5 >= 0.0F)
+/* 344 */     float var5 = TFC_Climate.getHeightAdjustedTemp(world, x, y, z);
+/* 345 */     if (var5 >= 0.0F)
 /*     */     {
-/* 339 */       return false;
+/* 347 */       return false;
 /*     */     }
 /*     */ 
 /*     */     
-/* 343 */     if (y >= 0 && y < 256 && world.func_72972_b(EnumSkyBlock.Block, x, y, z) < 10 && TFC_Time.getTotalMonths() > 1L) {
+/* 351 */     if (y >= 0 && y < 256 && world.func_72972_b(EnumSkyBlock.Block, x, y, z) < 10 && TFC_Time.getTotalMonths() > 1L) {
 /*     */       
-/* 345 */       Block var6 = world.func_147439_a(x, y - 1, z);
-/* 346 */       Block var7 = world.func_147439_a(x, y, z);
-/* 347 */       if (var7.isAir((IBlockAccess)world, x, y, z) && TFCBlocks.snow.func_149742_c(world, x, y, z) && !var6.isAir((IBlockAccess)world, x, y - 1, z) && var6.func_149688_o().func_76230_c())
-/* 348 */         return true; 
+/* 353 */       Block var6 = world.func_147439_a(x, y - 1, z);
+/* 354 */       Block var7 = world.func_147439_a(x, y, z);
+/* 355 */       if (var7.isAir((IBlockAccess)world, x, y, z) && TFCBlocks.snow.func_149742_c(world, x, y, z) && !var6.isAir((IBlockAccess)world, x, y - 1, z) && var6.func_149688_o().func_76230_c())
+/* 356 */         return true; 
 /*     */     } 
-/* 350 */     return false;
+/* 358 */     return false;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void generateTerrainHigh(int chunkX, int chunkZ, Block[] idsTop) {
-/* 356 */     byte subDivXZ = 4;
-/* 357 */     byte subDivY = 16;
-/* 358 */     int seaLevel = 16;
-/* 359 */     int xSize = subDivXZ + 1;
-/* 360 */     byte ySize = 17;
-/* 361 */     int zSize = subDivXZ + 1;
-/* 362 */     short arrayYHeight = 128;
-/* 363 */     this.biomesForGeneration = this.worldObj.func_72959_q().func_76937_a(this.biomesForGeneration, chunkX * 4 - 2, chunkZ * 4 - 2, xSize + 5, zSize + 5);
-/* 364 */     this.noiseArray = initializeNoiseFieldHigh(this.noiseArray, chunkX * subDivXZ, 0, chunkZ * subDivXZ, xSize, ySize, zSize);
+/* 364 */     byte subDivXZ = 4;
+/* 365 */     byte subDivY = 16;
+/* 366 */     int seaLevel = 16;
+/* 367 */     int xSize = subDivXZ + 1;
+/* 368 */     byte ySize = 17;
+/* 369 */     int zSize = subDivXZ + 1;
+/* 370 */     short arrayYHeight = 128;
+/* 371 */     this.biomesForGeneration = this.worldObj.func_72959_q().func_76937_a(this.biomesForGeneration, chunkX * 4 - 2, chunkZ * 4 - 2, xSize + 5, zSize + 5);
+/* 372 */     this.noiseArray = initializeNoiseFieldHigh(this.noiseArray, chunkX * subDivXZ, 0, chunkZ * subDivXZ, xSize, ySize, zSize);
 /*     */     
-/* 366 */     for (int x = 0; x < subDivXZ; x++) {
+/* 374 */     for (int x = 0; x < subDivXZ; x++) {
 /*     */       
-/* 368 */       for (int z = 0; z < subDivXZ; z++) {
+/* 376 */       for (int z = 0; z < subDivXZ; z++) {
 /*     */         
-/* 370 */         for (int y = 0; y < subDivY; y++) {
+/* 378 */         for (int y = 0; y < subDivY; y++) {
 /*     */           
-/* 372 */           double yLerp = 0.125D;
-/* 373 */           double noiseDL = this.noiseArray[((x + 0) * zSize + z + 0) * ySize + y + 0];
-/* 374 */           double noiseUL = this.noiseArray[((x + 0) * zSize + z + 1) * ySize + y + 0];
-/* 375 */           double noiseDR = this.noiseArray[((x + 1) * zSize + z + 0) * ySize + y + 0];
-/* 376 */           double noiseUR = this.noiseArray[((x + 1) * zSize + z + 1) * ySize + y + 0];
-/* 377 */           double noiseDLA = (this.noiseArray[((x + 0) * zSize + z + 0) * ySize + y + 1] - noiseDL) * yLerp;
-/* 378 */           double noiseULA = (this.noiseArray[((x + 0) * zSize + z + 1) * ySize + y + 1] - noiseUL) * yLerp;
-/* 379 */           double noiseDRA = (this.noiseArray[((x + 1) * zSize + z + 0) * ySize + y + 1] - noiseDR) * yLerp;
-/* 380 */           double noiseURA = (this.noiseArray[((x + 1) * zSize + z + 1) * ySize + y + 1] - noiseUR) * yLerp;
+/* 380 */           double yLerp = 0.125D;
+/* 381 */           double noiseDL = this.noiseArray[((x + 0) * zSize + z + 0) * ySize + y + 0];
+/* 382 */           double noiseUL = this.noiseArray[((x + 0) * zSize + z + 1) * ySize + y + 0];
+/* 383 */           double noiseDR = this.noiseArray[((x + 1) * zSize + z + 0) * ySize + y + 0];
+/* 384 */           double noiseUR = this.noiseArray[((x + 1) * zSize + z + 1) * ySize + y + 0];
+/* 385 */           double noiseDLA = (this.noiseArray[((x + 0) * zSize + z + 0) * ySize + y + 1] - noiseDL) * yLerp;
+/* 386 */           double noiseULA = (this.noiseArray[((x + 0) * zSize + z + 1) * ySize + y + 1] - noiseUL) * yLerp;
+/* 387 */           double noiseDRA = (this.noiseArray[((x + 1) * zSize + z + 0) * ySize + y + 1] - noiseDR) * yLerp;
+/* 388 */           double noiseURA = (this.noiseArray[((x + 1) * zSize + z + 1) * ySize + y + 1] - noiseUR) * yLerp;
 /*     */           
-/* 382 */           for (int var31 = 0; var31 < 8; var31++) {
+/* 390 */           for (int var31 = 0; var31 < 8; var31++) {
 /*     */             
-/* 384 */             double xLerp = 0.25D;
-/* 385 */             double var34 = noiseDL;
-/* 386 */             double var36 = noiseUL;
-/* 387 */             double var38 = (noiseDR - noiseDL) * xLerp;
-/* 388 */             double var40 = (noiseUR - noiseUL) * xLerp;
+/* 392 */             double xLerp = 0.25D;
+/* 393 */             double var34 = noiseDL;
+/* 394 */             double var36 = noiseUL;
+/* 395 */             double var38 = (noiseDR - noiseDL) * xLerp;
+/* 396 */             double var40 = (noiseUR - noiseUL) * xLerp;
 /*     */             
-/* 390 */             for (int var42 = 0; var42 < 4; var42++) {
+/* 398 */             for (int var42 = 0; var42 < 4; var42++) {
 /*     */               
-/* 392 */               int index = var42 + x * 4 << 11 | 0 + z * 4 << 7 | y * 8 + var31;
+/* 400 */               int index = var42 + x * 4 << 11 | 0 + z * 4 << 7 | y * 8 + var31;
 /*     */               
-/* 394 */               index -= arrayYHeight;
-/* 395 */               double zLerp = 0.25D;
-/* 396 */               double var49 = (var36 - var34) * zLerp;
-/* 397 */               double var47 = var34 - var49;
+/* 402 */               index -= arrayYHeight;
+/* 403 */               double zLerp = 0.25D;
+/* 404 */               double var49 = (var36 - var34) * zLerp;
+/* 405 */               double var47 = var34 - var49;
 /*     */               
-/* 399 */               for (int var51 = 0; var51 < 4; var51++) {
+/* 407 */               for (int var51 = 0; var51 < 4; var51++) {
 /*     */                 
-/* 401 */                 if ((var47 += var49) > 0.0D) {
-/* 402 */                   idsTop[index += arrayYHeight] = Blocks.field_150348_b;
-/* 403 */                 } else if (y * 8 + var31 < seaLevel) {
-/* 404 */                   idsTop[index += arrayYHeight] = TFCBlocks.saltWaterStationary;
+/* 409 */                 if ((var47 += var49) > 0.0D) {
+/* 410 */                   idsTop[index += arrayYHeight] = Blocks.field_150348_b;
+/* 411 */                 } else if (y * 8 + var31 < seaLevel) {
+/* 412 */                   idsTop[index += arrayYHeight] = TFCBlocks.saltWaterStationary;
 /*     */                 } else {
-/* 406 */                   idsTop[index += arrayYHeight] = Blocks.field_150350_a;
+/* 414 */                   idsTop[index += arrayYHeight] = Blocks.field_150350_a;
 /*     */                 } 
-/* 408 */               }  var34 += var38;
-/* 409 */               var36 += var40;
+/* 416 */               }  var34 += var38;
+/* 417 */               var36 += var40;
 /*     */             } 
-/* 411 */             noiseDL += noiseDLA;
-/* 412 */             noiseUL += noiseULA;
-/* 413 */             noiseDR += noiseDRA;
-/* 414 */             noiseUR += noiseURA;
+/* 419 */             noiseDL += noiseDLA;
+/* 420 */             noiseUL += noiseULA;
+/* 421 */             noiseDR += noiseDRA;
+/* 422 */             noiseUR += noiseURA;
 /*     */           } 
 /*     */         } 
 /*     */       } 
@@ -424,18 +432,18 @@
 /*     */ 
 /*     */   
 /*     */   private double[] initializeNoiseFieldHigh(double[] outArray, int xPos, int yPos, int zPos, int xSize, int ySize, int zSize) {
-/* 427 */     if (outArray == null) {
-/* 428 */       outArray = new double[xSize * ySize * zSize];
+/* 435 */     if (outArray == null) {
+/* 436 */       outArray = new double[xSize * ySize * zSize];
 /*     */     }
-/* 430 */     if (this.parabolicField == null) {
+/* 438 */     if (this.parabolicField == null) {
 /*     */       
-/* 432 */       this.parabolicField = new float[25];
-/* 433 */       for (int counter1 = -2; counter1 <= 2; counter1++) {
+/* 440 */       this.parabolicField = new float[25];
+/* 441 */       for (int counter1 = -2; counter1 <= 2; counter1++) {
 /*     */         
-/* 435 */         for (int counter2 = -2; counter2 <= 2; counter2++) {
+/* 443 */         for (int counter2 = -2; counter2 <= 2; counter2++) {
 /*     */           
-/* 437 */           float parabolaHeight = 10.0F / MathHelper.func_76129_c((counter1 * counter1 + counter2 * counter2) + 0.2F);
-/* 438 */           this.parabolicField[counter1 + 2 + (counter2 + 2) * 5] = parabolaHeight;
+/* 445 */           float parabolaHeight = 10.0F / MathHelper.func_76129_c((counter1 * counter1 + counter2 * counter2) + 0.2F);
+/* 446 */           this.parabolicField[counter1 + 2 + (counter2 + 2) * 5] = parabolaHeight;
 /*     */         } 
 /*     */       } 
 /*     */     } 
@@ -448,220 +456,212 @@
 /*     */ 
 /*     */ 
 /*     */     
-/* 451 */     double double1 = 1000.0D;
-/* 452 */     double double2 = 1000.0D;
+/* 459 */     double double1 = 1000.0D;
+/* 460 */     double double2 = 1000.0D;
 /*     */ 
 /*     */ 
 /*     */     
-/* 456 */     this.noise6 = this.field_73212_b.func_76305_a(this.noise6, xPos, zPos, xSize, zSize, 200.0D, 200.0D, 0.5D);
-/* 457 */     this.noise3 = this.noiseGen3.func_76304_a(this.noise3, xPos, yPos, zPos, xSize, ySize, zSize, double1 / 80.0D, double2 / 160.0D, double1 / 80.0D);
+/* 464 */     this.noise6 = this.field_73212_b.func_76305_a(this.noise6, xPos, zPos, xSize, zSize, 200.0D, 200.0D, 0.5D);
+/* 465 */     this.noise3 = this.noiseGen3.func_76304_a(this.noise3, xPos, yPos, zPos, xSize, ySize, zSize, double1 / 80.0D, double2 / 160.0D, double1 / 80.0D);
 /*     */     
-/* 459 */     this.noise1 = this.noiseGen1.func_76304_a(this.noise1, xPos, yPos, zPos, xSize, ySize, zSize, double1, double2, double1);
-/* 460 */     this.noise2 = this.noiseGen2.func_76304_a(this.noise2, xPos, yPos, zPos, xSize, ySize, zSize, double1, double2, double1);
+/* 467 */     this.noise1 = this.noiseGen1.func_76304_a(this.noise1, xPos, yPos, zPos, xSize, ySize, zSize, double1, double2, double1);
+/* 468 */     this.noise2 = this.noiseGen2.func_76304_a(this.noise2, xPos, yPos, zPos, xSize, ySize, zSize, double1, double2, double1);
 /*     */     
-/* 462 */     int index1 = 0;
-/* 463 */     int index2 = 0;
+/* 470 */     int index1 = 0;
+/* 471 */     int index2 = 0;
 /*     */     
-/* 465 */     for (int x = 0; x < xSize; x++) {
+/* 473 */     for (int x = 0; x < xSize; x++) {
 /*     */       
-/* 467 */       for (int z = 0; z < zSize; z++) {
+/* 475 */       for (int z = 0; z < zSize; z++) {
 /*     */         
-/* 469 */         float variationBlended = 0.0F;
-/* 470 */         float rootBlended = 0.0F;
-/* 471 */         float totalBlendedHeight = 0.0F;
-/* 472 */         byte radius = 2;
-/* 473 */         BiomeGenBase baseBiome = this.biomesForGeneration[x + 2 + (z + 2) * (xSize + 5)];
+/* 477 */         float variationBlended = 0.0F;
+/* 478 */         float rootBlended = 0.0F;
+/* 479 */         float totalBlendedHeight = 0.0F;
+/* 480 */         byte radius = 2;
+/* 481 */         BiomeGenBase baseBiome = this.biomesForGeneration[x + 2 + (z + 2) * (xSize + 5)];
 /*     */         
-/* 475 */         for (int xR = -radius; xR <= radius; xR++) {
+/* 483 */         for (int xR = -radius; xR <= radius; xR++) {
 /*     */           
-/* 477 */           for (int zR = -radius; zR <= radius; zR++) {
+/* 485 */           for (int zR = -radius; zR <= radius; zR++) {
 /*     */             
-/* 479 */             BiomeGenBase blendBiome = this.biomesForGeneration[x + xR + 2 + (z + zR + 2) * (xSize + 5)];
-/* 480 */             float blendedHeight = this.parabolicField[xR + 2 + (zR + 2) * 5] / 2.0F;
-/* 481 */             if (blendBiome.field_76748_D > baseBiome.field_76748_D) {
-/* 482 */               blendedHeight *= 0.5F;
+/* 487 */             BiomeGenBase blendBiome = this.biomesForGeneration[x + xR + 2 + (z + zR + 2) * (xSize + 5)];
+/* 488 */             float blendedHeight = this.parabolicField[xR + 2 + (zR + 2) * 5] / 2.0F;
+/* 489 */             if (blendBiome.field_76748_D > baseBiome.field_76748_D) {
+/* 490 */               blendedHeight *= 0.5F;
 /*     */             }
-/* 484 */             variationBlended += blendBiome.field_76749_E * blendedHeight;
-/* 485 */             rootBlended += blendBiome.field_76748_D * blendedHeight;
-/* 486 */             totalBlendedHeight += blendedHeight;
+/* 492 */             variationBlended += blendBiome.field_76749_E * blendedHeight;
+/* 493 */             rootBlended += blendBiome.field_76748_D * blendedHeight;
+/* 494 */             totalBlendedHeight += blendedHeight;
 /*     */           } 
 /*     */         } 
 /*     */         
-/* 490 */         variationBlended /= totalBlendedHeight;
-/* 491 */         rootBlended /= totalBlendedHeight;
-/* 492 */         variationBlended = variationBlended * 0.9F + 0.1F;
-/* 493 */         rootBlended = (rootBlended * 4.0F - 1.0F) / 8.0F;
+/* 498 */         variationBlended /= totalBlendedHeight;
+/* 499 */         rootBlended /= totalBlendedHeight;
+/* 500 */         variationBlended = variationBlended * 0.9F + 0.1F;
+/* 501 */         rootBlended = (rootBlended * 4.0F - 1.0F) / 8.0F;
 /*     */         
-/* 495 */         double scaledNoise6Value = this.noise6[index2] / 8000.0D;
+/* 503 */         double scaledNoise6Value = this.noise6[index2] / 8000.0D;
 /*     */         
-/* 497 */         if (scaledNoise6Value < 0.0D) {
-/* 498 */           scaledNoise6Value = -scaledNoise6Value * 0.3D;
+/* 505 */         if (scaledNoise6Value < 0.0D) {
+/* 506 */           scaledNoise6Value = -scaledNoise6Value * 0.3D;
 /*     */         }
-/* 500 */         scaledNoise6Value = scaledNoise6Value * 3.0D - 2.0D;
+/* 508 */         scaledNoise6Value = scaledNoise6Value * 3.0D - 2.0D;
 /*     */         
-/* 502 */         if (scaledNoise6Value < 0.0D) {
+/* 510 */         if (scaledNoise6Value < 0.0D) {
 /*     */           
-/* 504 */           scaledNoise6Value /= 2.0D;
-/* 505 */           if (scaledNoise6Value < -1.0D)
-/* 506 */             scaledNoise6Value = -1.0D; 
-/* 507 */           scaledNoise6Value /= 2.8D;
+/* 512 */           scaledNoise6Value /= 2.0D;
+/* 513 */           if (scaledNoise6Value < -1.0D)
+/* 514 */             scaledNoise6Value = -1.0D; 
+/* 515 */           scaledNoise6Value /= 2.8D;
 /*     */         }
 /*     */         else {
 /*     */           
-/* 511 */           if (scaledNoise6Value > 1.0D)
-/* 512 */             scaledNoise6Value = 1.0D; 
-/* 513 */           scaledNoise6Value /= 8.0D;
+/* 519 */           if (scaledNoise6Value > 1.0D)
+/* 520 */             scaledNoise6Value = 1.0D; 
+/* 521 */           scaledNoise6Value /= 8.0D;
 /*     */         } 
 /*     */         
-/* 516 */         index2++;
+/* 524 */         index2++;
 /*     */         
-/* 518 */         for (int y = 0; y < ySize; y++) {
+/* 526 */         for (int y = 0; y < ySize; y++) {
 /*     */           
-/* 520 */           double rootBlendedCopy = rootBlended;
-/* 521 */           rootBlendedCopy += scaledNoise6Value * 0.2D;
-/* 522 */           rootBlendedCopy = rootBlendedCopy * ySize / 16.0D;
-/* 523 */           double var28 = ySize / 2.0D + rootBlendedCopy * 4.0D;
-/* 524 */           double output = 0.0D;
-/* 525 */           double var32 = (y - var28) * 12.0D * 256.0D / 256.0D / (2.7D + variationBlended);
+/* 528 */           double rootBlendedCopy = rootBlended;
+/* 529 */           rootBlendedCopy += scaledNoise6Value * 0.2D;
+/* 530 */           rootBlendedCopy = rootBlendedCopy * ySize / 16.0D;
+/* 531 */           double var28 = ySize / 2.0D + rootBlendedCopy * 4.0D;
+/* 532 */           double output = 0.0D;
+/* 533 */           double var32 = (y - var28) * 12.0D * 256.0D / 256.0D / (2.7D + variationBlended);
 /*     */           
-/* 527 */           if (var32 < 0.0D) {
-/* 528 */             var32 *= 4.0D;
+/* 535 */           if (var32 < 0.0D) {
+/* 536 */             var32 *= 4.0D;
 /*     */           }
-/* 530 */           double var34 = this.noise1[index1] / 512.0D;
-/* 531 */           double var36 = this.noise2[index1] / 512.0D;
-/* 532 */           double var38 = (this.noise3[index1] / 10.0D + 1.0D) / 2.0D;
+/* 538 */           double var34 = this.noise1[index1] / 512.0D;
+/* 539 */           double var36 = this.noise2[index1] / 512.0D;
+/* 540 */           double var38 = (this.noise3[index1] / 10.0D + 1.0D) / 2.0D;
 /*     */           
-/* 534 */           if (var38 < 0.0D) {
-/* 535 */             output = var34;
-/* 536 */           } else if (var38 > 1.0D) {
-/* 537 */             output = var36;
+/* 542 */           if (var38 < 0.0D) {
+/* 543 */             output = var34;
+/* 544 */           } else if (var38 > 1.0D) {
+/* 545 */             output = var36;
 /*     */           } else {
-/* 539 */             output = var34 + (var36 - var34) * var38;
+/* 547 */             output = var34 + (var36 - var34) * var38;
 /*     */           } 
-/* 541 */           output -= var32;
-/* 542 */           if (y > ySize - 4) {
+/* 549 */           output -= var32;
+/* 550 */           if (y > ySize - 4) {
 /*     */             
-/* 544 */             double var40 = ((y - ySize - 4) / 3.0F);
-/* 545 */             output = output * (1.0D - var40) + -10.0D * var40;
+/* 552 */             double var40 = ((y - ySize - 4) / 3.0F);
+/* 553 */             output = output * (1.0D - var40) + -10.0D * var40;
 /*     */           } 
 /*     */           
-/* 548 */           outArray[index1] = output;
-/* 549 */           index1++;
+/* 556 */           outArray[index1] = output;
+/* 557 */           index1++;
 /*     */         } 
 /*     */       } 
 /*     */     } 
-/* 553 */     return outArray;
+/* 561 */     return outArray;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   private void replaceBlocksForBiomeHigh(int chunkX, int chunkZ, Block[] idsTop, Random rand, Block[] idsBig, byte[] metaBig) {
-/* 558 */     int seaLevel = 16;
-/* 559 */     int worldHeight = 256;
-/* 560 */     int indexOffset = 128;
-/* 561 */     double var6 = 0.03125D;
-/* 562 */     this.stoneNoise = this.noiseGen4.func_76304_a(this.stoneNoise, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, var6 * 4.0D, var6 * 1.0D, var6 * 4.0D);
-/* 563 */     boolean[] cliffMap = new boolean[256];
-/* 564 */     for (int xCoord = 0; xCoord < 16; xCoord++) {
+/* 566 */     int seaLevel = 16;
+/* 567 */     int worldHeight = 256;
+/* 568 */     int indexOffset = 128;
+/* 569 */     double var6 = 0.03125D;
+/* 570 */     this.stoneNoise = this.noiseGen4.func_76304_a(this.stoneNoise, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, var6 * 4.0D, var6 * 1.0D, var6 * 4.0D);
+/* 571 */     boolean[] cliffMap = new boolean[256];
+/* 572 */     for (int xCoord = 0; xCoord < 16; xCoord++) {
 /*     */       
-/* 566 */       for (int zCoord = 0; zCoord < 16; zCoord++) {
+/* 574 */       for (int zCoord = 0; zCoord < 16; zCoord++) {
 /*     */         
-/* 568 */         int arrayIndex = xCoord + zCoord * 16;
-/* 569 */         int arrayIndexDL = zCoord + xCoord * 16;
-/* 570 */         int arrayIndex2 = xCoord + 1 + zCoord + 16;
-/* 571 */         TFCBiome biome = (TFCBiome)getBiome(xCoord, zCoord);
-/* 572 */         DataLayer rock1 = (this.rockLayer1[arrayIndexDL] == null) ? DataLayer.GRANITE : this.rockLayer1[arrayIndexDL];
-/* 573 */         DataLayer rock2 = (this.rockLayer2[arrayIndexDL] == null) ? DataLayer.GRANITE : this.rockLayer2[arrayIndexDL];
-/* 574 */         DataLayer rock3 = (this.rockLayer3[arrayIndexDL] == null) ? DataLayer.GRANITE : this.rockLayer3[arrayIndexDL];
+/* 576 */         int arrayIndex = xCoord + zCoord * 16;
+/* 577 */         int arrayIndexDL = zCoord + xCoord * 16;
+/* 578 */         int arrayIndex2 = xCoord + 1 + zCoord + 16;
+/* 579 */         TFCBiome biome = (TFCBiome)getBiome(xCoord, zCoord);
+/* 580 */         DataLayer rock1 = (this.rockLayer1[arrayIndexDL] == null) ? DataLayer.GRANITE : this.rockLayer1[arrayIndexDL];
+/* 581 */         DataLayer rock2 = (this.rockLayer2[arrayIndexDL] == null) ? DataLayer.GRANITE : this.rockLayer2[arrayIndexDL];
+/* 582 */         DataLayer rock3 = (this.rockLayer3[arrayIndexDL] == null) ? DataLayer.GRANITE : this.rockLayer3[arrayIndexDL];
 /*     */         
-/* 576 */         float rain = (this.rainfallLayer[arrayIndexDL] == null) ? DataLayer.RAIN_125.floatdata1 : (this.rainfallLayer[arrayIndexDL]).floatdata1;
-/* 577 */         DataLayer drainage = (this.drainageLayer[arrayIndexDL] == null) ? DataLayer.DRAINAGE_NORMAL : this.drainageLayer[arrayIndexDL];
-/* 578 */         int var12 = (int)(this.stoneNoise[arrayIndex2] / 3.0D + 6.0D);
-/* 579 */         int var13 = -1;
+/* 584 */         float rain = (this.rainfallLayer[arrayIndexDL] == null) ? DataLayer.RAIN_125.floatdata1 : (this.rainfallLayer[arrayIndexDL]).floatdata1;
+/* 585 */         DataLayer drainage = (this.drainageLayer[arrayIndexDL] == null) ? DataLayer.DRAINAGE_NORMAL : this.drainageLayer[arrayIndexDL];
+/* 586 */         int var12 = (int)(this.stoneNoise[arrayIndex2] / 3.0D + 6.0D);
+/* 587 */         int var13 = -1;
 /*     */         
-/* 581 */         Block surfaceBlock = TFC_Core.getTypeForGrassWithRain(rock1.data1, rain);
-/* 582 */         Block subSurfaceBlock = TFC_Core.getTypeForDirtFromGrass(surfaceBlock);
+/* 589 */         Block surfaceBlock = TFC_Core.getTypeForGrassWithRain(rock1.data1, rain);
+/* 590 */         Block subSurfaceBlock = TFC_Core.getTypeForDirtFromGrass(surfaceBlock);
 /*     */         
-/* 584 */         float bioTemp = TFC_Climate.getBioTemperature(this.worldObj, chunkX * 16 + xCoord, chunkZ * 16 + zCoord);
-/* 585 */         int h = 0;
-/* 586 */         if (TFC_Core.isBeachBiome((getBiome(xCoord - 1, zCoord)).field_76756_M) || TFC_Core.isBeachBiome((getBiome(xCoord + 1, zCoord)).field_76756_M) || 
-/* 587 */           TFC_Core.isBeachBiome((getBiome(xCoord, zCoord + 1)).field_76756_M) || TFC_Core.isBeachBiome((getBiome(xCoord, zCoord - 1)).field_76756_M))
+/* 592 */         float bioTemp = TFC_Climate.getBioTemperature(this.worldObj, chunkX * 16 + xCoord, chunkZ * 16 + zCoord);
+/* 593 */         int h = 0;
+/* 594 */         if (TFC_Core.isBeachBiome((getBiome(xCoord - 1, zCoord)).field_76756_M) || TFC_Core.isBeachBiome((getBiome(xCoord + 1, zCoord)).field_76756_M) || 
+/* 595 */           TFC_Core.isBeachBiome((getBiome(xCoord, zCoord + 1)).field_76756_M) || TFC_Core.isBeachBiome((getBiome(xCoord, zCoord - 1)).field_76756_M))
 /*     */         {
-/* 589 */           if (!TFC_Core.isBeachBiome((getBiome(xCoord, zCoord)).field_76756_M))
-/* 590 */             cliffMap[arrayIndex] = true; 
+/* 597 */           if (!TFC_Core.isBeachBiome((getBiome(xCoord, zCoord)).field_76756_M))
+/* 598 */             cliffMap[arrayIndex] = true; 
 /*     */         }
-/* 592 */         for (int height = 127; height >= 0; height--) {
+/* 600 */         for (int height = 127; height >= 0; height--) {
 /*     */           
-/* 594 */           int indexBig = arrayIndex * worldHeight + height + indexOffset;
-/* 595 */           int index = arrayIndex * 128 + height;
+/* 602 */           int indexBig = arrayIndex * worldHeight + height + indexOffset;
+/* 603 */           int index = arrayIndex * 128 + height;
 /*     */           
-/* 597 */           float temp = TFC_Climate.adjustHeightToTemp(height, bioTemp);
-/* 598 */           if (TFC_Core.isBeachBiome(biome.field_76756_M) && height > seaLevel + h && idsTop[index] == Blocks.field_150348_b) {
+/* 605 */           float temp = TFC_Climate.adjustHeightToTemp(height, bioTemp);
+/* 606 */           if (TFC_Core.isBeachBiome(biome.field_76756_M) && height > seaLevel + h && idsTop[index] == Blocks.field_150348_b) {
 /*     */             
-/* 600 */             idsTop[index] = Blocks.field_150350_a;
-/* 601 */             if (h == 0)
-/* 602 */               h = (height - 16) / 4; 
+/* 608 */             idsTop[index] = Blocks.field_150350_a;
+/* 609 */             if (h == 0)
+/* 610 */               h = (height - 16) / 4; 
 /*     */           } 
-/* 604 */           if (idsBig[indexBig] == null) {
+/* 612 */           if (idsBig[indexBig] == null) {
 /*     */             
-/* 606 */             idsBig[indexBig] = idsTop[index];
-/* 607 */             if (indexBig + 1 < idsBig.length && TFC_Core.isSoilOrGravel(idsBig[indexBig + 1]) && idsBig[indexBig] == Blocks.field_150350_a)
+/* 614 */             idsBig[indexBig] = idsTop[index];
+/* 615 */             if (indexBig + 1 < idsBig.length && TFC_Core.isSoilOrGravel(idsBig[indexBig + 1]) && idsBig[indexBig] == Blocks.field_150350_a)
 /*     */             {
-/* 609 */               for (int upCount = 1; TFC_Core.isSoilOrGravel(idsBig[indexBig + upCount]); upCount++) {
-/* 610 */                 idsBig[indexBig + upCount] = Blocks.field_150350_a;
+/* 617 */               for (int upCount = 1; TFC_Core.isSoilOrGravel(idsBig[indexBig + upCount]); upCount++) {
+/* 618 */                 idsBig[indexBig + upCount] = Blocks.field_150350_a;
 /*     */               }
 /*     */             }
 /*     */           } 
-/* 614 */           if (idsBig[indexBig] == Blocks.field_150348_b) {
+/* 622 */           if (idsBig[indexBig] == Blocks.field_150348_b) {
 /*     */             
-/* 616 */             if (this.seaLevelOffsetMap[arrayIndex] == 0 && height - 16 >= 0) {
-/* 617 */               this.seaLevelOffsetMap[arrayIndex] = height - 16;
+/* 624 */             if (this.seaLevelOffsetMap[arrayIndex] == 0 && height - 16 >= 0) {
+/* 625 */               this.seaLevelOffsetMap[arrayIndex] = height - 16;
 /*     */             }
-/* 619 */             if (this.chunkHeightMap[arrayIndex] == 0) {
-/* 620 */               this.chunkHeightMap[arrayIndex] = height + indexOffset;
+/* 627 */             if (this.chunkHeightMap[arrayIndex] == 0) {
+/* 628 */               this.chunkHeightMap[arrayIndex] = height + indexOffset;
 /*     */             }
-/* 622 */             convertStone(indexOffset + height, arrayIndex, indexBig, idsBig, metaBig, rock1, rock2, rock3);
+/* 630 */             convertStone(indexOffset + height, arrayIndex, indexBig, idsBig, metaBig, rock1, rock2, rock3);
 /*     */ 
 /*     */             
-/* 625 */             if (rain < 125.0F && temp < 1.5F) {
+/* 633 */             if (rain < 125.0F && temp < 1.5F) {
 /*     */               
-/* 627 */               surfaceBlock = TFC_Core.getTypeForSand(rock1.data1);
-/* 628 */               subSurfaceBlock = TFC_Core.getTypeForSand(rock1.data1);
+/* 635 */               surfaceBlock = TFC_Core.getTypeForSand(rock1.data1);
+/* 636 */               subSurfaceBlock = TFC_Core.getTypeForSand(rock1.data1);
 /*     */             
 /*     */             }
-/* 631 */             else if (rain < 125.0F && biome.field_76749_E < 0.5F && temp > 20.0F) {
+/* 639 */             else if (rain < 125.0F && biome.field_76749_E < 0.5F && temp > 20.0F) {
 /*     */               
-/* 633 */               surfaceBlock = TFC_Core.getTypeForSand(rock1.data1);
-/* 634 */               subSurfaceBlock = TFC_Core.getTypeForSand(rock1.data1);
+/* 641 */               surfaceBlock = TFC_Core.getTypeForSand(rock1.data1);
+/* 642 */               subSurfaceBlock = TFC_Core.getTypeForSand(rock1.data1);
 /*     */             } 
 /*     */             
-/* 637 */             if (biome == TFCBiome.BEACH || biome == TFCBiome.OCEAN || biome == TFCBiome.DEEP_OCEAN) {
+/* 645 */             if (biome == TFCBiome.BEACH || biome == TFCBiome.OCEAN || biome == TFCBiome.DEEP_OCEAN) {
 /*     */               
-/* 639 */               subSurfaceBlock = surfaceBlock = TFC_Core.getTypeForSand(rock1.data1);
+/* 647 */               subSurfaceBlock = surfaceBlock = TFC_Core.getTypeForSand(rock1.data1);
 /*     */             }
-/* 641 */             else if (biome == TFCBiome.GRAVEL_BEACH) {
+/* 649 */             else if (biome == TFCBiome.GRAVEL_BEACH) {
 /*     */               
-/* 643 */               subSurfaceBlock = surfaceBlock = TFC_Core.getTypeForGravel(rock1.data1);
+/* 651 */               subSurfaceBlock = surfaceBlock = TFC_Core.getTypeForGravel(rock1.data1);
 /*     */             } 
 /*     */             
-/* 646 */             if (var13 == -1) {
+/* 654 */             if (var13 == -1) {
 /*     */ 
 /*     */               
-/* 649 */               int arrayIndexx = (xCoord > 0) ? (xCoord - 1 + zCoord * 16) : -1;
-/* 650 */               int arrayIndexX = (xCoord < 15) ? (xCoord + 1 + zCoord * 16) : -1;
-/* 651 */               int arrayIndexz = (zCoord > 0) ? (xCoord + (zCoord - 1) * 16) : -1;
-/* 652 */               int arrayIndexZ = (zCoord < 15) ? (xCoord + (zCoord + 1) * 16) : -1;
-/* 653 */               int var12Temp = var12;
-/* 654 */               for (int counter = 1; counter < var12Temp / 3; counter++) {
+/* 657 */               int arrayIndexx = (xCoord > 0) ? (xCoord - 1 + zCoord * 16) : -1;
+/* 658 */               int arrayIndexX = (xCoord < 15) ? (xCoord + 1 + zCoord * 16) : -1;
+/* 659 */               int arrayIndexz = (zCoord > 0) ? (xCoord + (zCoord - 1) * 16) : -1;
+/* 660 */               int arrayIndexZ = (zCoord < 15) ? (xCoord + (zCoord + 1) * 16) : -1;
+/* 661 */               int var12Temp = var12;
+/* 662 */               for (int counter = 1; counter < var12Temp / 3; counter++) {
 /*     */                 
-/* 656 */                 if (arrayIndexx >= 0 && this.seaLevelOffsetMap[arrayIndex] - 3 * counter > this.seaLevelOffsetMap[arrayIndexx]) {
-/*     */                   
-/* 658 */                   this.seaLevelOffsetMap[arrayIndex] = this.seaLevelOffsetMap[arrayIndex] - 1;
-/* 659 */                   var12--;
-/* 660 */                   height--;
-/* 661 */                   indexBig = arrayIndex * worldHeight + height + indexOffset;
-/* 662 */                   index = arrayIndex * 128 + height;
-/*     */                 }
-/* 664 */                 else if (arrayIndexX >= 0 && this.seaLevelOffsetMap[arrayIndex] - 3 * counter > this.seaLevelOffsetMap[arrayIndexX]) {
+/* 664 */                 if (arrayIndexx >= 0 && this.seaLevelOffsetMap[arrayIndex] - 3 * counter > this.seaLevelOffsetMap[arrayIndexx]) {
 /*     */                   
 /* 666 */                   this.seaLevelOffsetMap[arrayIndex] = this.seaLevelOffsetMap[arrayIndex] - 1;
 /* 667 */                   var12--;
@@ -669,7 +669,7 @@
 /* 669 */                   indexBig = arrayIndex * worldHeight + height + indexOffset;
 /* 670 */                   index = arrayIndex * 128 + height;
 /*     */                 }
-/* 672 */                 else if (arrayIndexz >= 0 && this.seaLevelOffsetMap[arrayIndex] - 3 * counter > this.seaLevelOffsetMap[arrayIndexz]) {
+/* 672 */                 else if (arrayIndexX >= 0 && this.seaLevelOffsetMap[arrayIndex] - 3 * counter > this.seaLevelOffsetMap[arrayIndexX]) {
 /*     */                   
 /* 674 */                   this.seaLevelOffsetMap[arrayIndex] = this.seaLevelOffsetMap[arrayIndex] - 1;
 /* 675 */                   var12--;
@@ -677,90 +677,98 @@
 /* 677 */                   indexBig = arrayIndex * worldHeight + height + indexOffset;
 /* 678 */                   index = arrayIndex * 128 + height;
 /*     */                 }
-/* 680 */                 else if (arrayIndexZ >= 0 && this.seaLevelOffsetMap[arrayIndex] - 3 * counter > this.seaLevelOffsetMap[arrayIndexZ]) {
+/* 680 */                 else if (arrayIndexz >= 0 && this.seaLevelOffsetMap[arrayIndex] - 3 * counter > this.seaLevelOffsetMap[arrayIndexz]) {
 /*     */                   
 /* 682 */                   this.seaLevelOffsetMap[arrayIndex] = this.seaLevelOffsetMap[arrayIndex] - 1;
 /* 683 */                   var12--;
 /* 684 */                   height--;
 /* 685 */                   indexBig = arrayIndex * worldHeight + height + indexOffset;
 /* 686 */                   index = arrayIndex * 128 + height;
+/*     */                 }
+/* 688 */                 else if (arrayIndexZ >= 0 && this.seaLevelOffsetMap[arrayIndex] - 3 * counter > this.seaLevelOffsetMap[arrayIndexZ]) {
+/*     */                   
+/* 690 */                   this.seaLevelOffsetMap[arrayIndex] = this.seaLevelOffsetMap[arrayIndex] - 1;
+/* 691 */                   var12--;
+/* 692 */                   height--;
+/* 693 */                   indexBig = arrayIndex * worldHeight + height + indexOffset;
+/* 694 */                   index = arrayIndex * 128 + height;
 /*     */                 } 
 /*     */               } 
-/* 689 */               var13 = (int)(var12 * (1.0D - Math.max(Math.min((height - 16) / 80.0D, 1.0D), 0.0D)));
+/* 697 */               var13 = (int)(var12 * (1.0D - Math.max(Math.min((height - 16) / 80.0D, 1.0D), 0.0D)));
 /*     */ 
 /*     */               
-/* 692 */               for (int c = 1; c < 3; c++) {
+/* 700 */               for (int c = 1; c < 3; c++) {
 /*     */                 
-/* 694 */                 if (indexBig + c < idsBig.length && idsBig[indexBig + c] != surfaceBlock && idsBig[indexBig + c] != subSurfaceBlock && idsBig[indexBig + c] != TFCBlocks.saltWaterStationary && idsBig[indexBig + c] != TFCBlocks.freshWaterStationary && idsBig[indexBig + c] != TFCBlocks.hotWater) {
+/* 702 */                 if (indexBig + c < idsBig.length && idsBig[indexBig + c] != surfaceBlock && idsBig[indexBig + c] != subSurfaceBlock && idsBig[indexBig + c] != TFCBlocks.saltWaterStationary && idsBig[indexBig + c] != TFCBlocks.freshWaterStationary && idsBig[indexBig + c] != TFCBlocks.hotWater) {
 /*     */ 
 /*     */ 
 /*     */ 
 /*     */ 
 /*     */ 
 /*     */                   
-/* 701 */                   idsBig[indexBig + c] = Blocks.field_150350_a;
+/* 709 */                   idsBig[indexBig + c] = Blocks.field_150350_a;
 /*     */                   
-/* 703 */                   if (indexBig + c + 1 < idsBig.length && idsBig[indexBig + c + 1] == TFCBlocks.saltWaterStationary) {
+/* 711 */                   if (indexBig + c + 1 < idsBig.length && idsBig[indexBig + c + 1] == TFCBlocks.saltWaterStationary) {
 /*     */                     
-/* 705 */                     idsBig[indexBig + c] = subSurfaceBlock;
-/* 706 */                     metaBig[indexBig + c] = (byte)TFC_Core.getSoilMeta(rock1.data1);
+/* 713 */                     idsBig[indexBig + c] = subSurfaceBlock;
+/* 714 */                     metaBig[indexBig + c] = (byte)TFC_Core.getSoilMeta(rock1.data1);
 /*     */                   } 
 /*     */                 } 
 /*     */               } 
 /*     */ 
 /*     */               
-/* 712 */               int dirtH = Math.max(8 - (height + 96 - 144) / 16, 0);
+/* 720 */               int dirtH = Math.max(8 - (height + 96 - 144) / 16, 0);
 /*     */               
-/* 714 */               if (var13 > 0)
+/* 722 */               if (var13 > 0)
 /*     */               {
-/* 716 */                 if (height >= seaLevel - 1 && index + 1 < idsTop.length && idsTop[index + 1] != TFCBlocks.saltWaterStationary && dirtH > 0) {
+/* 724 */                 if (height >= seaLevel - 1 && index + 1 < idsTop.length && idsTop[index + 1] != TFCBlocks.saltWaterStationary && dirtH > 0) {
 /*     */                   
-/* 718 */                   idsBig[indexBig] = surfaceBlock;
-/* 719 */                   metaBig[indexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
+/* 726 */                   idsBig[indexBig] = surfaceBlock;
+/* 727 */                   metaBig[indexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
 /*     */ 
 /*     */                   
-/* 722 */                   int i = 1;
-/* 723 */                   for (; i < dirtH && !TFC_Core.isMountainBiome(biome.field_76756_M) && biome != TFCBiome.HIGH_HILLS && biome != TFCBiome.HIGH_HILLS_EDGE && !cliffMap[arrayIndex]; i++) {
+/* 730 */                   int i = 1;
+/* 731 */                   for (; i < dirtH && !TFC_Core.isMountainBiome(biome.field_76756_M) && biome != TFCBiome.HIGH_HILLS && biome != TFCBiome.HIGH_HILLS_EDGE && !cliffMap[arrayIndex]; i++) {
 /*     */                     
-/* 725 */                     int offsetHeight = height - i;
-/* 726 */                     int newIndexBig = arrayIndex * worldHeight + offsetHeight + indexOffset;
-/* 727 */                     idsBig[newIndexBig] = subSurfaceBlock;
-/* 728 */                     metaBig[newIndexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
+/* 733 */                     int offsetHeight = height - i;
+/* 734 */                     int newIndexBig = arrayIndex * worldHeight + offsetHeight + indexOffset;
+/* 735 */                     idsBig[newIndexBig] = subSurfaceBlock;
+/* 736 */                     metaBig[newIndexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
 /*     */                     
-/* 730 */                     if (i > 1 + 5 - drainage.data1) {
+/* 738 */                     if (i > 1 + 5 - drainage.data1) {
 /*     */                       
-/* 732 */                       idsBig[newIndexBig] = TFC_Core.getTypeForGravel(rock1.data1);
-/* 733 */                       metaBig[newIndexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
+/* 740 */                       idsBig[newIndexBig] = TFC_Core.getTypeForGravel(rock1.data1);
+/* 741 */                       metaBig[newIndexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
 /*     */                     } 
 /*     */                   } 
 /*     */                 } 
 /*     */               }
 /*     */             } 
 /*     */             
-/* 740 */             if ((height > seaLevel - 2 && height < seaLevel && idsTop[index + 1] == TFCBlocks.saltWaterStationary) || (height < seaLevel && idsTop[index + 1] == TFCBlocks.saltWaterStationary))
+/* 748 */             if ((height > seaLevel - 2 && height < seaLevel && idsTop[index + 1] == TFCBlocks.saltWaterStationary) || (height < seaLevel && idsTop[index + 1] == TFCBlocks.saltWaterStationary))
 /*     */             {
 /*     */               
-/* 743 */               if (biome != TFCBiome.SWAMPLAND)
+/* 751 */               if (biome != TFCBiome.SWAMPLAND)
 /*     */               {
-/* 745 */                 if (idsBig[indexBig] != TFC_Core.getTypeForSand(rock1.data1) && rand.nextInt(5) != 0)
+/* 753 */                 if (idsBig[indexBig] != TFC_Core.getTypeForSand(rock1.data1) && rand.nextInt(5) != 0)
 /*     */                 {
-/* 747 */                   idsBig[indexBig] = TFC_Core.getTypeForGravel(rock1.data1);
-/* 748 */                   metaBig[indexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
+/* 755 */                   idsBig[indexBig] = TFC_Core.getTypeForGravel(rock1.data1);
+/* 756 */                   metaBig[indexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
 /*     */                 
 /*     */                 }
 /*     */               
 /*     */               }
-/* 753 */               else if (idsBig[indexBig] != TFC_Core.getTypeForGravel(rock1.data1))
+/* 761 */               else if (idsBig[indexBig] != TFC_Core.getTypeForGravel(rock1.data1))
 /*     */               {
-/* 755 */                 idsBig[indexBig] = TFC_Core.getTypeForDirt(rock1.data1);
-/* 756 */                 metaBig[indexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
+/* 763 */                 idsBig[indexBig] = TFC_Core.getTypeForDirt(rock1.data1);
+/* 764 */                 metaBig[indexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
 /*     */               }
 /*     */             
 /*     */             }
 /*     */           }
-/* 761 */           else if (idsTop[index] == TFCBlocks.saltWaterStationary && biome != TFCBiome.OCEAN && biome != TFCBiome.DEEP_OCEAN && biome != TFCBiome.BEACH && biome != TFCBiome.GRAVEL_BEACH) {
+/* 769 */           else if (idsTop[index] == TFCBlocks.saltWaterStationary && biome != TFCBiome.OCEAN && biome != TFCBiome.DEEP_OCEAN && biome != TFCBiome.BEACH && biome != TFCBiome.GRAVEL_BEACH) {
 /*     */             
-/* 763 */             idsBig[indexBig] = TFCBlocks.freshWaterStationary;
+/* 771 */             idsBig[indexBig] = TFCBlocks.freshWaterStationary;
 /*     */           } 
 /*     */         } 
 /*     */       } 
@@ -784,51 +792,51 @@
 /*     */ 
 /*     */   
 /*     */   private void replaceBlocksForBiomeLow(int par1, int par2, Random rand, Block[] idsBig, byte[] metaBig) {
-/* 787 */     for (int xCoord = 0; xCoord < 16; xCoord++) {
+/* 795 */     for (int xCoord = 0; xCoord < 16; xCoord++) {
 /*     */       
-/* 789 */       for (int zCoord = 0; zCoord < 16; zCoord++) {
+/* 797 */       for (int zCoord = 0; zCoord < 16; zCoord++) {
 /*     */         
-/* 791 */         int arrayIndex = xCoord + zCoord * 16;
-/* 792 */         int arrayIndexDL = zCoord + xCoord * 16;
-/* 793 */         DataLayer rock1 = this.rockLayer1[arrayIndexDL];
-/* 794 */         DataLayer rock2 = this.rockLayer2[arrayIndexDL];
-/* 795 */         DataLayer rock3 = this.rockLayer3[arrayIndexDL];
-/* 796 */         DataLayer stability = this.stabilityLayer[arrayIndexDL];
-/* 797 */         TFCBiome biome = (TFCBiome)getBiome(xCoord, zCoord);
+/* 799 */         int arrayIndex = xCoord + zCoord * 16;
+/* 800 */         int arrayIndexDL = zCoord + xCoord * 16;
+/* 801 */         DataLayer rock1 = this.rockLayer1[arrayIndexDL];
+/* 802 */         DataLayer rock2 = this.rockLayer2[arrayIndexDL];
+/* 803 */         DataLayer rock3 = this.rockLayer3[arrayIndexDL];
+/* 804 */         DataLayer stability = this.stabilityLayer[arrayIndexDL];
+/* 805 */         TFCBiome biome = (TFCBiome)getBiome(xCoord, zCoord);
 /*     */         
-/* 799 */         for (int height = 127; height >= 0; height--) {
+/* 807 */         for (int height = 127; height >= 0; height--) {
 /*     */ 
 /*     */           
-/* 802 */           int indexBig = arrayIndex * 256 + height;
-/* 803 */           metaBig[indexBig] = 0;
+/* 810 */           int indexBig = arrayIndex * 256 + height;
+/* 811 */           metaBig[indexBig] = 0;
 /*     */           
-/* 805 */           if (height <= 1 + this.seaLevelOffsetMap[arrayIndex] / 3 + this.rand.nextInt(3)) {
+/* 813 */           if (height <= 1 + this.seaLevelOffsetMap[arrayIndex] / 3 + this.rand.nextInt(3)) {
 /*     */             
-/* 807 */             idsBig[indexBig] = Blocks.field_150357_h;
+/* 815 */             idsBig[indexBig] = Blocks.field_150357_h;
 /*     */           }
-/* 809 */           else if (idsBig[indexBig] == null) {
+/* 817 */           else if (idsBig[indexBig] == null) {
 /*     */             
-/* 811 */             convertStone(height, arrayIndex, indexBig, idsBig, metaBig, rock1, rock2, rock3);
-/* 812 */             if (TFC_Core.isBeachBiome(biome.field_76756_M) || TFC_Core.isOceanicBiome(biome.field_76756_M))
+/* 819 */             convertStone(height, arrayIndex, indexBig, idsBig, metaBig, rock1, rock2, rock3);
+/* 820 */             if (TFC_Core.isBeachBiome(biome.field_76756_M) || TFC_Core.isOceanicBiome(biome.field_76756_M))
 /*     */             {
-/* 814 */               if (idsBig[indexBig + 1] == TFCBlocks.saltWaterStationary) {
+/* 822 */               if (idsBig[indexBig + 1] == TFCBlocks.saltWaterStationary) {
 /*     */                 
-/* 816 */                 idsBig[indexBig] = TFC_Core.getTypeForSand(rock1.data1);
-/* 817 */                 metaBig[indexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
-/* 818 */                 idsBig[indexBig - 1] = TFC_Core.getTypeForSand(rock1.data1);
-/* 819 */                 metaBig[indexBig - 1] = (byte)TFC_Core.getSoilMeta(rock1.data1);
+/* 824 */                 idsBig[indexBig] = TFC_Core.getTypeForSand(rock1.data1);
+/* 825 */                 metaBig[indexBig] = (byte)TFC_Core.getSoilMeta(rock1.data1);
+/* 826 */                 idsBig[indexBig - 1] = TFC_Core.getTypeForSand(rock1.data1);
+/* 827 */                 metaBig[indexBig - 1] = (byte)TFC_Core.getSoilMeta(rock1.data1);
 /*     */               } 
 /*     */             }
 /*     */           } 
 /*     */           
-/* 824 */           if (height <= 6 && stability.data1 == 1 && idsBig[indexBig] == Blocks.field_150350_a) {
+/* 832 */           if (height <= 6 && stability.data1 == 1 && idsBig[indexBig] == Blocks.field_150350_a) {
 /*     */             
-/* 826 */             idsBig[indexBig] = TFCBlocks.lava;
-/* 827 */             metaBig[indexBig] = 0;
-/* 828 */             if (idsBig[indexBig + 1] != TFCBlocks.lava && rand.nextBoolean()) {
+/* 834 */             idsBig[indexBig] = TFCBlocks.lava;
+/* 835 */             metaBig[indexBig] = 0;
+/* 836 */             if (idsBig[indexBig + 1] != TFCBlocks.lava && rand.nextBoolean()) {
 /*     */               
-/* 830 */               idsBig[indexBig + 1] = TFCBlocks.lava;
-/* 831 */               metaBig[indexBig + 1] = 0;
+/* 838 */               idsBig[indexBig + 1] = TFCBlocks.lava;
+/* 839 */               metaBig[indexBig + 1] = 0;
 /*     */             } 
 /*     */           } 
 /*     */         } 
@@ -838,29 +846,29 @@
 /*     */ 
 /*     */   
 /*     */   public void convertStone(int height, int indexArray, int indexBig, Block[] idsBig, byte[] metaBig, DataLayer rock1, DataLayer rock2, DataLayer rock3) {
-/* 841 */     if (idsBig[indexBig] != null && idsBig[indexBig] != Blocks.field_150348_b)
+/* 849 */     if (idsBig[indexBig] != null && idsBig[indexBig] != Blocks.field_150348_b)
 /*     */       return; 
-/* 843 */     if (height <= TFCOptions.rockLayer3Height + this.seaLevelOffsetMap[indexArray]) {
+/* 851 */     if (height <= TFCOptions.rockLayer3Height + this.seaLevelOffsetMap[indexArray]) {
 /*     */       
-/* 845 */       idsBig[indexBig] = rock3.block;
-/* 846 */       metaBig[indexBig] = (byte)rock3.data2;
+/* 853 */       idsBig[indexBig] = rock3.block;
+/* 854 */       metaBig[indexBig] = (byte)rock3.data2;
 /*     */     }
-/* 848 */     else if (height <= TFCOptions.rockLayer2Height + this.seaLevelOffsetMap[indexArray] && height > 55 + this.seaLevelOffsetMap[indexArray] && rock2 != null) {
+/* 856 */     else if (height <= TFCOptions.rockLayer2Height + this.seaLevelOffsetMap[indexArray] && height > 55 + this.seaLevelOffsetMap[indexArray] && rock2 != null) {
 /*     */       
-/* 850 */       idsBig[indexBig] = rock2.block;
-/* 851 */       metaBig[indexBig] = (byte)rock2.data2;
+/* 858 */       idsBig[indexBig] = rock2.block;
+/* 859 */       metaBig[indexBig] = (byte)rock2.data2;
 /*     */     }
 /*     */     else {
 /*     */       
-/* 855 */       idsBig[indexBig] = rock1.block;
-/* 856 */       metaBig[indexBig] = (byte)rock1.data2;
+/* 863 */       idsBig[indexBig] = rock1.block;
+/* 864 */       metaBig[indexBig] = (byte)rock1.data2;
 /*     */     } 
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean func_73156_b() {
-/* 863 */     return true;
+/* 871 */     return true;
 /*     */   }
 /*     */ }
 

@@ -5,6 +5,7 @@
 /*     */ import com.bioxx.tfc.Core.TFC_Climate;
 /*     */ import com.bioxx.tfc.Core.TFC_Core;
 /*     */ import com.bioxx.tfc.Core.TFC_Time;
+/*     */ import com.bioxx.tfc.Core.WeatherManager;
 /*     */ import com.bioxx.tfc.Food.CropIndex;
 /*     */ import com.bioxx.tfc.Food.CropManager;
 /*     */ import com.bioxx.tfc.api.TFCBlocks;
@@ -34,41 +35,41 @@
 /*     */ public class TECrop
 /*     */   extends NetworkTileEntity
 /*     */ {
-/*  37 */   public float growth = 0.1F;
-/*  38 */   private long plantedTime = TFC_Time.getTotalTicks();
-/*  39 */   private long growthTimer = TFC_Time.getTotalTicks();
-/*  40 */   private byte sunLevel = 1;
+/*  38 */   public float growth = 0.1F;
+/*  39 */   private long plantedTime = TFC_Time.getTotalTicks();
+/*  40 */   private long growthTimer = TFC_Time.getTotalTicks();
+/*  41 */   private byte sunLevel = 1;
 /*     */   
 /*     */   public int cropId;
 /*     */   public int tendingLevel;
 /*     */   private int killLevel;
 /*     */   
 /*     */   public void func_145845_h() {
-/*  47 */     Random r = new Random();
-/*  48 */     if (!this.field_145850_b.field_72995_K) {
+/*  48 */     Random r = new Random();
+/*  49 */     if (!this.field_145850_b.field_72995_K) {
 /*     */       
-/*  50 */       float timeMultiplier = 360.0F / TFC_Time.daysInYear;
-/*  51 */       CropIndex crop = CropManager.getInstance().getCropFromId(this.cropId);
-/*  52 */       long time = TFC_Time.getTotalTicks();
+/*  51 */       float timeMultiplier = 360.0F / TFC_Time.daysInYear;
+/*  52 */       CropIndex crop = CropManager.getInstance().getCropFromId(this.cropId);
+/*  53 */       long time = TFC_Time.getTotalTicks();
 /*     */       
-/*  54 */       if (crop != null && this.growthTimer < time && this.sunLevel > 0) {
+/*  55 */       if (crop != null && this.growthTimer < time && this.sunLevel > 0) {
 /*     */         
-/*  56 */         this.sunLevel = (byte)(this.sunLevel - 1);
-/*  57 */         if (crop.needsSunlight && hasSunlight(this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e)) {
+/*  57 */         this.sunLevel = (byte)(this.sunLevel - 1);
+/*  58 */         if (crop.needsSunlight && hasSunlight(this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e)) {
 /*     */           
-/*  59 */           this.sunLevel = (byte)(this.sunLevel + 1);
-/*  60 */           if (this.sunLevel > 30) {
-/*  61 */             this.sunLevel = 30;
+/*  60 */           this.sunLevel = (byte)(this.sunLevel + 1);
+/*  61 */           if (this.sunLevel > 30) {
+/*  62 */             this.sunLevel = 30;
 /*     */           }
 /*     */         } 
-/*  64 */         TEFarmland tef = null;
-/*  65 */         TileEntity te = this.field_145850_b.func_147438_o(this.field_145851_c, this.field_145848_d - 1, this.field_145849_e);
-/*  66 */         if (te instanceof TEFarmland) {
-/*  67 */           tef = (TEFarmland)te;
+/*  65 */         TEFarmland tef = null;
+/*  66 */         TileEntity te = this.field_145850_b.func_147438_o(this.field_145851_c, this.field_145848_d - 1, this.field_145849_e);
+/*  67 */         if (te instanceof TEFarmland) {
+/*  68 */           tef = (TEFarmland)te;
 /*     */         }
-/*  69 */         float ambientTemp = TFC_Climate.getHeightAdjustedTempSpecificDay(this.field_145850_b, TFC_Time.getDayOfYearFromTick(this.growthTimer), this.field_145851_c, this.field_145848_d, this.field_145849_e);
-/*  70 */         float tempAdded = 0.0F;
-/*  71 */         boolean isDormant = false;
+/*  70 */         float ambientTemp = TFC_Climate.getHeightAdjustedTempSpecificDay(this.field_145850_b, TFC_Time.getDayOfYearFromTick(this.growthTimer), this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/*  71 */         float tempAdded = 0.0F;
+/*  72 */         boolean isDormant = false;
 /*     */ 
 /*     */ 
 /*     */ 
@@ -90,101 +91,100 @@
 /*     */ 
 /*     */ 
 /*     */         
-/*  93 */         if (!crop.dormantInFrost && ambientTemp < crop.minGrowthTemp) {
-/*  94 */           tempAdded = -0.03F * (crop.minGrowthTemp - ambientTemp);
-/*  95 */         } else if (crop.dormantInFrost && ambientTemp < crop.minGrowthTemp) {
+/*  94 */         if (!crop.dormantInFrost && ambientTemp < crop.minGrowthTemp) {
+/*  95 */           tempAdded = -0.03F * (crop.minGrowthTemp - ambientTemp);
+/*  96 */         } else if (crop.dormantInFrost && ambientTemp < crop.minGrowthTemp) {
 /*     */           
-/*  97 */           if (this.growth > 1.0F)
-/*  98 */             tempAdded = -0.03F * (crop.minGrowthTemp - ambientTemp); 
-/*  99 */           isDormant = true;
+/*  98 */           if (this.growth > 1.0F)
+/*  99 */             tempAdded = -0.03F * (crop.minGrowthTemp - ambientTemp); 
+/* 100 */           isDormant = true;
 /*     */         }
-/* 101 */         else if (ambientTemp < 28.0F) {
-/* 102 */           tempAdded = ambientTemp * 3.5E-4F;
-/* 103 */         } else if (ambientTemp < 37.0F) {
-/* 104 */           tempAdded = (28.0F - ambientTemp - 28.0F) * 3.0E-4F;
+/* 102 */         else if (ambientTemp < 28.0F) {
+/* 103 */           tempAdded = ambientTemp * 3.5E-4F;
+/* 104 */         } else if (ambientTemp < 37.0F) {
+/* 105 */           tempAdded = (28.0F - ambientTemp - 28.0F) * 3.0E-4F;
 /*     */         } 
-/* 106 */         if (!crop.dormantInFrost && ambientTemp < crop.minAliveTemp) {
+/* 107 */         if (!crop.dormantInFrost && ambientTemp < crop.minAliveTemp) {
 /*     */           
-/* 108 */           int baseKillChance = 6;
-/* 109 */           if (this.field_145850_b.field_73012_v.nextInt(baseKillChance - this.killLevel) == 0) {
-/* 110 */             killCrop(crop);
+/* 109 */           int baseKillChance = 6;
+/* 110 */           if (this.field_145850_b.field_73012_v.nextInt(baseKillChance - this.killLevel) == 0) {
+/* 111 */             killCrop(crop);
 /*     */           
 /*     */           }
-/* 113 */           else if (this.killLevel < baseKillChance - 1) {
-/* 114 */             this.killLevel++;
+/* 114 */           else if (this.killLevel < baseKillChance - 1) {
+/* 115 */             this.killLevel++;
 /*     */           }
 /*     */         
-/* 117 */         } else if (crop.dormantInFrost && ambientTemp < crop.minAliveTemp) {
+/* 118 */         } else if (crop.dormantInFrost && ambientTemp < crop.minAliveTemp) {
 /*     */           
-/* 119 */           if (this.growth > 1.0F) {
+/* 120 */           if (this.growth > 1.0F) {
 /*     */             
-/* 121 */             int baseKillChance = 6;
-/* 122 */             if (this.field_145850_b.field_73012_v.nextInt(baseKillChance - this.killLevel) == 0) {
-/* 123 */               killCrop(crop);
+/* 122 */             int baseKillChance = 6;
+/* 123 */             if (this.field_145850_b.field_73012_v.nextInt(baseKillChance - this.killLevel) == 0) {
+/* 124 */               killCrop(crop);
 /*     */             
 /*     */             }
-/* 126 */             else if (this.killLevel < baseKillChance - 1) {
-/* 127 */               this.killLevel++;
+/* 127 */             else if (this.killLevel < baseKillChance - 1) {
+/* 128 */               this.killLevel++;
 /*     */             }
 /*     */           
 /*     */           } 
 /*     */         } else {
 /*     */           
-/* 133 */           this.killLevel = 0;
+/* 134 */           this.killLevel = 0;
 /*     */         } 
 /*     */         
-/* 136 */         int nutriType = crop.cycleType;
-/* 137 */         int nutri = (tef != null) ? tef.nutrients[nutriType] : 18000;
-/* 138 */         int fert = (tef != null) ? tef.nutrients[3] : 0;
-/* 139 */         int soilMax = (tef != null) ? tef.getSoilMax() : 18000;
+/* 137 */         int nutriType = crop.cycleType;
+/* 138 */         int nutri = (tef != null) ? tef.nutrients[nutriType] : 18000;
+/* 139 */         int fert = (tef != null) ? tef.nutrients[3] : 0;
+/* 140 */         int soilMax = (tef != null) ? tef.getSoilMax() : 18000;
 /*     */         
-/* 141 */         float waterBoost = BlockFarmland.isFreshWaterNearby(this.field_145850_b, this.field_145851_c, this.field_145848_d - 1, this.field_145849_e) ? 0.1F : 0.0F;
+/* 142 */         float waterBoost = BlockFarmland.isFreshWaterNearby(this.field_145850_b, this.field_145851_c, this.field_145848_d - 1, this.field_145849_e) ? 0.1F : 0.0F;
 /*     */ 
 /*     */         
-/* 144 */         nutri = Math.min(nutri + fert, (int)(soilMax * 1.25F));
+/* 145 */         nutri = Math.min(nutri + fert, (int)(soilMax * 1.25F));
 /*     */         
-/* 146 */         float nutriMult = 0.2F + nutri / soilMax * 0.5F + waterBoost;
+/* 147 */         float nutriMult = 0.2F + nutri / soilMax * 0.5F + waterBoost;
 /*     */         
-/* 148 */         if (tef != null && !isDormant) {
+/* 149 */         if (tef != null && !isDormant) {
 /*     */           
-/* 150 */           if (tef.nutrients[nutriType] > 0) {
-/* 151 */             tef.drainNutrients(nutriType, crop.nutrientUsageMult);
+/* 151 */           if (tef.nutrients[nutriType] > 0) {
+/* 152 */             tef.drainNutrients(nutriType, crop.nutrientUsageMult);
 /*     */           }
-/* 153 */           if (tef.nutrients[3] > 0) {
-/* 154 */             tef.drainNutrients(3, crop.nutrientUsageMult);
+/* 154 */           if (tef.nutrients[3] > 0) {
+/* 155 */             tef.drainNutrients(3, crop.nutrientUsageMult);
 /*     */           }
 /*     */         } 
-/* 157 */         float growthRate = Math.max(0.0F, (crop.numGrowthStages / crop.growthTime * TFC_Time.timeRatio96 + tempAdded) * nutriMult * timeMultiplier * TFCOptions.cropGrowthMultiplier);
-/* 158 */         if (tef != null && tef.isInfested)
-/* 159 */           growthRate /= 2.0F; 
-/* 160 */         int oldGrowth = (int)Math.floor(this.growth);
+/* 158 */         float growthRate = Math.max(0.0F, (crop.numGrowthStages / crop.growthTime * TFC_Time.timeRatio96 + tempAdded) * nutriMult * timeMultiplier * TFCOptions.cropGrowthMultiplier);
+/* 159 */         if (tef != null && tef.isInfested)
+/* 160 */           growthRate /= 2.0F; 
+/* 161 */         int oldGrowth = (int)Math.floor(this.growth);
 /*     */         
-/* 162 */         if (!isDormant) {
-/* 163 */           this.growth += growthRate;
+/* 163 */         if (!isDormant) {
+/* 164 */           this.growth += growthRate;
 /*     */         }
-/* 165 */         if (oldGrowth < (int)Math.floor(this.growth))
+/* 166 */         if (oldGrowth < (int)Math.floor(this.growth))
 /*     */         {
 /*     */           
-/* 168 */           this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 169 */           this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
 /*     */         }
 /*     */ 
 /*     */         
-/* 172 */         if (((TFCOptions.enableCropsDie || !TFC_Core.isFarmland(this.field_145850_b.func_147439_a(this.field_145851_c, this.field_145848_d - 1, this.field_145849_e))) && crop.maxLifespan == -1 && this.growth > crop.numGrowthStages + crop.numGrowthStages / 2.0F) || this.growth < 0.0F)
+/* 173 */         if (((TFCOptions.enableCropsDie || !TFC_Core.isFarmland(this.field_145850_b.func_147439_a(this.field_145851_c, this.field_145848_d - 1, this.field_145849_e))) && crop.maxLifespan == -1 && this.growth > crop.numGrowthStages + crop.numGrowthStages / 2.0F) || this.growth < 0.0F)
 /*     */         {
 /*     */           
-/* 175 */           killCrop(crop);
+/* 176 */           killCrop(crop);
 /*     */         }
 /*     */         
-/* 178 */         this.growthTimer += (r.nextInt(2) + 23) * 1000L;
+/* 179 */         this.growthTimer += (r.nextInt(2) + 23) * 1000L;
 /*     */       
 /*     */       }
-/* 181 */       else if (crop != null && crop.needsSunlight && this.sunLevel <= 0) {
+/* 182 */       else if (crop != null && crop.needsSunlight && this.sunLevel <= 0) {
 /*     */         
-/* 183 */         killCrop(crop);
+/* 184 */         killCrop(crop);
 /*     */       } 
-/*     */ 
 /*     */       
-/* 187 */       if (TFC_Core.isExposedToRain(this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e) && TFC_Climate.getHeightAdjustedTemp(this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e) < 0.0F)
+/* 187 */       if (WeatherManager.isRainingOnCoord(this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e) && TFC_Climate.getHeightAdjustedTemp(this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e) < 0.0F)
 /*     */       {
 /* 189 */         if ((crop != null && !crop.dormantInFrost) || this.growth > 1.0F)
 /*     */         {

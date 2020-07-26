@@ -36,6 +36,7 @@
 /*     */ 
 /*     */ 
 /*     */ 
+/*     */ 
 /*     */ public class ItemPotterySmallVessel
 /*     */   extends ItemPotteryBase
 /*     */   implements IBag
@@ -44,137 +45,137 @@
 /*     */   private IIcon overlayIcon;
 /*     */   
 /*     */   public ItemPotterySmallVessel() {
-/*  47 */     this.metaNames = new String[] { "Clay Vessel", "Ceramic Vessel", "Ceramic Vessel" };
-/*  48 */     func_77625_d(1);
-/*  49 */     setWeight(EnumWeight.MEDIUM);
-/*  50 */     setSize(EnumSize.SMALL);
+/*  48 */     this.metaNames = new String[] { "Clay Vessel", "Ceramic Vessel", "Ceramic Vessel" };
+/*  49 */     func_77625_d(1);
+/*  50 */     setWeight(EnumWeight.MEDIUM);
+/*  51 */     setSize(EnumSize.SMALL);
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   @SideOnly(Side.CLIENT)
 /*     */   public boolean func_77623_v() {
-/*  57 */     return true;
+/*  58 */     return true;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public IIcon getIcon(ItemStack stack, int pass) {
-/*  63 */     if (pass == 1 && stack.func_77978_p() != null && stack.func_77978_p().func_74764_b("color")) {
-/*  64 */       return this.overlayIcon;
+/*  64 */     if (pass == 1 && stack.func_77978_p() != null && stack.func_77978_p().func_74764_b("color")) {
+/*  65 */       return this.overlayIcon;
 /*     */     }
-/*  66 */     return super.getIcon(stack, pass);
+/*  67 */     return super.getIcon(stack, pass);
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void func_94581_a(IIconRegister registerer) {
-/*  72 */     super.func_94581_a(registerer);
-/*  73 */     this.overlayIcon = registerer.func_94245_a("terrafirmacraft:" + this.textureFolder + "Ceramic Vessel Overlay");
+/*  73 */     super.func_94581_a(registerer);
+/*  74 */     this.overlayIcon = registerer.func_94245_a("terrafirmacraft:" + this.textureFolder + "Ceramic Vessel Overlay");
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void func_150895_a(Item item, CreativeTabs tabs, List<ItemStack> list) {
-/*  79 */     list.add(new ItemStack((Item)this, 1, 0));
-/*  80 */     list.add(new ItemStack((Item)this, 1, 1));
+/*  80 */     list.add(new ItemStack((Item)this, 1, 0));
+/*  81 */     list.add(new ItemStack((Item)this, 1, 1));
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean canStack() {
-/*  86 */     return false;
+/*  87 */     return false;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void onDoneCooking(World world, ItemStack is, Alloy.EnumTier furnaceTier) {
-/*  92 */     ItemStack[] bag = loadBagInventory(is);
-/*  93 */     boolean canCookAlloy = true;
-/*  94 */     for (int i = 0; bag != null && i < 4; i++) {
+/*  93 */     ItemStack[] bag = loadBagInventory(is);
+/*  94 */     boolean canCookAlloy = true;
+/*  95 */     for (int i = 0; bag != null && i < 4; i++) {
 /*     */       
-/*  96 */       if (bag[i] != null)
+/*  97 */       if (bag[i] != null)
 /*     */       {
-/*  98 */         if (!(bag[i].func_77973_b() instanceof com.bioxx.tfc.Items.ItemOreSmall) && !(bag[i].func_77973_b() instanceof com.bioxx.tfc.Items.ItemOre)) {
-/*  99 */           canCookAlloy = false;
+/*  99 */         if (!(bag[i].func_77973_b() instanceof com.bioxx.tfc.Items.ItemOreSmall) && !(bag[i].func_77973_b() instanceof com.bioxx.tfc.Items.ItemOre) && !(bag[i].func_77973_b() instanceof com.bioxx.tfc.Items.ItemNugget)) {
+/* 100 */           canCookAlloy = false;
 /*     */         }
 /*     */       }
 /*     */     } 
-/* 103 */     if (is.func_77960_j() == 2) {
+/* 104 */     if (is.func_77960_j() == 2) {
 /*     */       
-/* 105 */       NBTTagCompound tag = is.field_77990_d;
-/* 106 */       long totalH = TFC_Time.getTotalHours();
-/* 107 */       tag.func_74772_a("TempTimer", totalH);
+/* 106 */       NBTTagCompound tag = is.field_77990_d;
+/* 107 */       long totalH = TFC_Time.getTotalHours();
+/* 108 */       tag.func_74772_a("TempTimer", totalH);
 /*     */     } 
 /*     */     
-/* 110 */     if (canCookAlloy && bag != null) {
+/* 111 */     if (canCookAlloy && bag != null) {
 /*     */       
-/* 112 */       Metal[] types = new Metal[4];
-/* 113 */       int[] metalAmounts = new int[4];
+/* 113 */       Metal[] types = new Metal[4];
+/* 114 */       int[] metalAmounts = new int[4];
 /*     */       
-/* 115 */       if (bag[0] != null) {
+/* 116 */       if (bag[0] != null) {
 /*     */         
-/* 117 */         types[0] = ((ISmeltable)bag[0].func_77973_b()).getMetalType(bag[0]);
-/* 118 */         metalAmounts[0] = ((ISmeltable)bag[0].func_77973_b()).getMetalReturnAmount(bag[0]) * (bag[0]).field_77994_a;
+/* 118 */         types[0] = ((ISmeltable)bag[0].func_77973_b()).getMetalType(bag[0]);
+/* 119 */         metalAmounts[0] = ((ISmeltable)bag[0].func_77973_b()).getMetalReturnAmount(bag[0]) * (bag[0]).field_77994_a;
 /*     */       } 
 /*     */       
-/* 121 */       if (bag[1] != null) {
+/* 122 */       if (bag[1] != null) {
 /*     */         
-/* 123 */         types[1] = ((ISmeltable)bag[1].func_77973_b()).getMetalType(bag[1]);
-/* 124 */         metalAmounts[1] = ((ISmeltable)bag[1].func_77973_b()).getMetalReturnAmount(bag[1]) * (bag[1]).field_77994_a;
+/* 124 */         types[1] = ((ISmeltable)bag[1].func_77973_b()).getMetalType(bag[1]);
+/* 125 */         metalAmounts[1] = ((ISmeltable)bag[1].func_77973_b()).getMetalReturnAmount(bag[1]) * (bag[1]).field_77994_a;
 /*     */         
-/* 126 */         if (mergeMetals(types[0], types[1], metalAmounts[0], metalAmounts[1]) != metalAmounts[0]) {
+/* 127 */         if (mergeMetals(types[0], types[1], metalAmounts[0], metalAmounts[1]) != metalAmounts[0]) {
 /*     */           
-/* 128 */           metalAmounts[0] = mergeMetals(types[0], types[1], metalAmounts[0], metalAmounts[1]);
-/* 129 */           types[1] = null;
-/* 130 */           metalAmounts[1] = 0;
-/*     */         } 
-/*     */       } 
-/*     */       
-/* 134 */       if (bag[2] != null) {
-/*     */         
-/* 136 */         types[2] = ((ISmeltable)bag[2].func_77973_b()).getMetalType(bag[2]);
-/* 137 */         metalAmounts[2] = ((ISmeltable)bag[2].func_77973_b()).getMetalReturnAmount(bag[2]) * (bag[2]).field_77994_a;
-/*     */         
-/* 139 */         if (mergeMetals(types[0], types[2], metalAmounts[0], metalAmounts[2]) != metalAmounts[0]) {
-/*     */           
-/* 141 */           metalAmounts[0] = mergeMetals(types[0], types[2], metalAmounts[0], metalAmounts[2]);
-/* 142 */           types[2] = null;
-/* 143 */           metalAmounts[2] = 0;
-/*     */         } 
-/* 145 */         if (mergeMetals(types[1], types[2], metalAmounts[1], metalAmounts[2]) != metalAmounts[1]) {
-/*     */           
-/* 147 */           metalAmounts[1] = mergeMetals(types[1], types[2], metalAmounts[1], metalAmounts[2]);
-/* 148 */           types[2] = null;
-/* 149 */           metalAmounts[2] = 0;
-/*     */         } 
-/*     */       } 
-/* 152 */       if (bag[3] != null) {
-/*     */         
-/* 154 */         types[3] = ((ISmeltable)bag[3].func_77973_b()).getMetalType(bag[3]);
-/* 155 */         metalAmounts[3] = ((ISmeltable)bag[3].func_77973_b()).getMetalReturnAmount(bag[3]) * (bag[3]).field_77994_a;
-/*     */         
-/* 157 */         if (mergeMetals(types[0], types[3], metalAmounts[0], metalAmounts[3]) != metalAmounts[0]) {
-/*     */           
-/* 159 */           metalAmounts[0] = mergeMetals(types[0], types[3], metalAmounts[0], metalAmounts[3]);
-/* 160 */           types[3] = null;
-/* 161 */           metalAmounts[3] = 0;
-/*     */         } 
-/* 163 */         if (mergeMetals(types[1], types[3], metalAmounts[1], metalAmounts[3]) != metalAmounts[1]) {
-/*     */           
-/* 165 */           metalAmounts[1] = mergeMetals(types[1], types[3], metalAmounts[1], metalAmounts[3]);
-/* 166 */           types[3] = null;
-/* 167 */           metalAmounts[3] = 0;
-/*     */         } 
-/* 169 */         if (mergeMetals(types[2], types[3], metalAmounts[2], metalAmounts[3]) != metalAmounts[2]) {
-/*     */           
-/* 171 */           metalAmounts[2] = mergeMetals(types[2], types[3], metalAmounts[2], metalAmounts[3]);
-/* 172 */           types[3] = null;
-/* 173 */           metalAmounts[3] = 0;
+/* 129 */           metalAmounts[0] = mergeMetals(types[0], types[1], metalAmounts[0], metalAmounts[1]);
+/* 130 */           types[1] = null;
+/* 131 */           metalAmounts[1] = 0;
 /*     */         } 
 /*     */       } 
 /*     */       
-/* 177 */       int total = metalAmounts[0] + metalAmounts[1] + metalAmounts[2] + metalAmounts[3];
+/* 135 */       if (bag[2] != null) {
+/*     */         
+/* 137 */         types[2] = ((ISmeltable)bag[2].func_77973_b()).getMetalType(bag[2]);
+/* 138 */         metalAmounts[2] = ((ISmeltable)bag[2].func_77973_b()).getMetalReturnAmount(bag[2]) * (bag[2]).field_77994_a;
+/*     */         
+/* 140 */         if (mergeMetals(types[0], types[2], metalAmounts[0], metalAmounts[2]) != metalAmounts[0]) {
+/*     */           
+/* 142 */           metalAmounts[0] = mergeMetals(types[0], types[2], metalAmounts[0], metalAmounts[2]);
+/* 143 */           types[2] = null;
+/* 144 */           metalAmounts[2] = 0;
+/*     */         } 
+/* 146 */         if (mergeMetals(types[1], types[2], metalAmounts[1], metalAmounts[2]) != metalAmounts[1]) {
+/*     */           
+/* 148 */           metalAmounts[1] = mergeMetals(types[1], types[2], metalAmounts[1], metalAmounts[2]);
+/* 149 */           types[2] = null;
+/* 150 */           metalAmounts[2] = 0;
+/*     */         } 
+/*     */       } 
+/* 153 */       if (bag[3] != null) {
+/*     */         
+/* 155 */         types[3] = ((ISmeltable)bag[3].func_77973_b()).getMetalType(bag[3]);
+/* 156 */         metalAmounts[3] = ((ISmeltable)bag[3].func_77973_b()).getMetalReturnAmount(bag[3]) * (bag[3]).field_77994_a;
+/*     */         
+/* 158 */         if (mergeMetals(types[0], types[3], metalAmounts[0], metalAmounts[3]) != metalAmounts[0]) {
+/*     */           
+/* 160 */           metalAmounts[0] = mergeMetals(types[0], types[3], metalAmounts[0], metalAmounts[3]);
+/* 161 */           types[3] = null;
+/* 162 */           metalAmounts[3] = 0;
+/*     */         } 
+/* 164 */         if (mergeMetals(types[1], types[3], metalAmounts[1], metalAmounts[3]) != metalAmounts[1]) {
+/*     */           
+/* 166 */           metalAmounts[1] = mergeMetals(types[1], types[3], metalAmounts[1], metalAmounts[3]);
+/* 167 */           types[3] = null;
+/* 168 */           metalAmounts[3] = 0;
+/*     */         } 
+/* 170 */         if (mergeMetals(types[2], types[3], metalAmounts[2], metalAmounts[3]) != metalAmounts[2]) {
+/*     */           
+/* 172 */           metalAmounts[2] = mergeMetals(types[2], types[3], metalAmounts[2], metalAmounts[3]);
+/* 173 */           types[3] = null;
+/* 174 */           metalAmounts[3] = 0;
+/*     */         } 
+/*     */       } 
+/*     */       
+/* 178 */       int total = metalAmounts[0] + metalAmounts[1] + metalAmounts[2] + metalAmounts[3];
 /*     */ 
 /*     */ 
 /*     */ 
@@ -185,35 +186,35 @@
 /*     */ 
 /*     */ 
 /*     */       
-/* 188 */       if (total > 0) {
+/* 189 */       if (total > 0) {
 /*     */         
-/* 190 */         float[] metalPercent = new float[4];
-/* 191 */         metalPercent[0] = metalAmounts[0] / total * 100.0F;
-/* 192 */         metalPercent[1] = metalAmounts[1] / total * 100.0F;
-/* 193 */         metalPercent[2] = metalAmounts[2] / total * 100.0F;
-/* 194 */         metalPercent[3] = metalAmounts[3] / total * 100.0F;
+/* 191 */         float[] metalPercent = new float[4];
+/* 192 */         metalPercent[0] = metalAmounts[0] / total * 100.0F;
+/* 193 */         metalPercent[1] = metalAmounts[1] / total * 100.0F;
+/* 194 */         metalPercent[2] = metalAmounts[2] / total * 100.0F;
+/* 195 */         metalPercent[3] = metalAmounts[3] / total * 100.0F;
 /*     */         
-/* 196 */         List<AlloyMetal> a = new ArrayList<AlloyMetal>();
-/* 197 */         if (types[0] != null)
-/* 198 */           a.add(new AlloyMetal(types[0], metalPercent[0])); 
-/* 199 */         if (types[1] != null)
-/* 200 */           a.add(new AlloyMetal(types[1], metalPercent[1])); 
-/* 201 */         if (types[2] != null)
-/* 202 */           a.add(new AlloyMetal(types[2], metalPercent[2])); 
-/* 203 */         if (types[3] != null) {
-/* 204 */           a.add(new AlloyMetal(types[3], metalPercent[3]));
+/* 197 */         List<AlloyMetal> a = new ArrayList<AlloyMetal>();
+/* 198 */         if (types[0] != null)
+/* 199 */           a.add(new AlloyMetal(types[0], metalPercent[0])); 
+/* 200 */         if (types[1] != null)
+/* 201 */           a.add(new AlloyMetal(types[1], metalPercent[1])); 
+/* 202 */         if (types[2] != null)
+/* 203 */           a.add(new AlloyMetal(types[2], metalPercent[2])); 
+/* 204 */         if (types[3] != null) {
+/* 205 */           a.add(new AlloyMetal(types[3], metalPercent[3]));
 /*     */         }
-/* 206 */         Metal match = AlloyManager.INSTANCE.matchesAlloy(a, furnaceTier);
-/* 207 */         if (match != null) {
+/* 207 */         Metal match = AlloyManager.INSTANCE.matchesAlloy(a, furnaceTier);
+/* 208 */         if (match != null) {
 /*     */           
-/* 209 */           Alloy output = new Alloy(match, total);
-/* 210 */           NBTTagCompound tag = is.field_77990_d;
-/* 211 */           tag.func_74778_a("MetalType", output.outputType.name);
-/* 212 */           tag.func_74768_a("MetalAmount", (int)output.outputAmount);
-/* 213 */           long totalH = TFC_Time.getTotalHours();
-/* 214 */           tag.func_74772_a("TempTimer", totalH);
-/* 215 */           is.func_77978_p().func_82580_o("Items");
-/* 216 */           is.func_77964_b(2);
+/* 210 */           Alloy output = new Alloy(match, total);
+/* 211 */           NBTTagCompound tag = is.field_77990_d;
+/* 212 */           tag.func_74778_a("MetalType", output.outputType.name);
+/* 213 */           tag.func_74768_a("MetalAmount", (int)output.outputAmount);
+/* 214 */           long totalH = TFC_Time.getTotalHours();
+/* 215 */           tag.func_74772_a("TempTimer", totalH);
+/* 216 */           is.func_77978_p().func_82580_o("Items");
+/* 217 */           is.func_77964_b(2);
 /*     */         } 
 /*     */       } 
 /*     */     } 
@@ -221,206 +222,206 @@
 /*     */ 
 /*     */   
 /*     */   private int mergeMetals(Metal mt0, Metal mt1, int m0, int m1) {
-/* 224 */     if (mt0 != null && mt1 != null && m0 > 0)
+/* 225 */     if (mt0 != null && mt1 != null && m0 > 0)
 /*     */     {
-/* 226 */       if (mt0.name.equals(mt1.name))
-/* 227 */         return m0 + m1; 
+/* 227 */       if (mt0.name.equals(mt1.name))
+/* 228 */         return m0 + m1; 
 /*     */     }
-/* 229 */     return m0;
+/* 230 */     return m0;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   @SideOnly(Side.CLIENT)
 /*     */   public int func_82790_a(ItemStack is, int pass) {
-/* 236 */     if (pass != 1)
+/* 237 */     if (pass != 1)
 /*     */     {
-/* 238 */       return 16777215;
+/* 239 */       return 16777215;
 /*     */     }
 /*     */ 
 /*     */     
-/* 242 */     int j = getColor(is);
+/* 243 */     int j = getColor(is);
 /*     */     
-/* 244 */     if (j < 0)
+/* 245 */     if (j < 0)
 /*     */     {
-/* 246 */       return 16777215;
+/* 247 */       return 16777215;
 /*     */     }
 /*     */     
-/* 249 */     if (is.func_77960_j() == 0) {
+/* 250 */     if (is.func_77960_j() == 0) {
 /*     */ 
 /*     */ 
 /*     */ 
 /*     */ 
 /*     */ 
 /*     */       
-/* 256 */       int r = Math.min((j >> 16) + 96, 255);
-/* 257 */       int b = Math.min((j >> 8 & 0xFF) + 96, 255);
-/* 258 */       int g = Math.min((j & 0xFF) + 96, 255);
-/* 259 */       return r << 16 | b << 8 | g;
+/* 257 */       int r = Math.min((j >> 16) + 96, 255);
+/* 258 */       int b = Math.min((j >> 8 & 0xFF) + 96, 255);
+/* 259 */       int g = Math.min((j & 0xFF) + 96, 255);
+/* 260 */       return r << 16 | b << 8 | g;
 /*     */     } 
 /*     */     
-/* 262 */     return j;
+/* 263 */     return j;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public int getColor(ItemStack is) {
-/* 268 */     if (!is.func_77942_o() || !is.func_77978_p().func_74764_b("color")) {
-/* 269 */       return -1;
+/* 269 */     if (!is.func_77942_o() || !is.func_77978_p().func_74764_b("color")) {
+/* 270 */       return -1;
 /*     */     }
-/* 271 */     return is.func_77978_p().func_74762_e("color");
+/* 272 */     return is.func_77978_p().func_74762_e("color");
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public ItemStack[] loadBagInventory(ItemStack is) {
-/* 277 */     ItemStack[] bag = new ItemStack[4];
-/* 278 */     if (is != null && is.func_77942_o() && is.func_77978_p().func_74764_b("Items")) {
+/* 278 */     ItemStack[] bag = new ItemStack[4];
+/* 279 */     if (is != null && is.func_77942_o() && is.func_77978_p().func_74764_b("Items")) {
 /*     */       
-/* 280 */       NBTTagList nbttaglist = is.func_77978_p().func_150295_c("Items", 10);
-/* 281 */       for (int i = 0; i < nbttaglist.func_74745_c(); i++) {
+/* 281 */       NBTTagList nbttaglist = is.func_77978_p().func_150295_c("Items", 10);
+/* 282 */       for (int i = 0; i < nbttaglist.func_74745_c(); i++) {
 /*     */         
-/* 283 */         NBTTagCompound nbttagcompound1 = nbttaglist.func_150305_b(i);
-/* 284 */         byte byte0 = nbttagcompound1.func_74771_c("Slot");
-/* 285 */         if (byte0 >= 0 && byte0 < 4) {
-/* 286 */           bag[byte0] = ItemStack.func_77949_a(nbttagcompound1);
+/* 284 */         NBTTagCompound nbttagcompound1 = nbttaglist.func_150305_b(i);
+/* 285 */         byte byte0 = nbttagcompound1.func_74771_c("Slot");
+/* 286 */         if (byte0 >= 0 && byte0 < 4) {
+/* 287 */           bag[byte0] = ItemStack.func_77949_a(nbttagcompound1);
 /*     */         }
 /*     */       } 
 /*     */     } else {
-/* 290 */       return null;
+/* 291 */       return null;
 /*     */     } 
-/* 292 */     return bag;
+/* 293 */     return bag;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean onUpdate(ItemStack is, World world, int x, int y, int z) {
-/* 298 */     ItemStack[] bag = loadBagInventory(is);
-/* 299 */     if (bag != null) {
+/* 299 */     ItemStack[] bag = loadBagInventory(is);
+/* 300 */     if (bag != null) {
 /*     */       
-/* 301 */       TFC_Core.handleItemTicking(bag, world, x, y, z, 0.5F);
-/* 302 */       for (ItemStack i : bag) {
+/* 302 */       TFC_Core.handleItemTicking(bag, world, x, y, z, 0.5F);
+/* 303 */       for (ItemStack i : bag) {
 /*     */         
-/* 304 */         if (i != null && i.field_77994_a == 0)
-/* 305 */           i = null; 
+/* 305 */         if (i != null && i.field_77994_a == 0)
+/* 306 */           i = null; 
 /*     */       } 
-/* 307 */       saveContents(is, bag);
+/* 308 */       saveContents(is, bag);
 /*     */     } 
-/* 309 */     return true;
+/* 310 */     return true;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void saveContents(ItemStack vessel, ItemStack[] bag) {
-/* 314 */     NBTTagList nbttaglist = new NBTTagList();
-/* 315 */     for (int i = 0; i < 4; i++) {
+/* 315 */     NBTTagList nbttaglist = new NBTTagList();
+/* 316 */     for (int i = 0; i < 4; i++) {
 /*     */       
-/* 317 */       if (bag[i] != null) {
+/* 318 */       if (bag[i] != null) {
 /*     */         
-/* 319 */         NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-/* 320 */         nbttagcompound1.func_74774_a("Slot", (byte)i);
-/* 321 */         bag[i].func_77955_b(nbttagcompound1);
-/* 322 */         nbttaglist.func_74742_a((NBTBase)nbttagcompound1);
+/* 320 */         NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+/* 321 */         nbttagcompound1.func_74774_a("Slot", (byte)i);
+/* 322 */         bag[i].func_77955_b(nbttagcompound1);
+/* 323 */         nbttaglist.func_74742_a((NBTBase)nbttagcompound1);
 /*     */       } 
 /*     */     } 
-/* 325 */     if (vessel != null) {
+/* 326 */     if (vessel != null) {
 /*     */       
-/* 327 */       if (!vessel.func_77942_o())
-/* 328 */         vessel.func_77982_d(new NBTTagCompound()); 
-/* 329 */       vessel.func_77978_p().func_74782_a("Items", (NBTBase)nbttaglist);
+/* 328 */       if (!vessel.func_77942_o())
+/* 329 */         vessel.func_77982_d(new NBTTagCompound()); 
+/* 330 */       vessel.func_77978_p().func_74782_a("Items", (NBTBase)nbttaglist);
 /*     */     } 
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public ItemStack func_77659_a(ItemStack itemstack, World world, EntityPlayer entityplayer) {
-/* 336 */     if (!entityplayer.func_70093_af())
+/* 337 */     if (!entityplayer.func_70093_af())
 /*     */     {
-/* 338 */       if (itemstack.func_77960_j() == 2) {
+/* 339 */       if (itemstack.func_77960_j() == 2) {
 /*     */         
-/* 340 */         NBTTagCompound nbt = itemstack.func_77978_p();
-/* 341 */         if (nbt == null) {
+/* 341 */         NBTTagCompound nbt = itemstack.func_77978_p();
+/* 342 */         if (nbt == null) {
 /*     */           
-/* 343 */           itemstack.func_77964_b(1);
-/* 344 */           if (!world.field_72995_K)
+/* 344 */           itemstack.func_77964_b(1);
+/* 345 */           if (!world.field_72995_K)
 /*     */           {
 /*     */             
-/* 347 */             String error = TFC_Core.translate("error.error") + " " + itemstack.func_77977_a() + " " + TFC_Core.translate("error.NBT") + " " + TFC_Core.translate("error.Contact");
-/* 348 */             TerraFirmaCraft.LOG.error(error);
-/* 349 */             TFC_Core.sendInfoMessage(entityplayer, (IChatComponent)new ChatComponentText(error));
+/* 348 */             String error = TFC_Core.translate("error.error") + " " + itemstack.func_77977_a() + " " + TFC_Core.translate("error.NBT") + " " + TFC_Core.translate("error.Contact");
+/* 349 */             TerraFirmaCraft.LOG.error(error);
+/* 350 */             TFC_Core.sendInfoMessage(entityplayer, (IChatComponent)new ChatComponentText(error));
 /*     */           }
 /*     */         
-/* 352 */         } else if (nbt.func_74764_b("TempTimer")) {
+/* 353 */         } else if (nbt.func_74764_b("TempTimer")) {
 /*     */           
-/* 354 */           long temp = nbt.func_74763_f("TempTimer");
-/* 355 */           if (TFC_Time.getTotalHours() - temp < 11L) {
-/* 356 */             entityplayer.openGui(TerraFirmaCraft.instance, 19, entityplayer.field_70170_p, (int)entityplayer.field_70165_t, (int)entityplayer.field_70163_u, (int)entityplayer.field_70161_v);
+/* 355 */           long temp = nbt.func_74763_f("TempTimer");
+/* 356 */           if (TFC_Time.getTotalHours() - temp < 11L) {
+/* 357 */             entityplayer.openGui(TerraFirmaCraft.instance, 19, entityplayer.field_70170_p, (int)entityplayer.field_70165_t, (int)entityplayer.field_70163_u, (int)entityplayer.field_70161_v);
 /*     */           }
 /*     */         } 
-/* 359 */       } else if (itemstack.func_77960_j() == 1) {
+/* 360 */       } else if (itemstack.func_77960_j() == 1) {
 /*     */         
-/* 361 */         entityplayer.openGui(TerraFirmaCraft.instance, 39, entityplayer.field_70170_p, (int)entityplayer.field_70165_t, (int)entityplayer.field_70163_u, (int)entityplayer.field_70161_v);
+/* 362 */         entityplayer.openGui(TerraFirmaCraft.instance, 39, entityplayer.field_70170_p, (int)entityplayer.field_70165_t, (int)entityplayer.field_70163_u, (int)entityplayer.field_70161_v);
 /*     */       } 
 /*     */     }
-/* 364 */     return itemstack;
+/* 365 */     return itemstack;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void addItemInformation(ItemStack is, EntityPlayer player, List<String> arraylist) {
-/* 370 */     NBTTagCompound tag = is.field_77990_d;
-/* 371 */     if (tag != null) {
+/* 371 */     NBTTagCompound tag = is.field_77990_d;
+/* 372 */     if (tag != null) {
 /*     */       
-/* 373 */       if (tag.func_74764_b("MetalType")) {
+/* 374 */       if (tag.func_74764_b("MetalType")) {
 /*     */         
-/* 375 */         String name = tag.func_74779_i("MetalType");
-/* 376 */         name = name.replace(" ", "");
-/* 377 */         name = TFC_Core.translate("gui.metal." + name);
+/* 376 */         String name = tag.func_74779_i("MetalType");
+/* 377 */         name = name.replace(" ", "");
+/* 378 */         name = TFC_Core.translate("gui.metal." + name);
 /*     */ 
 /*     */         
-/* 380 */         if (tag.func_74764_b("MetalAmount"))
+/* 381 */         if (tag.func_74764_b("MetalAmount"))
 /*     */         {
 /*     */           
-/* 383 */           name = name + " (" + tag.func_74762_e("MetalAmount") + " " + TFC_Core.translate("gui.units") + ")";
+/* 384 */           name = name + " (" + tag.func_74762_e("MetalAmount") + " " + TFC_Core.translate("gui.units") + ")";
 /*     */         }
 /*     */         
-/* 386 */         arraylist.add(EnumChatFormatting.DARK_GREEN + name);
+/* 387 */         arraylist.add(EnumChatFormatting.DARK_GREEN + name);
 /*     */       } 
 /*     */       
-/* 389 */       if (tag.func_74764_b("TempTimer")) {
+/* 390 */       if (tag.func_74764_b("TempTimer")) {
 /*     */         
-/* 391 */         long total = TFC_Time.getTotalHours();
-/* 392 */         long temp = tag.func_74763_f("TempTimer");
-/* 393 */         if (total - temp < 11L) {
-/* 394 */           arraylist.add(EnumChatFormatting.WHITE + TFC_Core.translate("gui.ItemHeat.Liquid"));
+/* 392 */         long total = TFC_Time.getTotalHours();
+/* 393 */         long temp = tag.func_74763_f("TempTimer");
+/* 394 */         if (total - temp < 11L) {
+/* 395 */           arraylist.add(EnumChatFormatting.WHITE + TFC_Core.translate("gui.ItemHeat.Liquid"));
 /*     */         } else {
-/* 396 */           arraylist.add(EnumChatFormatting.WHITE + TFC_Core.translate("gui.ItemHeat.Solidified"));
+/* 397 */           arraylist.add(EnumChatFormatting.WHITE + TFC_Core.translate("gui.ItemHeat.Solidified"));
 /*     */         } 
 /*     */       } 
-/* 399 */       if (tag.func_74764_b("Items")) {
+/* 400 */       if (tag.func_74764_b("Items")) {
 /*     */         
-/* 401 */         NBTTagList nbttaglist = tag.func_150295_c("Items", 10);
-/* 402 */         for (int i = 0; i < nbttaglist.func_74745_c(); i++) {
+/* 402 */         NBTTagList nbttaglist = tag.func_150295_c("Items", 10);
+/* 403 */         for (int i = 0; i < nbttaglist.func_74745_c(); i++) {
 /*     */           
-/* 404 */           NBTTagCompound nbttagcompound1 = nbttaglist.func_150305_b(i);
-/* 405 */           byte byte0 = nbttagcompound1.func_74771_c("Slot");
-/* 406 */           if (byte0 >= 0 && byte0 < 4) {
+/* 405 */           NBTTagCompound nbttagcompound1 = nbttaglist.func_150305_b(i);
+/* 406 */           byte byte0 = nbttagcompound1.func_74771_c("Slot");
+/* 407 */           if (byte0 >= 0 && byte0 < 4) {
 /*     */             
-/* 408 */             ItemStack itemstack = ItemStack.func_77949_a(nbttagcompound1);
-/* 409 */             if (itemstack.field_77994_a > 0)
+/* 409 */             ItemStack itemstack = ItemStack.func_77949_a(nbttagcompound1);
+/* 410 */             if (itemstack.field_77994_a > 0)
 /*     */             {
-/* 411 */               if (itemstack.func_77973_b() instanceof com.bioxx.tfc.Food.ItemFoodTFC) {
+/* 412 */               if (itemstack.func_77973_b() instanceof com.bioxx.tfc.Food.ItemFoodTFC) {
 /*     */                 
-/* 413 */                 float decay = Food.getDecay(itemstack);
-/* 414 */                 float weight = Helper.roundNumber(Food.getWeight(itemstack), 100.0F);
+/* 414 */                 float decay = Food.getDecay(itemstack);
+/* 415 */                 float weight = Helper.roundNumber(Food.getWeight(itemstack), 100.0F);
 /*     */                 
-/* 416 */                 String ds = " " + EnumChatFormatting.DARK_GRAY + Helper.roundNumber(decay / weight * 100.0F, 10.0F) + "%";
-/* 417 */                 if (decay <= 0.0F) {
-/* 418 */                   ds = "";
+/* 417 */                 String ds = " " + EnumChatFormatting.DARK_GRAY + Helper.roundNumber(decay / weight * 100.0F, 10.0F) + "%";
+/* 418 */                 if (decay <= 0.0F) {
+/* 419 */                   ds = "";
 /*     */                 }
-/* 420 */                 arraylist.add(EnumChatFormatting.GOLD.toString() + itemstack.func_77973_b().func_77653_i(itemstack) + " " + EnumChatFormatting.WHITE + weight + "oz" + ds);
+/* 421 */                 arraylist.add(EnumChatFormatting.GOLD.toString() + itemstack.func_77973_b().func_77653_i(itemstack) + " " + EnumChatFormatting.WHITE + weight + "oz" + ds);
 /*     */               } else {
 /*     */                 
-/* 423 */                 arraylist.add(EnumChatFormatting.GOLD.toString() + itemstack.field_77994_a + "x " + itemstack.func_77973_b().func_77653_i(itemstack));
+/* 424 */                 arraylist.add(EnumChatFormatting.GOLD.toString() + itemstack.field_77994_a + "x " + itemstack.func_77973_b().func_77653_i(itemstack));
 /*     */               } 
 /*     */             }
 /*     */           } 
@@ -431,25 +432,25 @@
 /*     */ 
 /*     */   
 /*     */   public void addExtraInformation(ItemStack is, EntityPlayer player, List<String> arraylist) {
-/* 434 */     if (TFC_Core.showShiftInformation()) {
+/* 435 */     if (TFC_Core.showShiftInformation()) {
 /*     */       
-/* 436 */       arraylist.add(TFC_Core.translate("gui.Help"));
-/* 437 */       arraylist.add(TFC_Core.translate("gui.PotteryBase.Inst0"));
+/* 437 */       arraylist.add(TFC_Core.translate("gui.Help"));
+/* 438 */       arraylist.add(TFC_Core.translate("gui.PotteryBase.Inst0"));
 /*     */       
-/* 439 */       NBTTagCompound tag = is.field_77990_d;
-/* 440 */       if (tag != null && tag.func_74764_b("TempTimer")) {
+/* 440 */       NBTTagCompound tag = is.field_77990_d;
+/* 441 */       if (tag != null && tag.func_74764_b("TempTimer")) {
 /*     */         
-/* 442 */         long total = TFC_Time.getTotalHours();
-/* 443 */         long temp = tag.func_74763_f("TempTimer");
-/* 444 */         if (total - temp < 11L) {
-/* 445 */           arraylist.add(TFC_Core.translate("gui.PotteryVesselSmall.Inst0"));
+/* 443 */         long total = TFC_Time.getTotalHours();
+/* 444 */         long temp = tag.func_74763_f("TempTimer");
+/* 445 */         if (total - temp < 11L) {
+/* 446 */           arraylist.add(TFC_Core.translate("gui.PotteryVesselSmall.Inst0"));
 /*     */         }
 /*     */       } else {
-/* 448 */         arraylist.add(TFC_Core.translate("gui.PotteryVesselSmall.Inst0"));
+/* 449 */         arraylist.add(TFC_Core.translate("gui.PotteryVesselSmall.Inst0"));
 /*     */       } 
 /*     */     } else {
 /*     */       
-/* 452 */       arraylist.add(TFC_Core.translate("gui.ShowHelp"));
+/* 453 */       arraylist.add(TFC_Core.translate("gui.ShowHelp"));
 /*     */     } 
 /*     */   }
 /*     */ }

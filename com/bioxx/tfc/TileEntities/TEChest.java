@@ -287,95 +287,99 @@
 /*     */ 
 /*     */ 
 /*     */ 
-/*     */ 
 /*     */   
 /*     */   public void func_145845_h() {
-/* 293 */     TFC_Core.handleItemTicking(this, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 292 */     this.ticksSinceSync++;
+/* 293 */     if (this.ticksSinceSync % 20 == 0)
+/*     */     {
+/* 295 */       TFC_Core.handleItemTicking(this, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/*     */     }
 /*     */     
-/* 295 */     if (this.type == 0 && !this.typeSynced) {
+/* 298 */     TFC_Core.handleItemTicking(this, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/*     */     
+/* 300 */     if (this.type == 0 && !this.typeSynced) {
 /*     */       
-/* 297 */       if (this.cooldown == 0)
+/* 302 */       if (this.cooldown == 0)
 /*     */       {
-/* 299 */         this.field_145984_a = false;
-/* 300 */         this.isDoubleChest = false;
-/* 301 */         this.typeSynced = true;
+/* 304 */         this.field_145984_a = false;
+/* 305 */         this.isDoubleChest = false;
+/* 306 */         this.typeSynced = true;
 /*     */       }
-/* 303 */       else if (this.cooldown > 0)
+/* 308 */       else if (this.cooldown > 0)
 /*     */       {
-/* 305 */         this.cooldown--;
+/* 310 */         this.cooldown--;
 /*     */       }
 /*     */     
-/* 308 */     } else if (this.cooldown != 0) {
+/* 313 */     } else if (this.cooldown != 0) {
 /*     */       
-/* 310 */       this.cooldown = 0;
+/* 315 */       this.cooldown = 0;
 /*     */     } 
 /*     */     
-/* 313 */     func_145979_i();
-/* 314 */     this.ticksSinceSync++;
+/* 318 */     func_145979_i();
 /*     */     
-/* 316 */     if (!this.field_145850_b.field_72995_K && this.field_145987_o != 0 && (this.ticksSinceSync + this.field_145851_c + this.field_145848_d + this.field_145849_e) % 200 == 0) {
+/* 320 */     if (!this.field_145850_b.field_72995_K && this.field_145987_o != 0 && (this.ticksSinceSync + this.field_145851_c + this.field_145848_d + this.field_145849_e) % 200 == 0) {
 /*     */       
-/* 318 */       this.field_145987_o = 0;
-/* 319 */       float f = 5.0F;
-/* 320 */       List list = this.field_145850_b.func_72872_a(EntityPlayer.class, AxisAlignedBB.func_72330_a((this.field_145851_c - f), (this.field_145848_d - f), (this.field_145849_e - f), ((this.field_145851_c + 1) + f), ((this.field_145848_d + 1) + f), ((this.field_145849_e + 1) + f)));
-/* 321 */       Iterator<EntityPlayer> iterator = list.iterator();
+/* 322 */       this.field_145987_o = 0;
+/* 323 */       float f = 5.0F;
+/* 324 */       List list = this.field_145850_b.func_72872_a(EntityPlayer.class, AxisAlignedBB.func_72330_a((this.field_145851_c - f), (this.field_145848_d - f), (this.field_145849_e - f), ((this.field_145851_c + 1) + f), ((this.field_145848_d + 1) + f), ((this.field_145849_e + 1) + f)));
+/* 325 */       Iterator<EntityPlayer> iterator = list.iterator();
 /*     */       
-/* 323 */       while (iterator.hasNext()) {
+/* 327 */       while (iterator.hasNext()) {
 /*     */         
-/* 325 */         EntityPlayer entityplayer = iterator.next();
+/* 329 */         EntityPlayer entityplayer = iterator.next();
 /*     */         
-/* 327 */         if (entityplayer.field_71070_bA instanceof ContainerChestTFC) {
+/* 331 */         if (entityplayer.field_71070_bA instanceof ContainerChestTFC) {
 /*     */           
-/* 329 */           IInventory iinventory = ((ContainerChestTFC)entityplayer.field_71070_bA).getLowerChestInventory();
+/* 333 */           IInventory iinventory = ((ContainerChestTFC)entityplayer.field_71070_bA).getLowerChestInventory();
 /*     */           
-/* 331 */           if (iinventory == this || (iinventory instanceof InventoryLargeChest && ((InventoryLargeChest)iinventory).func_90010_a(this)))
+/* 335 */           if (iinventory == this || (iinventory instanceof InventoryLargeChest && ((InventoryLargeChest)iinventory).func_90010_a(this)))
 /*     */           {
-/* 333 */             this.field_145987_o++;
+/* 337 */             this.field_145987_o++;
 /*     */           }
 /*     */         } 
 /*     */       } 
 /*     */     } 
 /*     */     
-/* 339 */     this.field_145986_n = this.field_145989_m;
-/* 340 */     float var1 = 0.1F;
+/* 343 */     this.field_145986_n = this.field_145989_m;
+/* 344 */     float var1 = 0.1F;
 /*     */ 
 /*     */     
-/* 343 */     if (this.field_145987_o > 0 && this.field_145989_m == 0.0F && this.field_145992_i == null && this.field_145991_k == null) {
+/* 347 */     if (this.field_145987_o > 0 && this.field_145989_m == 0.0F && this.field_145992_i == null && this.field_145991_k == null) {
 /*     */       
-/* 345 */       double var2 = this.field_145851_c + 0.5D;
-/* 346 */       double var4 = this.field_145849_e + 0.5D;
-/* 347 */       if (this.field_145988_l != null)
-/* 348 */         var4 += 0.5D; 
-/* 349 */       if (this.field_145990_j != null)
-/* 350 */         var2 += 0.5D; 
-/* 351 */       this.field_145850_b.func_72908_a(var2, this.field_145848_d + 0.5D, var4, "random.chestopen", 0.5F, this.field_145850_b.field_73012_v.nextFloat() * 0.1F + 0.9F);
+/* 349 */       double var2 = this.field_145851_c + 0.5D;
+/* 350 */       double var4 = this.field_145849_e + 0.5D;
+/* 351 */       if (this.field_145988_l != null)
+/* 352 */         var4 += 0.5D; 
+/* 353 */       if (this.field_145990_j != null)
+/* 354 */         var2 += 0.5D; 
+/* 355 */       this.field_145850_b.func_72908_a(var2, this.field_145848_d + 0.5D, var4, "random.chestopen", 0.5F, this.field_145850_b.field_73012_v.nextFloat() * 0.1F + 0.9F);
 /*     */     } 
 /*     */     
-/* 354 */     if ((this.field_145987_o == 0 && this.field_145989_m > 0.0F) || (this.field_145987_o > 0 && this.field_145989_m < 1.0F)) {
+/* 358 */     if ((this.field_145987_o == 0 && this.field_145989_m > 0.0F) || (this.field_145987_o > 0 && this.field_145989_m < 1.0F)) {
 /*     */       
-/* 356 */       if (this.field_145987_o > 0) {
-/* 357 */         this.field_145989_m += var1;
+/* 360 */       if (this.field_145987_o > 0) {
+/* 361 */         this.field_145989_m += var1;
 /*     */       } else {
-/* 359 */         this.field_145989_m -= var1;
+/* 363 */         this.field_145989_m -= var1;
 /*     */       } 
-/* 361 */       if (this.field_145989_m > 1.0F) {
-/* 362 */         this.field_145989_m = 1.0F;
+/* 365 */       if (this.field_145989_m > 1.0F) {
+/* 366 */         this.field_145989_m = 1.0F;
 /*     */       }
-/* 364 */       float var8 = this.field_145989_m;
-/* 365 */       float var3 = 0.5F;
-/* 366 */       if (this.field_145989_m < var3 && var8 >= var3 && this.field_145992_i == null && this.field_145991_k == null) {
+/* 368 */       float var8 = this.field_145989_m;
+/* 369 */       float var3 = 0.5F;
+/* 370 */       if (this.field_145989_m < var3 && var8 >= var3 && this.field_145992_i == null && this.field_145991_k == null) {
 /*     */         
-/* 368 */         double var4 = this.field_145851_c + 0.5D;
-/* 369 */         double var6 = this.field_145849_e + 0.5D;
-/* 370 */         if (this.field_145988_l != null)
-/* 371 */           var6 += 0.5D; 
-/* 372 */         if (this.field_145990_j != null)
-/* 373 */           var4 += 0.5D; 
-/* 374 */         this.field_145850_b.func_72908_a(var4, this.field_145848_d + 0.5D, var6, "random.chestclosed", 0.5F, this.field_145850_b.field_73012_v.nextFloat() * 0.1F + 0.9F);
+/* 372 */         double var4 = this.field_145851_c + 0.5D;
+/* 373 */         double var6 = this.field_145849_e + 0.5D;
+/* 374 */         if (this.field_145988_l != null)
+/* 375 */           var6 += 0.5D; 
+/* 376 */         if (this.field_145990_j != null)
+/* 377 */           var4 += 0.5D; 
+/* 378 */         this.field_145850_b.func_72908_a(var4, this.field_145848_d + 0.5D, var6, "random.chestclosed", 0.5F, this.field_145850_b.field_73012_v.nextFloat() * 0.1F + 0.9F);
 /*     */       } 
 /*     */       
-/* 377 */       if (this.field_145989_m < 0.0F) {
-/* 378 */         this.field_145989_m = 0.0F;
+/* 381 */       if (this.field_145989_m < 0.0F) {
+/* 382 */         this.field_145989_m = 0.0F;
 /*     */       }
 /*     */     } 
 /*     */   }
@@ -383,33 +387,33 @@
 /*     */   
 /*     */   @SideOnly(Side.CLIENT)
 /*     */   public AxisAlignedBB getRenderBoundingBox() {
-/* 386 */     return AxisAlignedBB.func_72330_a((this.field_145851_c - 1), this.field_145848_d, (this.field_145849_e - 1), (this.field_145851_c + 2), (this.field_145848_d + 2), (this.field_145849_e + 2));
+/* 390 */     return AxisAlignedBB.func_72330_a((this.field_145851_c - 1), this.field_145848_d, (this.field_145849_e - 1), (this.field_145851_c + 2), (this.field_145848_d + 2), (this.field_145849_e + 2));
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void func_70295_k_() {
-/* 392 */     this.field_145987_o++;
-/* 393 */     this.field_145850_b.func_147452_c(this.field_145851_c, this.field_145848_d, this.field_145849_e, TFCBlocks.chest, 1, this.field_145987_o);
+/* 396 */     this.field_145987_o++;
+/* 397 */     this.field_145850_b.func_147452_c(this.field_145851_c, this.field_145848_d, this.field_145849_e, TFCBlocks.chest, 1, this.field_145987_o);
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void func_70305_f() {
-/* 399 */     this.field_145987_o--;
-/* 400 */     this.field_145850_b.func_147452_c(this.field_145851_c, this.field_145848_d, this.field_145849_e, TFCBlocks.chest, 1, this.field_145987_o);
+/* 403 */     this.field_145987_o--;
+/* 404 */     this.field_145850_b.func_147452_c(this.field_145851_c, this.field_145848_d, this.field_145849_e, TFCBlocks.chest, 1, this.field_145987_o);
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean func_145818_k_() {
-/* 406 */     return false;
+/* 410 */     return false;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean func_94041_b(int i, ItemStack itemstack) {
-/* 412 */     return true;
+/* 416 */     return true;
 /*     */   }
 /*     */ }
 

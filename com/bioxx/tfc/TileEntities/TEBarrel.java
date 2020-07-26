@@ -2,6 +2,7 @@
 /*     */ 
 /*     */ import com.bioxx.tfc.Core.TFC_Core;
 /*     */ import com.bioxx.tfc.Core.TFC_Time;
+/*     */ import com.bioxx.tfc.Core.WeatherManager;
 /*     */ import com.bioxx.tfc.Food.ItemFoodTFC;
 /*     */ import com.bioxx.tfc.Handlers.Network.AbstractPacket;
 /*     */ import com.bioxx.tfc.Items.Tools.ItemCustomBucketMilk;
@@ -39,9 +40,7 @@
 /*     */ import net.minecraftforge.fluids.FluidStack;
 /*     */ import net.minecraftforge.fluids.IFluidContainerItem;
 /*     */ 
-/*     */ public class TEBarrel
-/*     */   extends NetworkTileEntity
-/*     */   implements IInventory {
+/*     */ public class TEBarrel extends NetworkTileEntity implements IInventory {
 /*     */   public FluidStack fluid;
 /*     */   public byte rotation;
 /*     */   public int barrelType;
@@ -51,40 +50,40 @@
 /*     */   public int sealtime;
 /*     */   
 /*     */   public TEBarrel() {
-/*  54 */     this.storage = new ItemStack[12];
+/*  53 */     this.storage = new ItemStack[12];
 /*     */   }
 /*     */   public int unsealtime; private int processTimer; public static final int MODE_IN = 0; public static final int MODE_OUT = 1; public static final int INPUT_SLOT = 0; public BarrelRecipe recipe; public boolean shouldDropItem = true;
 /*     */   
 /*     */   public boolean getSealed() {
-/*  59 */     return this.sealed;
+/*  58 */     return this.sealed;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public int getTechLevel() {
-/*  64 */     return 1;
+/*  63 */     return 1;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void clearInventory() {
-/*  69 */     this.storage = new ItemStack[12];
+/*  68 */     this.storage = new ItemStack[12];
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   @SideOnly(Side.CLIENT)
 /*     */   public AxisAlignedBB getRenderBoundingBox() {
-/*  76 */     return AxisAlignedBB.func_72330_a(this.field_145851_c, this.field_145848_d, this.field_145849_e, (this.field_145851_c + 1), (this.field_145848_d + 1), (this.field_145849_e + 1));
+/*  75 */     return AxisAlignedBB.func_72330_a(this.field_145851_c, this.field_145848_d, this.field_145849_e, (this.field_145851_c + 1), (this.field_145848_d + 1), (this.field_145849_e + 1));
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void setSealed() {
-/*  81 */     this.sealed = true;
+/*  80 */     this.sealed = true;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void setUnsealed(String reason) {
-/*  86 */     if ("killing fuse".equals(reason)) {
-/*  87 */       this.sealed = false;
+/*  85 */     if ("killing fuse".equals(reason)) {
+/*  86 */       this.sealed = false;
 /*     */     }
 /*     */   }
 /*     */ 
@@ -95,43 +94,43 @@
 /*     */ 
 /*     */   
 /*     */   public ItemStack func_70298_a(int i, int j) {
-/*  98 */     if (this.storage[i] != null) {
+/*  97 */     if (this.storage[i] != null) {
 /*     */       
-/* 100 */       if ((this.storage[i]).field_77994_a <= j) {
+/*  99 */       if ((this.storage[i]).field_77994_a <= j) {
 /*     */         
-/* 102 */         ItemStack is = this.storage[i];
-/* 103 */         this.storage[i] = null;
-/* 104 */         return is;
+/* 101 */         ItemStack is = this.storage[i];
+/* 102 */         this.storage[i] = null;
+/* 103 */         return is;
 /*     */       } 
-/* 106 */       ItemStack isSplit = this.storage[i].func_77979_a(j);
-/* 107 */       if ((this.storage[i]).field_77994_a == 0)
-/* 108 */         this.storage[i] = null; 
-/* 109 */       return isSplit;
+/* 105 */       ItemStack isSplit = this.storage[i].func_77979_a(j);
+/* 106 */       if ((this.storage[i]).field_77994_a == 0)
+/* 107 */         this.storage[i] = null; 
+/* 108 */       return isSplit;
 /*     */     } 
 /*     */ 
 /*     */     
-/* 113 */     return null;
+/* 112 */     return null;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void ejectContents() {
-/* 119 */     float f3 = 0.05F;
+/* 118 */     float f3 = 0.05F;
 /*     */     
-/* 121 */     Random rand = new Random();
-/* 122 */     float f = rand.nextFloat() * 0.3F + 0.1F;
-/* 123 */     float f1 = rand.nextFloat() * 2.0F + 0.4F;
-/* 124 */     float f2 = rand.nextFloat() * 0.3F + 0.1F;
+/* 120 */     Random rand = new Random();
+/* 121 */     float f = rand.nextFloat() * 0.3F + 0.1F;
+/* 122 */     float f1 = rand.nextFloat() * 2.0F + 0.4F;
+/* 123 */     float f2 = rand.nextFloat() * 0.3F + 0.1F;
 /*     */     
-/* 126 */     for (int i = 0; i < func_70302_i_(); i++) {
+/* 125 */     for (int i = 0; i < func_70302_i_(); i++) {
 /*     */       
-/* 128 */       if (this.storage[i] != null) {
+/* 127 */       if (this.storage[i] != null) {
 /*     */         
-/* 130 */         EntityItem entityitem = new EntityItem(this.field_145850_b, (this.field_145851_c + f), (this.field_145848_d + f1), (this.field_145849_e + f2), this.storage[i]);
-/* 131 */         entityitem.field_70159_w = ((float)rand.nextGaussian() * f3);
-/* 132 */         entityitem.field_70181_x = ((float)rand.nextGaussian() * f3 + 0.2F);
-/* 133 */         entityitem.field_70179_y = ((float)rand.nextGaussian() * f3);
-/* 134 */         this.field_145850_b.func_72838_d((Entity)entityitem);
+/* 129 */         EntityItem entityitem = new EntityItem(this.field_145850_b, (this.field_145851_c + f), (this.field_145848_d + f1), (this.field_145849_e + f2), this.storage[i]);
+/* 130 */         entityitem.field_70159_w = ((float)rand.nextGaussian() * f3);
+/* 131 */         entityitem.field_70181_x = ((float)rand.nextGaussian() * f3 + 0.2F);
+/* 132 */         entityitem.field_70179_y = ((float)rand.nextGaussian() * f3);
+/* 133 */         this.field_145850_b.func_72838_d((Entity)entityitem);
 /*     */       } 
 /*     */     } 
 /*     */   }
@@ -139,66 +138,66 @@
 /*     */ 
 /*     */   
 /*     */   public int func_70297_j_() {
-/* 142 */     return 64;
+/* 141 */     return 64;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public String func_145825_b() {
-/* 148 */     return "Barrel";
+/* 147 */     return "Barrel";
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public int func_70302_i_() {
-/* 154 */     return 12;
+/* 153 */     return 12;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public ItemStack func_70301_a(int i) {
-/* 160 */     return this.storage[i];
+/* 159 */     return this.storage[i];
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public ItemStack func_70304_b(int i) {
-/* 166 */     return this.storage[i];
+/* 165 */     return this.storage[i];
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public int getInvCount() {
-/* 171 */     int count = 0;
-/* 172 */     for (ItemStack is : this.storage) {
+/* 170 */     int count = 0;
+/* 171 */     for (ItemStack is : this.storage) {
 /*     */       
-/* 174 */       if (is != null)
-/* 175 */         count++; 
+/* 173 */       if (is != null)
+/* 174 */         count++; 
 /*     */     } 
-/* 177 */     if (this.storage[0] != null && count == 1)
-/* 178 */       return 0; 
-/* 179 */     return count;
+/* 176 */     if (this.storage[0] != null && count == 1)
+/* 177 */       return 0; 
+/* 178 */     return count;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public int getGunPowderCount() {
-/* 184 */     int count = 0;
-/* 185 */     for (ItemStack is : this.storage) {
+/* 183 */     int count = 0;
+/* 184 */     for (ItemStack is : this.storage) {
 /*     */       
-/* 187 */       if (is != null && is.func_77973_b() == Items.field_151016_H)
-/* 188 */         count += is.field_77994_a; 
+/* 186 */       if (is != null && is.func_77973_b() == Items.field_151016_H)
+/* 187 */         count += is.field_77994_a; 
 /*     */     } 
-/* 190 */     return count;
+/* 189 */     return count;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public boolean canAcceptLiquids() {
-/* 195 */     return (getInvCount() == 0);
+/* 194 */     return (getInvCount() == 0);
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean func_70300_a(EntityPlayer entityplayer) {
-/* 201 */     return false;
+/* 200 */     return false;
 /*     */   }
 /*     */ 
 /*     */ 
@@ -209,103 +208,103 @@
 /*     */ 
 /*     */   
 /*     */   public void func_70299_a(int i, ItemStack is) {
-/* 212 */     if (!ItemStack.func_77989_b(this.storage[i], is)) {
+/* 211 */     if (!ItemStack.func_77989_b(this.storage[i], is)) {
 /*     */       
-/* 214 */       this.storage[i] = is;
-/* 215 */       if (i == 0) {
+/* 213 */       this.storage[i] = is;
+/* 214 */       if (i == 0) {
 /*     */         
-/* 217 */         processItems();
-/* 218 */         if (!getSealed()) {
-/* 219 */           this.unsealtime = (int)TFC_Time.getTotalHours();
+/* 216 */         processItems();
+/* 217 */         if (!getSealed()) {
+/* 218 */           this.unsealtime = (int)TFC_Time.getTotalHours();
 /*     */         }
 /*     */       } 
 /*     */     } 
 /*     */   }
 /*     */   
 /*     */   public int getFluidLevel() {
-/* 226 */     if (this.fluid != null)
-/* 227 */       return this.fluid.amount; 
-/* 228 */     return 0;
+/* 225 */     if (this.fluid != null)
+/* 226 */       return this.fluid.amount; 
+/* 227 */     return 0;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public ItemStack getInputStack() {
-/* 233 */     return this.storage[0];
+/* 232 */     return this.storage[0];
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public FluidStack getFluidStack() {
-/* 238 */     return this.fluid;
+/* 237 */     return this.fluid;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public int getMaxLiquid() {
-/* 243 */     return 10000;
+/* 242 */     return 10000;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public boolean addLiquid(FluidStack inFS) {
-/* 248 */     if (inFS != null) {
+/* 247 */     if (inFS != null) {
 /*     */ 
 /*     */       
-/* 251 */       if (inFS.getFluid() != null && inFS.getFluid().getTemperature(inFS) > 385) {
-/* 252 */         return false;
+/* 250 */       if (inFS.getFluid() != null && inFS.getFluid() == TFCFluids.HOTWATER && inFS.getFluid().getTemperature(inFS) > 550) {
+/* 251 */         return false;
 /*     */       }
-/* 254 */       if (this.fluid == null) {
+/* 253 */       if (this.fluid == null) {
 /*     */         
-/* 256 */         this.fluid = inFS.copy();
-/* 257 */         if (this.fluid.amount > getMaxLiquid())
+/* 255 */         this.fluid = inFS.copy();
+/* 256 */         if (this.fluid.amount > getMaxLiquid())
 /*     */         {
-/* 259 */           this.fluid.amount = getMaxLiquid();
-/* 260 */           inFS.amount -= getMaxLiquid();
+/* 258 */           this.fluid.amount = getMaxLiquid();
+/* 259 */           inFS.amount -= getMaxLiquid();
 /*     */         }
 /*     */         else
 /*     */         {
-/* 264 */           inFS.amount = 0;
+/* 263 */           inFS.amount = 0;
 /*     */         }
 /*     */       
 /*     */       } else {
 /*     */         
-/* 269 */         if (this.fluid.amount == getMaxLiquid() || !this.fluid.isFluidEqual(inFS)) {
-/* 270 */           return false;
+/* 268 */         if (this.fluid.amount == getMaxLiquid() || !this.fluid.isFluidEqual(inFS)) {
+/* 269 */           return false;
 /*     */         }
-/* 272 */         int a = this.fluid.amount + inFS.amount - getMaxLiquid();
-/* 273 */         this.fluid.amount = Math.min(this.fluid.amount + inFS.amount, getMaxLiquid());
-/* 274 */         if (a > 0) {
-/* 275 */           inFS.amount = a;
+/* 271 */         int a = this.fluid.amount + inFS.amount - getMaxLiquid();
+/* 272 */         this.fluid.amount = Math.min(this.fluid.amount + inFS.amount, getMaxLiquid());
+/* 273 */         if (a > 0) {
+/* 274 */           inFS.amount = a;
 /*     */         } else {
-/* 277 */           inFS.amount = 0;
+/* 276 */           inFS.amount = 0;
 /*     */         } 
-/* 279 */       }  this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
-/* 280 */       return true;
+/* 278 */       }  this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 279 */       return true;
 /*     */     } 
 /*     */     
-/* 283 */     return false;
+/* 282 */     return false;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public ItemStack addLiquid(ItemStack is) {
-/* 288 */     if (is == null || is.field_77994_a > 1)
-/* 289 */       return is; 
-/* 290 */     if (FluidContainerRegistry.isFilledContainer(is)) {
+/* 287 */     if (is == null || is.field_77994_a > 1)
+/* 288 */       return is; 
+/* 289 */     if (FluidContainerRegistry.isFilledContainer(is)) {
 /*     */       
-/* 292 */       FluidStack fs = FluidContainerRegistry.getFluidForFilledItem(is);
-/* 293 */       if (addLiquid(fs))
+/* 291 */       FluidStack fs = FluidContainerRegistry.getFluidForFilledItem(is);
+/* 292 */       if (addLiquid(fs))
 /*     */       {
-/* 295 */         this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
-/* 296 */         return FluidContainerRegistry.drainFluidContainer(is);
+/* 294 */         this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 295 */         return FluidContainerRegistry.drainFluidContainer(is);
 /*     */       }
 /*     */     
-/* 299 */     } else if (is.func_77973_b() instanceof IFluidContainerItem) {
+/* 298 */     } else if (is.func_77973_b() instanceof IFluidContainerItem) {
 /*     */       
-/* 301 */       FluidStack isfs = ((IFluidContainerItem)is.func_77973_b()).getFluid(is);
-/* 302 */       if (isfs != null && addLiquid(isfs)) {
+/* 300 */       FluidStack isfs = ((IFluidContainerItem)is.func_77973_b()).getFluid(is);
+/* 301 */       if (isfs != null && addLiquid(isfs)) {
 /*     */         
-/* 304 */         ((IFluidContainerItem)is.func_77973_b()).drain(is, is.func_77958_k(), true);
-/* 305 */         this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 303 */         ((IFluidContainerItem)is.func_77973_b()).drain(is, is.func_77958_k(), true);
+/* 304 */         this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
 /*     */       } 
 /*     */     } 
-/* 308 */     return is;
+/* 307 */     return is;
 /*     */   }
 /*     */ 
 /*     */ 
@@ -313,36 +312,36 @@
 /*     */ 
 /*     */   
 /*     */   public ItemStack removeLiquid(ItemStack is) {
-/* 316 */     if (is == null || is.field_77994_a > 1)
-/* 317 */       return is; 
-/* 318 */     if (FluidContainerRegistry.isEmptyContainer(is)) {
+/* 315 */     if (is == null || is.field_77994_a > 1)
+/* 316 */       return is; 
+/* 317 */     if (FluidContainerRegistry.isEmptyContainer(is)) {
 /*     */       
-/* 320 */       ItemStack out = FluidContainerRegistry.fillFluidContainer(this.fluid, is);
-/* 321 */       if (out != null)
+/* 319 */       ItemStack out = FluidContainerRegistry.fillFluidContainer(this.fluid, is);
+/* 320 */       if (out != null)
 /*     */       {
-/* 323 */         FluidStack fs = FluidContainerRegistry.getFluidForFilledItem(out);
-/* 324 */         this.fluid.amount -= fs.amount;
-/* 325 */         is = null;
-/* 326 */         if (this.fluid.amount == 0)
+/* 322 */         FluidStack fs = FluidContainerRegistry.getFluidForFilledItem(out);
+/* 323 */         this.fluid.amount -= fs.amount;
+/* 324 */         is = null;
+/* 325 */         if (this.fluid.amount == 0)
 /*     */         {
-/* 328 */           this.fluid = null;
+/* 327 */           this.fluid = null;
 /*     */         }
-/* 330 */         this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
-/* 331 */         return out;
+/* 329 */         this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 330 */         return out;
 /*     */       }
 /*     */     
-/* 334 */     } else if (this.fluid != null && is.func_77973_b() instanceof IFluidContainerItem) {
+/* 333 */     } else if (this.fluid != null && is.func_77973_b() instanceof IFluidContainerItem) {
 /*     */       
-/* 336 */       FluidStack isfs = ((IFluidContainerItem)is.func_77973_b()).getFluid(is);
-/* 337 */       if (isfs == null || this.fluid.isFluidEqual(isfs)) {
+/* 335 */       FluidStack isfs = ((IFluidContainerItem)is.func_77973_b()).getFluid(is);
+/* 336 */       if (isfs == null || this.fluid.isFluidEqual(isfs)) {
 /*     */         
-/* 339 */         this.fluid.amount -= ((IFluidContainerItem)is.func_77973_b()).fill(is, this.fluid, true);
-/* 340 */         if (this.fluid.amount == 0)
-/* 341 */           this.fluid = null; 
-/* 342 */         this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 338 */         this.fluid.amount -= ((IFluidContainerItem)is.func_77973_b()).fill(is, this.fluid, true);
+/* 339 */         if (this.fluid.amount == 0)
+/* 340 */           this.fluid = null; 
+/* 341 */         this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
 /*     */       } 
 /*     */     } 
-/* 345 */     return is;
+/* 344 */     return is;
 /*     */   }
 /*     */ 
 /*     */ 
@@ -350,307 +349,308 @@
 /*     */ 
 /*     */   
 /*     */   public void drainLiquid(int amount) {
-/* 353 */     if (!getSealed() && getFluidStack() != null) {
+/* 352 */     if (!getSealed() && getFluidStack() != null) {
 /*     */       
-/* 355 */       (getFluidStack()).amount -= amount;
-/* 356 */       if ((getFluidStack()).amount <= 0) {
-/* 357 */         actionEmpty();
+/* 354 */       (getFluidStack()).amount -= amount;
+/* 355 */       if ((getFluidStack()).amount <= 0) {
+/* 356 */         actionEmpty();
 /*     */       } else {
-/* 359 */         this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 358 */         this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
 /*     */       } 
 /*     */     } 
 /*     */   }
 /*     */   
 /*     */   public int getLiquidScaled(int i) {
-/* 365 */     if (this.fluid != null)
-/* 366 */       return this.fluid.amount * i / getMaxLiquid(); 
-/* 367 */     return 0;
+/* 364 */     if (this.fluid != null)
+/* 365 */       return this.fluid.amount * i / getMaxLiquid(); 
+/* 366 */     return 0;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public boolean actionSeal(int tab, EntityPlayer player) {
-/* 372 */     NBTTagCompound nbt = new NBTTagCompound();
-/* 373 */     nbt.func_74757_a("seal", true);
-/* 374 */     nbt.func_74774_a("tab", (byte)tab);
-/* 375 */     nbt.func_74778_a("player", player.func_70005_c_());
-/* 376 */     broadcastPacketInRange((AbstractPacket)createDataPacket(nbt));
-/* 377 */     this.sealed = true;
-/* 378 */     this.field_145850_b.func_147479_m(this.field_145851_c, this.field_145848_d, this.field_145849_e);
-/* 379 */     return true;
+/* 371 */     NBTTagCompound nbt = new NBTTagCompound();
+/* 372 */     nbt.func_74757_a("seal", true);
+/* 373 */     nbt.func_74774_a("tab", (byte)tab);
+/* 374 */     nbt.func_74778_a("player", player.func_70005_c_());
+/* 375 */     broadcastPacketInRange((AbstractPacket)createDataPacket(nbt));
+/* 376 */     this.sealed = true;
+/* 377 */     this.field_145850_b.func_147479_m(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 378 */     return true;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public boolean actionUnSeal(int tab, EntityPlayer player) {
-/* 384 */     NBTTagCompound nbt = new NBTTagCompound();
-/* 385 */     nbt.func_74757_a("seal", false);
-/* 386 */     nbt.func_74774_a("tab", (byte)tab);
-/* 387 */     nbt.func_74778_a("player", player.func_70005_c_());
-/* 388 */     broadcastPacketInRange((AbstractPacket)createDataPacket(nbt));
-/* 389 */     this.sealed = false;
-/* 390 */     this.field_145850_b.func_147479_m(this.field_145851_c, this.field_145848_d, this.field_145849_e);
-/* 391 */     return true;
+/* 383 */     NBTTagCompound nbt = new NBTTagCompound();
+/* 384 */     nbt.func_74757_a("seal", false);
+/* 385 */     nbt.func_74774_a("tab", (byte)tab);
+/* 386 */     nbt.func_74778_a("player", player.func_70005_c_());
+/* 387 */     broadcastPacketInRange((AbstractPacket)createDataPacket(nbt));
+/* 388 */     this.sealed = false;
+/* 389 */     this.field_145850_b.func_147479_m(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 390 */     return true;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void actionEmpty() {
-/* 396 */     this.fluid = null;
-/* 397 */     NBTTagCompound nbt = new NBTTagCompound();
-/* 398 */     nbt.func_74774_a("fluidID", (byte)-1);
-/* 399 */     broadcastPacketInRange((AbstractPacket)createDataPacket(nbt));
+/* 395 */     this.fluid = null;
+/* 396 */     NBTTagCompound nbt = new NBTTagCompound();
+/* 397 */     nbt.func_74774_a("fluidID", (byte)-1);
+/* 398 */     broadcastPacketInRange((AbstractPacket)createDataPacket(nbt));
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void actionMode() {
-/* 404 */     this.mode = (this.mode == 0) ? 1 : 0;
-/* 405 */     NBTTagCompound nbt = new NBTTagCompound();
-/* 406 */     nbt.func_74774_a("mode", (byte)this.mode);
-/* 407 */     broadcastPacketInRange((AbstractPacket)createDataPacket(nbt));
+/* 403 */     this.mode = (this.mode == 0) ? 1 : 0;
+/* 404 */     NBTTagCompound nbt = new NBTTagCompound();
+/* 405 */     nbt.func_74774_a("mode", (byte)this.mode);
+/* 406 */     broadcastPacketInRange((AbstractPacket)createDataPacket(nbt));
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void actionSwitchTab(int tab, EntityPlayer player) {
-/* 412 */     NBTTagCompound nbt = new NBTTagCompound();
-/* 413 */     nbt.func_74774_a("tab", (byte)tab);
-/* 414 */     nbt.func_74778_a("player", player.func_70005_c_());
-/* 415 */     broadcastPacketInRange((AbstractPacket)createDataPacket(nbt));
+/* 411 */     NBTTagCompound nbt = new NBTTagCompound();
+/* 412 */     nbt.func_74774_a("tab", (byte)tab);
+/* 413 */     nbt.func_74778_a("player", player.func_70005_c_());
+/* 414 */     broadcastPacketInRange((AbstractPacket)createDataPacket(nbt));
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean func_145818_k_() {
-/* 421 */     return false;
+/* 420 */     return false;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean func_94041_b(int i, ItemStack itemstack) {
-/* 427 */     return false;
+/* 426 */     return false;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void func_145841_b(NBTTagCompound nbt) {
-/* 433 */     super.func_145841_b(nbt);
-/* 434 */     nbt.func_74757_a("Sealed", this.sealed);
-/* 435 */     nbt.func_74768_a("SealTime", this.sealtime);
-/* 436 */     nbt.func_74768_a("barrelType", this.barrelType);
+/* 432 */     super.func_145841_b(nbt);
+/* 433 */     nbt.func_74757_a("Sealed", this.sealed);
+/* 434 */     nbt.func_74768_a("SealTime", this.sealtime);
+/* 435 */     nbt.func_74768_a("barrelType", this.barrelType);
 /*     */     
-/* 438 */     NBTTagCompound fluidNBT = new NBTTagCompound();
-/* 439 */     if (this.fluid != null)
-/* 440 */       this.fluid.writeToNBT(fluidNBT); 
-/* 441 */     nbt.func_74782_a("fluidNBT", (NBTBase)fluidNBT);
-/* 442 */     nbt.func_74774_a("rotation", this.rotation);
-/* 443 */     NBTTagList nbttaglist = new NBTTagList();
-/* 444 */     for (int i = 0; i < this.storage.length; i++) {
+/* 437 */     NBTTagCompound fluidNBT = new NBTTagCompound();
+/* 438 */     if (this.fluid != null)
+/* 439 */       this.fluid.writeToNBT(fluidNBT); 
+/* 440 */     nbt.func_74782_a("fluidNBT", (NBTBase)fluidNBT);
+/* 441 */     nbt.func_74774_a("rotation", this.rotation);
+/* 442 */     NBTTagList nbttaglist = new NBTTagList();
+/* 443 */     for (int i = 0; i < this.storage.length; i++) {
 /*     */       
-/* 446 */       if (this.storage[i] != null) {
+/* 445 */       if (this.storage[i] != null) {
 /*     */         
-/* 448 */         NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-/* 449 */         nbttagcompound1.func_74774_a("Slot", (byte)i);
-/* 450 */         this.storage[i].func_77955_b(nbttagcompound1);
-/* 451 */         nbttaglist.func_74742_a((NBTBase)nbttagcompound1);
+/* 447 */         NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+/* 448 */         nbttagcompound1.func_74774_a("Slot", (byte)i);
+/* 449 */         this.storage[i].func_77955_b(nbttagcompound1);
+/* 450 */         nbttaglist.func_74742_a((NBTBase)nbttagcompound1);
 /*     */       } 
 /*     */     } 
-/* 454 */     nbt.func_74782_a("Items", (NBTBase)nbttaglist);
+/* 453 */     nbt.func_74782_a("Items", (NBTBase)nbttaglist);
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void func_145839_a(NBTTagCompound nbt) {
-/* 460 */     super.func_145839_a(nbt);
-/* 461 */     this.fluid = FluidStack.loadFluidStackFromNBT(nbt.func_74775_l("fluidNBT"));
-/* 462 */     this.sealed = nbt.func_74767_n("Sealed");
-/* 463 */     this.sealtime = nbt.func_74762_e("SealTime");
-/* 464 */     this.barrelType = nbt.func_74762_e("barrelType");
+/* 459 */     super.func_145839_a(nbt);
+/* 460 */     this.fluid = FluidStack.loadFluidStackFromNBT(nbt.func_74775_l("fluidNBT"));
+/* 461 */     this.sealed = nbt.func_74767_n("Sealed");
+/* 462 */     this.sealtime = nbt.func_74762_e("SealTime");
+/* 463 */     this.barrelType = nbt.func_74762_e("barrelType");
 /*     */     
-/* 466 */     this.rotation = nbt.func_74771_c("rotation");
-/* 467 */     NBTTagList nbttaglist = nbt.func_150295_c("Items", 10);
-/* 468 */     this.storage = new ItemStack[func_70302_i_()];
-/* 469 */     for (int i = 0; i < nbttaglist.func_74745_c(); i++) {
+/* 465 */     this.rotation = nbt.func_74771_c("rotation");
+/* 466 */     NBTTagList nbttaglist = nbt.func_150295_c("Items", 10);
+/* 467 */     this.storage = new ItemStack[func_70302_i_()];
+/* 468 */     for (int i = 0; i < nbttaglist.func_74745_c(); i++) {
 /*     */       
-/* 471 */       NBTTagCompound nbttagcompound1 = nbttaglist.func_150305_b(i);
-/* 472 */       byte byte0 = nbttagcompound1.func_74771_c("Slot");
-/* 473 */       if (byte0 >= 0 && byte0 < this.storage.length) {
-/* 474 */         this.storage[byte0] = ItemStack.func_77949_a(nbttagcompound1);
+/* 470 */       NBTTagCompound nbttagcompound1 = nbttaglist.func_150305_b(i);
+/* 471 */       byte byte0 = nbttagcompound1.func_74771_c("Slot");
+/* 472 */       if (byte0 >= 0 && byte0 < this.storage.length) {
+/* 473 */         this.storage[byte0] = ItemStack.func_77949_a(nbttagcompound1);
 /*     */       }
 /*     */     } 
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void readFromItemNBT(NBTTagCompound nbt) {
-/* 481 */     this.barrelType = nbt.func_74762_e("barrelType");
-/* 482 */     this.fluid = FluidStack.loadFluidStackFromNBT(nbt.func_74775_l("fluidNBT"));
-/* 483 */     this.sealed = nbt.func_74767_n("Sealed");
-/* 484 */     this.sealtime = nbt.func_74762_e("SealTime");
-/* 485 */     NBTTagList nbttaglist = nbt.func_150295_c("Items", 10);
-/* 486 */     for (int i = 0; i < nbttaglist.func_74745_c(); i++) {
+/* 480 */     this.barrelType = nbt.func_74762_e("barrelType");
+/* 481 */     this.fluid = FluidStack.loadFluidStackFromNBT(nbt.func_74775_l("fluidNBT"));
+/* 482 */     this.sealed = nbt.func_74767_n("Sealed");
+/* 483 */     this.sealtime = nbt.func_74762_e("SealTime");
+/* 484 */     NBTTagList nbttaglist = nbt.func_150295_c("Items", 10);
+/* 485 */     for (int i = 0; i < nbttaglist.func_74745_c(); i++) {
 /*     */       
-/* 488 */       NBTTagCompound nbt1 = nbttaglist.func_150305_b(i);
-/* 489 */       byte byte0 = nbt1.func_74771_c("Slot");
-/* 490 */       if (byte0 >= 0 && byte0 < this.storage.length) {
-/* 491 */         func_70299_a(byte0, ItemStack.func_77949_a(nbt1));
+/* 487 */       NBTTagCompound nbt1 = nbttaglist.func_150305_b(i);
+/* 488 */       byte byte0 = nbt1.func_74771_c("Slot");
+/* 489 */       if (byte0 >= 0 && byte0 < this.storage.length) {
+/* 490 */         func_70299_a(byte0, ItemStack.func_77949_a(nbt1));
 /*     */       }
 /*     */     } 
 /*     */   }
 /*     */   
 /*     */   public void updateGui() {
-/* 497 */     this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 496 */     this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void handleInitPacket(NBTTagCompound nbt) {
-/* 504 */     this.rotation = nbt.func_74771_c("rotation");
-/* 505 */     this.sealed = nbt.func_74767_n("sealed");
-/* 506 */     this.sealtime = nbt.func_74762_e("SealTime");
-/* 507 */     this.barrelType = nbt.func_74762_e("barrelType");
-/* 508 */     if (nbt.func_74762_e("fluid") != -1) {
+/* 503 */     this.rotation = nbt.func_74771_c("rotation");
+/* 504 */     this.sealed = nbt.func_74767_n("sealed");
+/* 505 */     this.sealtime = nbt.func_74762_e("SealTime");
+/* 506 */     this.barrelType = nbt.func_74762_e("barrelType");
+/* 507 */     if (nbt.func_74762_e("fluid") != -1) {
 /*     */       
-/* 510 */       if (this.fluid != null) {
-/* 511 */         this.fluid.amount = nbt.func_74762_e("fluidAmount");
+/* 509 */       if (this.fluid != null) {
+/* 510 */         this.fluid.amount = nbt.func_74762_e("fluidAmount");
 /*     */       } else {
-/* 513 */         this.fluid = new FluidStack(nbt.func_74762_e("fluid"), nbt.func_74762_e("fluidAmount"));
+/* 512 */         this.fluid = new FluidStack(nbt.func_74762_e("fluid"), nbt.func_74762_e("fluidAmount"));
 /*     */       } 
 /*     */     } else {
 /*     */       
-/* 517 */       this.fluid = null;
+/* 516 */       this.fluid = null;
 /*     */     } 
-/* 519 */     this.field_145850_b.func_147479_m(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 518 */     this.field_145850_b.func_147479_m(this.field_145851_c, this.field_145848_d, this.field_145849_e);
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void createInitNBT(NBTTagCompound nbt) {
-/* 525 */     nbt.func_74774_a("rotation", this.rotation);
-/* 526 */     nbt.func_74757_a("sealed", this.sealed);
-/* 527 */     nbt.func_74768_a("SealTime", this.sealtime);
-/* 528 */     nbt.func_74768_a("fluid", (this.fluid != null) ? this.fluid.getFluidID() : -1);
-/* 529 */     nbt.func_74768_a("fluidAmount", (this.fluid != null) ? this.fluid.amount : 0);
-/* 530 */     nbt.func_74768_a("barrelType", this.barrelType);
+/* 524 */     nbt.func_74774_a("rotation", this.rotation);
+/* 525 */     nbt.func_74757_a("sealed", this.sealed);
+/* 526 */     nbt.func_74768_a("SealTime", this.sealtime);
+/* 527 */     nbt.func_74768_a("fluid", (this.fluid != null) ? this.fluid.getFluidID() : -1);
+/* 528 */     nbt.func_74768_a("fluidAmount", (this.fluid != null) ? this.fluid.amount : 0);
+/* 529 */     nbt.func_74768_a("barrelType", this.barrelType);
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void handleDataPacket(NBTTagCompound nbt) {
-/* 536 */     if (nbt.func_74764_b("fluidID")) {
+/* 535 */     if (nbt.func_74764_b("fluidID")) {
 /*     */       
-/* 538 */       if (nbt.func_74771_c("fluidID") == -1)
-/* 539 */         this.fluid = null; 
-/* 540 */       this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 537 */       if (nbt.func_74771_c("fluidID") == -1)
+/* 538 */         this.fluid = null; 
+/* 539 */       this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
 /*     */     } 
-/* 542 */     if (!this.field_145850_b.field_72995_K) {
+/* 541 */     if (!this.field_145850_b.field_72995_K) {
 /*     */       
-/* 544 */       if (nbt.func_74764_b("mode")) {
+/* 543 */       if (nbt.func_74764_b("mode")) {
 /*     */         
-/* 546 */         this.mode = nbt.func_74771_c("mode");
+/* 545 */         this.mode = nbt.func_74771_c("mode");
 /*     */       }
-/* 548 */       else if (nbt.func_74764_b("seal")) {
+/* 547 */       else if (nbt.func_74764_b("seal")) {
 /*     */         
-/* 550 */         this.sealed = nbt.func_74767_n("seal");
-/* 551 */         if (!this.sealed) {
+/* 549 */         this.sealed = nbt.func_74767_n("seal");
+/* 550 */         if (!this.sealed) {
 /*     */           
-/* 553 */           this.unsealtime = (int)TFC_Time.getTotalHours();
-/* 554 */           this.sealtime = 0;
+/* 552 */           this.unsealtime = (int)TFC_Time.getTotalHours();
+/* 553 */           this.sealtime = 0;
 /*     */         }
 /*     */         else {
 /*     */           
-/* 558 */           this.sealtime = (int)TFC_Time.getTotalHours();
-/* 559 */           this.unsealtime = 0;
+/* 557 */           this.sealtime = (int)TFC_Time.getTotalHours();
+/* 558 */           this.unsealtime = 0;
 /*     */         } 
 /*     */ 
 /*     */         
-/* 563 */         NBTTagCompound timeTag = new NBTTagCompound();
-/* 564 */         timeTag.func_74768_a("SealTime", this.sealtime);
-/* 565 */         broadcastPacketInRange((AbstractPacket)createDataPacket(timeTag));
+/* 562 */         NBTTagCompound timeTag = new NBTTagCompound();
+/* 563 */         timeTag.func_74768_a("SealTime", this.sealtime);
+/* 564 */         broadcastPacketInRange((AbstractPacket)createDataPacket(timeTag));
 /*     */         
-/* 567 */         this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 566 */         this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
 /*     */       } 
 /*     */       
-/* 570 */       if (nbt.func_74764_b("tab"))
+/* 569 */       if (nbt.func_74764_b("tab"))
 /*     */       {
-/* 572 */         int tab = nbt.func_74771_c("tab");
-/* 573 */         switchTab(this.field_145850_b.func_72924_a(nbt.func_74779_i("player")), tab);
+/* 571 */         int tab = nbt.func_74771_c("tab");
+/* 572 */         switchTab(this.field_145850_b.func_72924_a(nbt.func_74779_i("player")), tab);
 /*     */       
 /*     */       }
 /*     */ 
 /*     */     
 /*     */     }
-/* 579 */     else if (nbt.func_74764_b("SealTime")) {
-/* 580 */       this.sealtime = nbt.func_74762_e("SealTime");
+/* 578 */     else if (nbt.func_74764_b("SealTime")) {
+/* 579 */       this.sealtime = nbt.func_74762_e("SealTime");
 /*     */     } 
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   protected void switchTab(EntityPlayer player, int tab) {
-/* 586 */     if (player != null) {
-/* 587 */       if (tab == 0) {
-/* 588 */         player.openGui(TerraFirmaCraft.instance, 35, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e);
-/* 589 */       } else if (tab == 1) {
-/* 590 */         player.openGui(TerraFirmaCraft.instance, 36, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 585 */     if (player != null) {
+/* 586 */       if (tab == 0) {
+/* 587 */         player.openGui(TerraFirmaCraft.instance, 35, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 588 */       } else if (tab == 1) {
+/* 589 */         player.openGui(TerraFirmaCraft.instance, 36, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e);
 /*     */       } 
 /*     */     }
 /*     */   }
 /*     */   
 /*     */   public void func_145845_h() {
-/* 596 */     if (!this.field_145850_b.field_72995_K) {
+/* 595 */     if (!this.field_145850_b.field_72995_K) {
 /*     */       
-/* 598 */       ItemStack itemstack = this.storage[0];
-/* 599 */       BarrelPreservativeRecipe preservative = BarrelManager.getInstance().findMatchingPreservativeRepice(this, itemstack, this.fluid, this.sealed);
-/* 600 */       if (itemstack != null && this.fluid != null && this.fluid.getFluid() == TFCFluids.FRESHWATER)
+/* 597 */       ItemStack itemstack = this.storage[0];
+/* 598 */       BarrelPreservativeRecipe preservative = BarrelManager.getInstance().findMatchingPreservativeRepice(this, itemstack, this.fluid, this.sealed);
+/* 599 */       if (itemstack != null && this.fluid != null && this.fluid.getFluid() == TFCFluids.FRESHWATER)
 /*     */       {
-/* 602 */         if (TFC_ItemHeat.hasTemp(itemstack)) {
+/* 601 */         if (TFC_ItemHeat.hasTemp(itemstack)) {
 /*     */           
-/* 604 */           float temp = TFC_ItemHeat.getTemp(itemstack);
-/* 605 */           if (this.fluid.amount >= 1 && temp > 1.0F) {
+/* 603 */           float temp = TFC_ItemHeat.getTemp(itemstack);
+/* 604 */           if (this.fluid.amount >= 1 && temp > 1.0F) {
 /*     */             
-/* 607 */             temp -= 50.0F;
-/* 608 */             this.fluid.amount--;
-/* 609 */             TFC_ItemHeat.setTemp(itemstack, temp);
-/* 610 */             TFC_ItemHeat.handleItemHeat(itemstack);
+/* 606 */             temp -= 50.0F;
+/* 607 */             this.fluid.amount--;
+/* 608 */             TFC_ItemHeat.setTemp(itemstack, temp);
+/* 609 */             TFC_ItemHeat.handleItemHeat(itemstack);
 /*     */           } 
 /*     */         } 
 /*     */       }
-/* 614 */       if (this.fluid != null && itemstack != null && itemstack.func_77973_b() instanceof IFood) {
+/* 613 */       if (this.fluid != null && itemstack != null && itemstack.func_77973_b() instanceof IFood) {
 /*     */         
-/* 616 */         float w = Food.getWeight(itemstack);
-/* 617 */         if (this.fluid.getFluid() == TFCFluids.VINEGAR)
+/* 615 */         float w = Food.getWeight(itemstack);
+/* 616 */         if (this.fluid.getFluid() == TFCFluids.VINEGAR)
 /*     */         {
 /*     */           
-/* 620 */           if (Food.isBrined(itemstack) && !Food.isPickled(itemstack) && w / this.fluid.amount <= 160.0F / getMaxLiquid() && getSealed() && this.sealtime != 0 && 
-/* 621 */             TFC_Time.getTotalHours() - this.sealtime >= 4L) {
+/* 619 */           if (Food.isBrined(itemstack) && !Food.isPickled(itemstack) && w / this.fluid.amount <= 160.0F / getMaxLiquid() && getSealed() && this.sealtime != 0 && 
+/* 620 */             TFC_Time.getTotalHours() - this.sealtime >= 4L) {
 /*     */             
-/* 623 */             this.fluid.amount = (int)(this.fluid.amount - 1.0F * w);
-/* 624 */             Food.setPickled(itemstack, true);
+/* 622 */             this.fluid.amount = (int)(this.fluid.amount - 1.0F * w);
+/* 623 */             Food.setPickled(itemstack, true);
 /*     */           } 
 /*     */         }
 /*     */       } 
 /*     */       
-/* 629 */       if (preservative == null) {
+/* 628 */       if (preservative == null) {
 /*     */ 
 /*     */         
-/* 632 */         TFC_Core.handleItemTicking(this, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 631 */         TFC_Core.handleItemTicking(this, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e);
 /*     */       }
 /*     */       else {
 /*     */         
-/* 636 */         float env = preservative.getEnvironmentalDecayFactor();
-/* 637 */         float base = preservative.getBaseDecayModifier();
-/* 638 */         if (Float.isNaN(env) || env < 0.0D) {
+/* 635 */         float env = preservative.getEnvironmentalDecayFactor();
+/* 636 */         float base = preservative.getBaseDecayModifier();
+/* 637 */         if (Float.isNaN(env) || env < 0.0D) {
 /*     */           
-/* 640 */           TFC_Core.handleItemTicking(this, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e);
+/* 639 */           TFC_Core.handleItemTicking(this, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e);
 /*     */         }
-/* 642 */         else if (Float.isNaN(base) || base < 0.0D) {
+/* 641 */         else if (Float.isNaN(base) || base < 0.0D) {
 /*     */           
-/* 644 */           TFC_Core.handleItemTicking(this, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e, env);
+/* 643 */           TFC_Core.handleItemTicking(this, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e, env);
 /*     */         }
 /*     */         else {
 /*     */           
-/* 648 */           TFC_Core.handleItemTicking(this, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e, env, base);
+/* 647 */           TFC_Core.handleItemTicking(this, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e, env, base);
 /*     */         } 
 /*     */       } 
 /*     */ 
+/*     */ 
 /*     */       
-/* 653 */       if (!getSealed() && TFC_Core.isExposedToRain(this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e)) {
+/* 653 */       if (!getSealed() && WeatherManager.isRainingOnCoord(this.field_145850_b, this.field_145851_c, this.field_145848_d + 1, this.field_145849_e)) {
 /*     */         
 /* 655 */         int count = getInvCount();
 /* 656 */         if (count == 0 || (count == 1 && getInputStack() != null))

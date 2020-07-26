@@ -35,7 +35,7 @@
 /* 35 */     ModMetadata meta = getMetadata();
 /* 36 */     meta.modId = "tfc_coremod";
 /* 37 */     meta.name = "TFC[coremod]";
-/* 38 */     meta.version = "0.79.37TFR";
+/* 38 */     meta.version = "0.79.36";
 /* 39 */     meta.credits = "";
 /* 40 */     meta.authorList = Arrays.asList(new String[] { "Bioxx", "Dunkleosteus" });
 /* 41 */     meta.description = "";

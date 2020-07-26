@@ -1,4 +1,4 @@
-/*     */ package com.bioxx.tfc.api.Constant;
+﻿/*     */ package com.bioxx.tfc.api.Constant;
 /*     */ 
 /*     */ import com.bioxx.tfc.api.Metal;
 /*     */ import com.bioxx.tfc.api.TFCOptions;
@@ -78,6 +78,13 @@
 /*     */   
 /*  79 */   public static final String[] ORE_MINERAL2 = new String[] { "Borax", "Olivine", "Lapis Lazuli" };
 /*     */   
+/*  81 */   public static final String[] METAL_ALL = new String[] { "Bismuth", "Bismuth Bronze", "Black Bronze", "Black Steel", "Blue Steel", "Brass", "Bronze", "Copper", "Gold", "Wrought Iron", "Lead", "Nickel", "Pig Iron", "Platinum", "Red Steel", "Rose Gold", "Silver", "Steel", "Sterling Silver", "Tin", "Zinc", "Electrum", "Cupronickel" };
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */ 
+/*     */   
 /*  81 */   public static final String[] WOOD_ALL = new String[] { "Oak", "Aspen", "Birch", "Chestnut", "Douglas Fir", "Hickory", "Maple", "Ash", "Pine", "Sequoia", "Spruce", "Sycamore", "White Cedar", "White Elm", "Willow", "Kapok", "Acacia", "temp1", "temp2" };
 /*     */   
 /*     */   public static final String SKILL_GENERAL_SMITHING = "skill.gensmith";
@@ -119,6 +126,8 @@
 /*     */   public static Metal STERLINGSILVER;
 /*     */   public static Metal TIN;
 /*     */   public static Metal ZINC;
+/*     */   public static Metal ELECTRUM;
+/*     */   public static Metal CUPRONICKEL;
 /*     */   public static Metal WEAKSTEEL;
 /*     */   public static Metal HCBLACKSTEEL;
 /*     */   public static Metal WEAKREDSTEEL;
@@ -127,11 +136,11 @@
 /*     */   public static Metal HCBLUESTEEL;
 /*     */   public static Metal UNKNOWN;
 /*     */   @Deprecated
-/* 130 */   public static double foodDecayRate = TFCOptions.foodDecayRate;
+/* 139 */   public static double foodDecayRate = TFCOptions.foodDecayRate;
 /*     */   public static final float FOOD_MAX_WEIGHT = 160.0F;
 /*     */   public static final float FOOD_MIN_DROP_WEIGHT = 0.1F;
 /*     */   public static final int SEALEVEL = 144;
-/*     */   public static final int HOT_LIQUID_TEMP = 385;
+/*     */   public static final int HOT_LIQUID_TEMP = 550;
 /*     */ }
 
 

@@ -1,4 +1,4 @@
-/*     */ package com.bioxx.tfc.Containers;
+﻿/*     */ package com.bioxx.tfc.Containers;
 /*     */ 
 /*     */ import com.bioxx.tfc.Containers.Slots.SlotAnvilFlux;
 /*     */ import com.bioxx.tfc.Containers.Slots.SlotAnvilHammer;
@@ -174,10 +174,8 @@
 /*     */     }
 /*     */   }
 /*     */ 
-/*     */ 
 /*     */   
 /*     */   public void func_75134_a(EntityPlayer par1EntityPlayer) {
-/* 180 */     this.anvil.func_70305_f();
 /*     */   }
 /*     */ }
 

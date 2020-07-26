@@ -4,6 +4,7 @@
 /*     */ import com.bioxx.tfc.Core.TFCTabs;
 /*     */ import com.bioxx.tfc.Core.TFC_Core;
 /*     */ import com.bioxx.tfc.Core.TFC_Time;
+/*     */ import com.bioxx.tfc.Core.WeatherManager;
 /*     */ import com.bioxx.tfc.TerraFirmaCraft;
 /*     */ import com.bioxx.tfc.TileEntities.TELightEmitter;
 /*     */ import com.bioxx.tfc.api.TFCBlocks;
@@ -27,7 +28,6 @@
 /*     */ import net.minecraft.world.IBlockAccess;
 /*     */ import net.minecraft.world.World;
 /*     */ import net.minecraftforge.common.util.ForgeDirection;
-/*     */ 
 /*     */ 
 /*     */ 
 /*     */ 
@@ -254,14 +254,15 @@
 /*     */         
 /* 255 */         TELightEmitter te = (TELightEmitter)world.func_147438_o(x, y, z);
 /* 256 */         if (TFC_Time.getTotalHours() > (te.hourPlaced + TFCOptions.torchBurnTime) || 
-/* 257 */           TFC_Core.isExposedToRain(world, x, y, z))
+/* 257 */           WeatherManager.isRainingOnCoord(world, x, y, z))
 /*     */         {
 /* 259 */           world.func_147465_d(x, y, z, TFCBlocks.torchOff, meta, 3);
 /*     */         }
 /*     */       }
 /* 262 */       else if (meta >= 8) {
+/*     */ 
 /*     */         
-/* 264 */         world.func_147465_d(x, y, z, TFCBlocks.torchOff, meta - 8, 3);
+/* 265 */         world.func_147465_d(x, y, z, TFCBlocks.torchOff, meta - 8, 3);
 /*     */       } 
 /*     */     }
 /*     */   }
@@ -272,33 +273,33 @@
 /*     */ 
 /*     */   
 /*     */   public void func_149726_b(World world, int x, int y, int z) {
-/* 275 */     if (world.func_72805_g(x, y, z) == 0)
+/* 276 */     if (world.func_72805_g(x, y, z) == 0)
 /*     */     {
-/* 277 */       if (world.isSideSolid(x - 1, y, z, ForgeDirection.EAST, true)) {
+/* 278 */       if (world.isSideSolid(x - 1, y, z, ForgeDirection.EAST, true)) {
 /*     */         
-/* 279 */         world.func_72921_c(x, y, z, 1, 3);
+/* 280 */         world.func_72921_c(x, y, z, 1, 3);
 /*     */       }
-/* 281 */       else if (world.isSideSolid(x + 1, y, z, ForgeDirection.WEST, true)) {
+/* 282 */       else if (world.isSideSolid(x + 1, y, z, ForgeDirection.WEST, true)) {
 /*     */         
-/* 283 */         world.func_72921_c(x, y, z, 2, 3);
+/* 284 */         world.func_72921_c(x, y, z, 2, 3);
 /*     */       }
-/* 285 */       else if (world.isSideSolid(x, y, z - 1, ForgeDirection.SOUTH, true)) {
+/* 286 */       else if (world.isSideSolid(x, y, z - 1, ForgeDirection.SOUTH, true)) {
 /*     */         
-/* 287 */         world.func_72921_c(x, y, z, 3, 3);
+/* 288 */         world.func_72921_c(x, y, z, 3, 3);
 /*     */       }
-/* 289 */       else if (world.isSideSolid(x, y, z + 1, ForgeDirection.NORTH, true)) {
+/* 290 */       else if (world.isSideSolid(x, y, z + 1, ForgeDirection.NORTH, true)) {
 /*     */         
-/* 291 */         world.func_72921_c(x, y, z, 4, 3);
+/* 292 */         world.func_72921_c(x, y, z, 4, 3);
 /*     */       }
-/* 293 */       else if (canSupportTorch(world, x, y - 1, z)) {
+/* 294 */       else if (canSupportTorch(world, x, y - 1, z)) {
 /*     */         
-/* 295 */         world.func_72921_c(x, y, z, 5, 3);
+/* 296 */         world.func_72921_c(x, y, z, 5, 3);
 /*     */       } 
 /*     */     }
 /*     */     
-/* 299 */     ((TELightEmitter)world.func_147438_o(x, y, z)).create();
+/* 300 */     ((TELightEmitter)world.func_147438_o(x, y, z)).create();
 /*     */     
-/* 301 */     tryPlace(world, x, y, z);
+/* 302 */     tryPlace(world, x, y, z);
 /*     */   }
 /*     */ 
 /*     */ 
@@ -308,79 +309,79 @@
 /*     */ 
 /*     */   
 /*     */   public void func_149695_a(World world, int x, int y, int z, Block b) {
-/* 311 */     checkValidity(world, x, y, z, b);
+/* 312 */     checkValidity(world, x, y, z, b);
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean isReplaceable(IBlockAccess world, int x, int y, int z) {
-/* 317 */     return true;
+/* 318 */     return true;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   protected boolean checkValidity(World world, int x, int y, int z, Block b) {
-/* 322 */     if (tryPlace(world, x, y, z)) {
+/* 323 */     if (tryPlace(world, x, y, z)) {
 /*     */       
-/* 324 */       int l = world.func_72805_g(x, y, z);
-/* 325 */       boolean flag = false;
+/* 325 */       int l = world.func_72805_g(x, y, z);
+/* 326 */       boolean flag = false;
 /*     */       
-/* 327 */       if (!world.isSideSolid(x - 1, y, z, ForgeDirection.EAST, true) && l == 1)
+/* 328 */       if (!world.isSideSolid(x - 1, y, z, ForgeDirection.EAST, true) && l == 1)
 /*     */       {
-/* 329 */         flag = true;
+/* 330 */         flag = true;
 /*     */       }
 /*     */       
-/* 332 */       if (!world.isSideSolid(x + 1, y, z, ForgeDirection.WEST, true) && l == 2)
+/* 333 */       if (!world.isSideSolid(x + 1, y, z, ForgeDirection.WEST, true) && l == 2)
 /*     */       {
-/* 334 */         flag = true;
+/* 335 */         flag = true;
 /*     */       }
 /*     */       
-/* 337 */       if (!world.isSideSolid(x, y, z - 1, ForgeDirection.SOUTH, true) && l == 3)
+/* 338 */       if (!world.isSideSolid(x, y, z - 1, ForgeDirection.SOUTH, true) && l == 3)
 /*     */       {
-/* 339 */         flag = true;
+/* 340 */         flag = true;
 /*     */       }
 /*     */       
-/* 342 */       if (!world.isSideSolid(x, y, z + 1, ForgeDirection.NORTH, true) && l == 4)
+/* 343 */       if (!world.isSideSolid(x, y, z + 1, ForgeDirection.NORTH, true) && l == 4)
 /*     */       {
-/* 344 */         flag = true;
+/* 345 */         flag = true;
 /*     */       }
 /*     */       
-/* 347 */       if (!canSupportTorch(world, x, y - 1, z) && l == 5)
+/* 348 */       if (!canSupportTorch(world, x, y - 1, z) && l == 5)
 /*     */       {
-/* 349 */         flag = true;
+/* 350 */         flag = true;
 /*     */       }
 /*     */       
-/* 352 */       if (flag) {
+/* 353 */       if (flag) {
 /*     */         
-/* 354 */         func_149697_b(world, x, y, z, world.func_72805_g(x, y, z), 0);
-/* 355 */         world.func_147468_f(x, y, z);
-/* 356 */         return true;
+/* 355 */         func_149697_b(world, x, y, z, world.func_72805_g(x, y, z), 0);
+/* 356 */         world.func_147468_f(x, y, z);
+/* 357 */         return true;
 /*     */       } 
 /*     */ 
 /*     */       
-/* 360 */       return false;
+/* 361 */       return false;
 /*     */     } 
 /*     */ 
 /*     */ 
 /*     */     
-/* 365 */     return true;
+/* 366 */     return true;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   protected boolean tryPlace(World world, int x, int y, int z) {
-/* 371 */     if (!func_149742_c(world, x, y, z)) {
+/* 372 */     if (!func_149742_c(world, x, y, z)) {
 /*     */       
-/* 373 */       if (world.func_147439_a(x, y, z) == this) {
+/* 374 */       if (world.func_147439_a(x, y, z) == this) {
 /*     */         
-/* 375 */         func_149697_b(world, x, y, z, world.func_72805_g(x, y, z), 0);
-/* 376 */         world.func_147468_f(x, y, z);
+/* 376 */         func_149697_b(world, x, y, z, world.func_72805_g(x, y, z), 0);
+/* 377 */         world.func_147468_f(x, y, z);
 /*     */       } 
 /*     */       
-/* 379 */       return false;
+/* 380 */       return false;
 /*     */     } 
 /*     */ 
 /*     */     
-/* 383 */     return true;
+/* 384 */     return true;
 /*     */   }
 /*     */ 
 /*     */ 
@@ -391,32 +392,32 @@
 /*     */ 
 /*     */   
 /*     */   public MovingObjectPosition func_149731_a(World world, int x, int y, int z, Vec3 startVec, Vec3 endVec) {
-/* 394 */     int l = world.func_72805_g(x, y, z) & 0x7;
-/* 395 */     float f = 0.15F;
+/* 395 */     int l = world.func_72805_g(x, y, z) & 0x7;
+/* 396 */     float f = 0.15F;
 /*     */     
-/* 397 */     if (l == 1) {
+/* 398 */     if (l == 1) {
 /*     */       
-/* 399 */       func_149676_a(0.0F, 0.2F, 0.5F - f, f * 2.0F, 0.8F, 0.5F + f);
+/* 400 */       func_149676_a(0.0F, 0.2F, 0.5F - f, f * 2.0F, 0.8F, 0.5F + f);
 /*     */     }
-/* 401 */     else if (l == 2) {
+/* 402 */     else if (l == 2) {
 /*     */       
-/* 403 */       func_149676_a(1.0F - f * 2.0F, 0.2F, 0.5F - f, 1.0F, 0.8F, 0.5F + f);
+/* 404 */       func_149676_a(1.0F - f * 2.0F, 0.2F, 0.5F - f, 1.0F, 0.8F, 0.5F + f);
 /*     */     }
-/* 405 */     else if (l == 3) {
+/* 406 */     else if (l == 3) {
 /*     */       
-/* 407 */       func_149676_a(0.5F - f, 0.2F, 0.0F, 0.5F + f, 0.8F, f * 2.0F);
+/* 408 */       func_149676_a(0.5F - f, 0.2F, 0.0F, 0.5F + f, 0.8F, f * 2.0F);
 /*     */     }
-/* 409 */     else if (l == 4) {
+/* 410 */     else if (l == 4) {
 /*     */       
-/* 411 */       func_149676_a(0.5F - f, 0.2F, 1.0F - f * 2.0F, 0.5F + f, 0.8F, 1.0F);
+/* 412 */       func_149676_a(0.5F - f, 0.2F, 1.0F - f * 2.0F, 0.5F + f, 0.8F, 1.0F);
 /*     */     }
 /*     */     else {
 /*     */       
-/* 415 */       f = 0.1F;
-/* 416 */       func_149676_a(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.6F, 0.5F + f);
+/* 416 */       f = 0.1F;
+/* 417 */       func_149676_a(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.6F, 0.5F + f);
 /*     */     } 
 /*     */     
-/* 419 */     return super.func_149731_a(world, x, y, z, startVec, endVec);
+/* 420 */     return super.func_149731_a(world, x, y, z, startVec, endVec);
 /*     */   }
 /*     */ 
 /*     */ 
@@ -426,41 +427,41 @@
 /*     */   
 /*     */   @SideOnly(Side.CLIENT)
 /*     */   public void func_149734_b(World world, int x, int y, int z, Random rand) {
-/* 429 */     int meta = world.func_72805_g(x, y, z);
-/* 430 */     if (meta >= 8) {
+/* 430 */     int meta = world.func_72805_g(x, y, z);
+/* 431 */     if (meta >= 8) {
 /*     */       return;
 /*     */     }
 /*     */     
-/* 434 */     double centerX = (x + 0.5F);
-/* 435 */     double centerY = (y + 0.7F);
-/* 436 */     double centerZ = (z + 0.5F);
-/* 437 */     double d3 = 0.22D;
-/* 438 */     double d4 = 0.27D;
+/* 435 */     double centerX = (x + 0.5F);
+/* 436 */     double centerY = (y + 0.7F);
+/* 437 */     double centerZ = (z + 0.5F);
+/* 438 */     double d3 = 0.22D;
+/* 439 */     double d4 = 0.27D;
 /*     */     
-/* 440 */     if ((meta & 0x7) == 1) {
+/* 441 */     if ((meta & 0x7) == 1) {
 /*     */       
-/* 442 */       world.func_72869_a("smoke", centerX - d4, centerY + d3, centerZ, 0.0D, 0.0D, 0.0D);
-/* 443 */       world.func_72869_a("flame", centerX - d4, centerY + d3, centerZ, 0.0D, 0.0D, 0.0D);
+/* 443 */       world.func_72869_a("smoke", centerX - d4, centerY + d3, centerZ, 0.0D, 0.0D, 0.0D);
+/* 444 */       world.func_72869_a("flame", centerX - d4, centerY + d3, centerZ, 0.0D, 0.0D, 0.0D);
 /*     */     }
-/* 445 */     else if ((meta & 0x7) == 2) {
+/* 446 */     else if ((meta & 0x7) == 2) {
 /*     */       
-/* 447 */       world.func_72869_a("smoke", centerX + d4, centerY + d3, centerZ, 0.0D, 0.0D, 0.0D);
-/* 448 */       world.func_72869_a("flame", centerX + d4, centerY + d3, centerZ, 0.0D, 0.0D, 0.0D);
+/* 448 */       world.func_72869_a("smoke", centerX + d4, centerY + d3, centerZ, 0.0D, 0.0D, 0.0D);
+/* 449 */       world.func_72869_a("flame", centerX + d4, centerY + d3, centerZ, 0.0D, 0.0D, 0.0D);
 /*     */     }
-/* 450 */     else if ((meta & 0x7) == 3) {
+/* 451 */     else if ((meta & 0x7) == 3) {
 /*     */       
-/* 452 */       world.func_72869_a("smoke", centerX, centerY + d3, centerZ - d4, 0.0D, 0.0D, 0.0D);
-/* 453 */       world.func_72869_a("flame", centerX, centerY + d3, centerZ - d4, 0.0D, 0.0D, 0.0D);
+/* 453 */       world.func_72869_a("smoke", centerX, centerY + d3, centerZ - d4, 0.0D, 0.0D, 0.0D);
+/* 454 */       world.func_72869_a("flame", centerX, centerY + d3, centerZ - d4, 0.0D, 0.0D, 0.0D);
 /*     */     }
-/* 455 */     else if ((meta & 0x7) == 4) {
+/* 456 */     else if ((meta & 0x7) == 4) {
 /*     */       
-/* 457 */       world.func_72869_a("smoke", centerX, centerY + d3, centerZ + d4, 0.0D, 0.0D, 0.0D);
-/* 458 */       world.func_72869_a("flame", centerX, centerY + d3, centerZ + d4, 0.0D, 0.0D, 0.0D);
+/* 458 */       world.func_72869_a("smoke", centerX, centerY + d3, centerZ + d4, 0.0D, 0.0D, 0.0D);
+/* 459 */       world.func_72869_a("flame", centerX, centerY + d3, centerZ + d4, 0.0D, 0.0D, 0.0D);
 /*     */     }
 /*     */     else {
 /*     */       
-/* 462 */       world.func_72869_a("smoke", centerX, centerY, centerZ, 0.0D, 0.0D, 0.0D);
-/* 463 */       world.func_72869_a("flame", centerX, centerY, centerZ, 0.0D, 0.0D, 0.0D);
+/* 463 */       world.func_72869_a("smoke", centerX, centerY, centerZ, 0.0D, 0.0D, 0.0D);
+/* 464 */       world.func_72869_a("flame", centerX, centerY, centerZ, 0.0D, 0.0D, 0.0D);
 /*     */     } 
 /*     */   }
 /*     */ }

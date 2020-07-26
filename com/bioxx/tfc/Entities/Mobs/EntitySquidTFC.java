@@ -65,7 +65,7 @@
 /* 65 */     for (int k = 0; k < j; k++) {
 /* 66 */       func_70099_a(new ItemStack(TFCItems.dye, 1, 0), 0.0F);
 /*    */     }
-/* 68 */     TFC_Core.animalDropMeat((Entity)this, TFCItems.calamariRaw, 0.5F + 1.0F * this.field_70146_Z.nextFloat());
+/* 68 */     TFC_Core.animalDropMeat((Entity)this, TFCItems.calamariRaw, 5.0F + 10.0F * this.field_70146_Z.nextFloat());
 /*    */   }
 /*    */ }
 

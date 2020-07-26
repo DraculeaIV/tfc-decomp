@@ -8,11 +8,14 @@
 /*     */ import com.bioxx.tfc.GUI.GuiInventoryTFC;
 /*     */ import com.bioxx.tfc.GUI.GuiLargeVessel;
 /*     */ import com.bioxx.tfc.GUI.GuiWorkbench;
+/*     */ import com.bioxx.tfc.ModSupport.ShipsMod;
 /*     */ import com.bioxx.tfc.TileEntities.TEAnvil;
 /*     */ import com.bioxx.tfc.TileEntities.TEBarrel;
 /*     */ import com.bioxx.tfc.TileEntities.TEFirepit;
 /*     */ import com.bioxx.tfc.TileEntities.TEFoodPrep;
+/*     */ import com.bioxx.tfc.TileEntities.TEForge;
 /*     */ import com.bioxx.tfc.TileEntities.TEVessel;
+/*     */ import cpw.mods.fml.common.Loader;
 /*     */ import net.minecraft.entity.player.EntityPlayer;
 /*     */ import net.minecraft.inventory.IInventory;
 /*     */ import net.minecraft.tileentity.TileEntity;
@@ -24,101 +27,108 @@
 /*     */     TileEntity te;
 /*     */     PlayerInfo pi;
 /*     */     try {
-/*  27 */       te = world.func_147438_o(x, y, z);
+/*  30 */       te = world.func_147438_o(x, y, z);
+/*  31 */       if (te == null && Loader.isModLoaded("cuchaz.ships"))
+/*     */       {
+/*  33 */         ShipsMod shipsMod = new ShipsMod();
+/*  34 */         world = shipsMod.getShipsWorld(world, player.field_71071_by);
+/*  35 */         te = world.func_147438_o(x, y, z);
+/*     */       }
+/*     */     
 /*     */     }
-/*  29 */     catch (Exception e) {
+/*  39 */     catch (Exception e) {
 /*     */       
-/*  31 */       te = null;
+/*  41 */       te = null;
 /*     */     } 
 /*     */     
-/*  34 */     switch (id) {
+/*  44 */     switch (id) {
 /*     */       
 /*     */       case 0:
-/*  37 */         return new GuiLogPile(player.field_71071_by, (TELogPile)te, world, x, y, z);
+/*  47 */         return new GuiLogPile(player.field_71071_by, (TELogPile)te, world, x, y, z);
 /*     */       case 1:
-/*  39 */         return new GuiWorkbench(player.field_71071_by, (TEWorkbench)te, world, x, y, z);
+/*  49 */         return new GuiWorkbench(player.field_71071_by, (TEWorkbench)te, world, x, y, z);
 /*     */       case 19:
-/*  41 */         return new GuiVesselLiquid(player.field_71071_by, world, x, y, z);
+/*  51 */         return new GuiVesselLiquid(player.field_71071_by, world, x, y, z);
 /*     */       case 20:
-/*  43 */         return new GuiFirepit(player.field_71071_by, (TEFirepit)te, world, x, y, z);
+/*  53 */         return new GuiFirepit(player.field_71071_by, (TEFirepit)te, world, x, y, z);
 /*     */       case 21:
-/*  45 */         return new GuiAnvil(player.field_71071_by, (TEAnvil)te, world, x, y, z);
+/*  55 */         return new GuiAnvil(player.field_71071_by, (TEAnvil)te, world, x, y, z);
 /*     */       case 22:
-/*  47 */         return null;
+/*  57 */         return null;
 /*     */       case 23:
-/*  49 */         return new GuiForge(player.field_71071_by, (TEForge)te, world, x, y, z);
+/*  59 */         return new GuiForge(player.field_71071_by, (TEForge)te, world, x, y, z);
 /*     */       case 24:
-/*  51 */         return new GuiPlanSelection(player, (TEAnvil)te, world, x, y, z);
+/*  61 */         return new GuiPlanSelection(player, (TEAnvil)te, world, x, y, z);
 /*     */       case 25:
-/*  53 */         return new GuiSluice(player.field_71071_by, (TESluice)te, world, x, y, z);
+/*  63 */         return new GuiSluice(player.field_71071_by, (TESluice)te, world, x, y, z);
 /*     */       case 26:
-/*  55 */         return new GuiBlastFurnace(player.field_71071_by, (TEBlastFurnace)te, world, x, y, z);
+/*  65 */         return new GuiBlastFurnace(player.field_71071_by, (TEBlastFurnace)te, world, x, y, z);
 /*     */       case 27:
-/*  57 */         return new GuiCalendar(player);
+/*  67 */         return new GuiCalendar(player);
 /*     */       case 28:
-/*  59 */         pi = PlayerManagerTFC.getInstance().getPlayerInfoFromPlayer(player);
-/*  60 */         return new GuiKnapping(player.field_71071_by, (pi.specialCraftingTypeAlternate == null) ? pi.specialCraftingType : null, world, x, y, z);
+/*  69 */         pi = PlayerManagerTFC.getInstance().getPlayerInfoFromPlayer(player);
+/*  70 */         return new GuiKnapping(player.field_71071_by, (pi.specialCraftingTypeAlternate == null) ? pi.specialCraftingType : null, world, x, y, z);
 /*     */       case 29:
-/*  62 */         return new GuiChestTFC((IInventory)player.field_71071_by, (IInventory)te, world, x, y, z);
+/*  72 */         return new GuiChestTFC((IInventory)player.field_71071_by, (IInventory)te, world, x, y, z);
 /*     */       case 31:
-/*  64 */         return new GuiInventoryTFC(player);
+/*  74 */         return new GuiInventoryTFC(player);
 /*     */       
 /*     */       case 32:
 /*     */       case 33:
-/*  68 */         return new GuiQuern(player.field_71071_by, (TEQuern)te, world, x, y, z);
+/*  78 */         return new GuiQuern(player.field_71071_by, (TEQuern)te, world, x, y, z);
 /*     */       case 34:
-/*  70 */         return new GuiBlueprint(player, world, x, y, z);
+/*  80 */         return new GuiBlueprint(player, world, x, y, z);
 /*     */       case 35:
-/*  72 */         return new GuiBarrel(player.field_71071_by, (TEBarrel)te, world, x, y, z, 0);
+/*  82 */         return new GuiBarrel(player.field_71071_by, (TEBarrel)te, world, x, y, z, 0);
 /*     */       case 36:
-/*  74 */         return new GuiBarrel(player.field_71071_by, (TEBarrel)te, world, x, y, z, 1);
+/*  84 */         return new GuiBarrel(player.field_71071_by, (TEBarrel)te, world, x, y, z, 1);
 /*     */       case 37:
-/*  76 */         return new GuiCrucible(player.field_71071_by, (TECrucible)te, world, x, y, z);
+/*  86 */         return new GuiCrucible(player.field_71071_by, (TECrucible)te, world, x, y, z);
 /*     */       case 38:
-/*  78 */         return new GuiMold(player.field_71071_by, world, x, y, z);
+/*  88 */         return new GuiMold(player.field_71071_by, world, x, y, z);
 /*     */       case 39:
-/*  80 */         return new GuiVessel(player.field_71071_by, world, x, y, z);
+/*  90 */         return new GuiVessel(player.field_71071_by, world, x, y, z);
 /*     */       case 40:
-/*  82 */         return new GuiQuiver(player.field_71071_by, world, x, y, z);
+/*  92 */         return new GuiQuiver(player.field_71071_by, world, x, y, z);
 /*     */       case 41:
-/*  84 */         return new GuiNestBox(player.field_71071_by, (TENestBox)te, world, x, y, z);
+/*  94 */         return new GuiNestBox(player.field_71071_by, (TENestBox)te, world, x, y, z);
 /*     */       
 /*     */       case 42:
-/*  87 */         if (player.field_70154_o instanceof EntityHorseTFC) {
+/*  97 */         if (player.field_70154_o instanceof EntityHorseTFC) {
 /*     */           
-/*  89 */           EntityHorseTFC horse = (EntityHorseTFC)player.field_70154_o;
-/*  90 */           horse.updateChestSaddle();
-/*  91 */           return new GuiScreenHorseInventoryTFC(player.field_71071_by, (IInventory)horse.getHorseChest(), horse);
+/*  99 */           EntityHorseTFC horse = (EntityHorseTFC)player.field_70154_o;
+/* 100 */           horse.updateChestSaddle();
+/* 101 */           return new GuiScreenHorseInventoryTFC(player.field_71071_by, (IInventory)horse.getHorseChest(), horse);
 /*     */         } 
 /*     */         
-/*  94 */         return null;
+/* 104 */         return null;
 /*     */       
 /*     */       case 43:
-/*  97 */         return new GuiGrill(player.field_71071_by, (TEGrill)te, world, x, y, z);
+/* 107 */         return new GuiGrill(player.field_71071_by, (TEGrill)te, world, x, y, z);
 /*     */       case 44:
-/*  99 */         return new GuiFoodPrep(player.field_71071_by, (TEFoodPrep)te, world, x, y, z, 0);
+/* 109 */         return new GuiFoodPrep(player.field_71071_by, (TEFoodPrep)te, world, x, y, z, 0);
 /*     */       case 45:
-/* 101 */         return new GuiFoodPrep(player.field_71071_by, (TEFoodPrep)te, world, x, y, z, 1);
+/* 111 */         return new GuiFoodPrep(player.field_71071_by, (TEFoodPrep)te, world, x, y, z, 1);
 /*     */       case 46:
-/* 103 */         return new GuiLargeVessel(player.field_71071_by, (TEVessel)te, world, x, y, z, 0);
+/* 113 */         return new GuiLargeVessel(player.field_71071_by, (TEVessel)te, world, x, y, z, 0);
 /*     */       case 47:
-/* 105 */         return new GuiLargeVessel(player.field_71071_by, (TEVessel)te, world, x, y, z, 1);
+/* 115 */         return new GuiLargeVessel(player.field_71071_by, (TEVessel)te, world, x, y, z, 1);
 /*     */       case 48:
-/* 107 */         return new GuiCustomNametag(player, world, x, y, z);
+/* 117 */         return new GuiCustomNametag(player, world, x, y, z);
 /*     */       
 /*     */       case 49:
-/* 110 */         return new GuiHopper(player.field_71071_by, (TEHopper)te, world, x, y, z);
+/* 120 */         return new GuiHopper(player.field_71071_by, (TEHopper)te, world, x, y, z);
 /*     */     } 
 /*     */     
-/* 113 */     return null;
+/* 123 */     return null;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   @SubscribeEvent
 /*     */   public void openGuiHandler(GuiOpenEvent event) {
-/* 120 */     if (event.gui instanceof net.minecraft.client.gui.inventory.GuiInventory && !(event.gui instanceof GuiInventoryTFC))
-/* 121 */       event.gui = (GuiScreen)new GuiInventoryTFC((EntityPlayer)(Minecraft.func_71410_x()).field_71439_g); 
+/* 130 */     if (event.gui instanceof net.minecraft.client.gui.inventory.GuiInventory && !(event.gui instanceof GuiInventoryTFC))
+/* 131 */       event.gui = (GuiScreen)new GuiInventoryTFC((EntityPlayer)(Minecraft.func_71410_x()).field_71439_g); 
 /*     */   }
 /*     */ }
 

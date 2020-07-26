@@ -3,6 +3,7 @@
 /*     */ import com.bioxx.tfc.Core.TFC_Climate;
 /*     */ import com.bioxx.tfc.Core.TFC_Core;
 /*     */ import com.bioxx.tfc.Core.TFC_Time;
+/*     */ import com.bioxx.tfc.Core.WeatherManager;
 /*     */ import com.bioxx.tfc.api.Food;
 /*     */ import cpw.mods.fml.relauncher.Side;
 /*     */ import cpw.mods.fml.relauncher.SideOnly;
@@ -14,8 +15,7 @@
 /*     */ 
 /*     */ public class TESmokeRack
 /*     */   extends NetworkTileEntity
-/*     */   implements IInventory
-/*     */ {
+/*     */   implements IInventory {
 /*  19 */   public ItemStack[] storage = new ItemStack[2];
 /*  20 */   public int[] driedCounter = new int[] { 0, 0 };
 /*     */ 
@@ -45,7 +45,7 @@
 /*  45 */       dryFoods();
 /*     */     } 
 /*     */     
-/*  48 */     if (!TFC_Core.isExposedToRain(this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e) && TFC_Time.getTotalHours() > (this.lastSmokedTime + 1)) {
+/*  48 */     if (!WeatherManager.isRainingOnCoord(this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e) && TFC_Time.getTotalHours() > (this.lastSmokedTime + 1)) {
 /*  49 */       TFC_Core.handleItemTicking(this, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e, env, base);
 /*  50 */     } else if (TFC_Climate.getHeightAdjustedTemp(this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e) > 0.0F) {
 /*  51 */       TFC_Core.handleItemTicking(this, this.field_145850_b, this.field_145851_c, this.field_145848_d, this.field_145849_e, env * 2.0F, base * 2.0F);

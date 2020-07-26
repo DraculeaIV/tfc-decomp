@@ -27,7 +27,7 @@
 /*     */ public class WorldGenLooseRocks
 /*     */   implements IWorldGenerator
 /*     */ {
-/*     */   private boolean generateRocks(World world, Random random, int i, int j, int k) {
+/*     */   public boolean generateRocks(World world, Random random, int i, int j, int k) {
 /*  31 */     if ((world.func_147437_c(i, j + 1, k) || world.func_147439_a(i, j + 1, k) == Blocks.field_150433_aE || world.func_147439_a(i, j + 1, k) == TFCBlocks.tallGrass) && (world
 /*  32 */       .func_147439_a(i, j, k).func_149688_o() == Material.field_151577_b || world.func_147439_a(i, j, k).func_149688_o() == Material.field_151576_e) && world.func_147439_a(i, j, k).func_149662_c())
 /*     */     {
@@ -112,7 +112,7 @@
 /*     */   }
 /*     */ 
 /*     */   
-/*     */   private boolean generateSticks(World world, Random random, int i, int j, int k) {
+/*     */   public boolean generateSticks(World world, Random random, int i, int j, int k) {
 /* 116 */     if ((world.func_147437_c(i, j + 1, k) || world.func_147439_a(i, j + 1, k) == Blocks.field_150433_aE || world.func_147439_a(i, j + 1, k) == TFCBlocks.tallGrass) && (world
 /* 117 */       .func_147439_a(i, j, k).func_149688_o() == Material.field_151577_b || world.func_147439_a(i, j, k).func_149688_o() == Material.field_151576_e || world
 /* 118 */       .func_147439_a(i, j, k).func_149688_o() == Material.field_151595_p || world.func_147439_a(i, j, k).func_149688_o() == Material.field_151578_c) && world.func_147439_a(i, j, k).func_149662_c())
@@ -146,6 +146,23 @@
 /* 146 */       .func_147439_a(i - 5, j + 6, k).func_149688_o() == Material.field_151584_j || world
 /* 147 */       .func_147439_a(i, j + 6, k + 5).func_149688_o() == Material.field_151584_j || world
 /* 148 */       .func_147439_a(i, j + 6, k - 5).func_149688_o() == Material.field_151584_j);
+/*     */   }
+/*     */ 
+/*     */   
+/*     */   public static boolean rocksNearby(World world, int i, int j, int k) {
+/* 153 */     if (world.func_147439_a(i + 1, j + 1, k) != TFCBlocks.worldItem || world
+/* 154 */       .func_147439_a(i + 1, j + 1, k + 1) != TFCBlocks.worldItem || world
+/* 155 */       .func_147439_a(i, j + 1, k + 1) != TFCBlocks.worldItem || world
+/* 156 */       .func_147439_a(i - 1, j + 1, k) != TFCBlocks.worldItem || world
+/* 157 */       .func_147439_a(i - 1, j + 1, k + 1) != TFCBlocks.worldItem || world
+/* 158 */       .func_147439_a(i - 1, j + 1, k - 1) != TFCBlocks.worldItem || world
+/* 159 */       .func_147439_a(i, j + 1, k - 1) != TFCBlocks.worldItem || world
+/* 160 */       .func_147439_a(i + 1, j + 1, k) != TFCBlocks.worldItem)
+/*     */     {
+/* 162 */       return true;
+/*     */     }
+/*     */     
+/* 165 */     return false;
 /*     */   }
 /*     */ }
 

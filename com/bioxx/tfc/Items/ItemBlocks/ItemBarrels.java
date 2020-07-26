@@ -145,7 +145,7 @@
 /* 145 */       Fluid fluid = ((IFluidBlock)world.func_147439_a(i, j, k)).getFluid();
 /* 146 */       int temp = fluid.getTemperature();
 /* 147 */       int volume = 0;
-/* 148 */       if (temp < 385 && fluid != TFCFluids.HOTWATER) {
+/* 148 */       if (temp < 550 && fluid != TFCFluids.HOTWATER) {
 /*     */         
 /* 150 */         world.func_147468_f(i, j, k);
 /*     */         

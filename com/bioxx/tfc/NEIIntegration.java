@@ -9,10 +9,10 @@
 /*     */ import java.util.List;
 /*     */ import net.minecraft.block.Block;
 /*     */ import net.minecraft.client.gui.inventory.GuiContainer;
-/*     */ import net.minecraft.init.Blocks;
-/*     */ import net.minecraft.init.Items;
 /*     */ import net.minecraft.inventory.Slot;
 /*     */ import net.minecraft.item.ItemStack;
+/*     */ 
+/*     */ 
 /*     */ 
 /*     */ 
 /*     */ 
@@ -114,49 +114,15 @@
 /* 114 */       API.hideItem(new ItemStack(TFCBlocks.woodSupportH2, 1, 32767));
 /* 115 */       API.hideItem(new ItemStack(TFCBlocks.woodVert, 1, 32767));
 /* 116 */       API.hideItem(new ItemStack(TFCBlocks.woodVert2, 1, 32767));
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */ 
-/*     */       
-/* 131 */       API.hideItem(new ItemStack((Block)Blocks.field_150373_bw, 1, 32767));
-/* 132 */       API.hideItem(new ItemStack((Block)Blocks.field_150376_bx, 1, 32767));
-/* 133 */       API.hideItem(new ItemStack(Blocks.field_150476_ad, 1, 32767));
-/* 134 */       API.hideItem(new ItemStack(Blocks.field_150400_ck, 1, 32767));
-/* 135 */       API.hideItem(new ItemStack(Blocks.field_150401_cl, 1, 32767));
-/* 136 */       API.hideItem(new ItemStack(Blocks.field_150485_bF, 1, 32767));
-/* 137 */       API.hideItem(new ItemStack(Blocks.field_150487_bG, 1, 32767));
-/* 138 */       API.hideItem(new ItemStack(Blocks.field_150481_bH, 1, 32767));
-/* 139 */       API.hideItem(new ItemStack(Blocks.field_150392_bi, 1, 32767));
-/* 140 */       API.hideItem(new ItemStack((Block)Blocks.field_150329_H, 1, 32767));
-/* 141 */       API.hideItem(new ItemStack((Block)Blocks.field_150327_N, 1, 32767));
-/* 142 */       API.hideItem(new ItemStack((Block)Blocks.field_150328_O, 1, 32767));
-/* 143 */       API.hideItem(new ItemStack((Block)Blocks.field_150338_P, 1, 32767));
-/* 144 */       API.hideItem(new ItemStack((Block)Blocks.field_150337_Q, 1, 32767));
-/* 145 */       API.hideItem(new ItemStack(Blocks.field_150342_X, 1, 32767));
-/* 146 */       API.hideItem(new ItemStack(Blocks.field_150478_aa, 1, 32767));
-/* 147 */       API.hideItem(new ItemStack((Block)Blocks.field_150486_ae, 1, 32767));
-/* 148 */       API.hideItem(new ItemStack(Blocks.field_150344_f, 1, 32767));
-/* 149 */       API.hideItem(new ItemStack(Blocks.field_150462_ai, 1, 32767));
-/* 150 */       API.hideItem(new ItemStack(Blocks.field_150434_aF, 1, 32767));
-/* 151 */       API.hideItem(new ItemStack(Blocks.field_150436_aH, 1, 32767));
-/* 152 */       API.hideItem(new ItemStack(Blocks.field_150423_aK, 1, 32767));
-/* 153 */       API.hideItem(new ItemStack(Blocks.field_150428_aP, 1, 32767));
-/* 154 */       API.hideItem(new ItemStack(Blocks.field_150471_bO, 1, 32767));
-/* 155 */       API.hideItem(new ItemStack(Blocks.field_150432_aD, 1, 32767));
-/* 156 */       API.hideItem(new ItemStack(Blocks.field_150395_bd, 1, 32767));
-/* 157 */       API.hideItem(new ItemStack(Blocks.field_150457_bL, 1, 32767));
-/* 158 */       API.hideItem(new ItemStack(Items.field_151162_bE, 1, 32767));
-/* 159 */       API.hideItem(new ItemStack(Items.field_151120_aE, 1, 32767));
+/* 117 */       API.hideItem(new ItemStack(TFCBlocks.freshWater));
+/* 118 */       API.hideItem(new ItemStack(TFCBlocks.freshWaterStationary));
+/* 119 */       API.hideItem(new ItemStack(TFCBlocks.saltWater));
+/* 120 */       API.hideItem(new ItemStack(TFCBlocks.saltWaterStationary));
+/* 121 */       API.hideItem(new ItemStack(TFCBlocks.hotWater));
+/* 122 */       API.hideItem(new ItemStack(TFCBlocks.hotWaterStationary));
+/* 123 */       API.hideItem(new ItemStack(TFCBlocks.lava));
+/* 124 */       API.hideItem(new ItemStack(TFCBlocks.lavaStationary));
+/* 125 */       API.hideItem(new ItemStack(TFCBlocks.freshWater));
 /*     */     } 
 /*     */   }
 /*     */ }

@@ -188,6 +188,8 @@
 /*     */   public static Block crucible;
 /*     */   public static Block fireBrick;
 /*     */   public static Block metalSheet;
+/*     */   public static Block metalBlock;
+/*     */   public static Block metalBlock2;
 /*     */   public static Block nestBox;
 /*     */   public static Block fence;
 /*     */   public static Block fenceGate;
@@ -236,27 +238,27 @@
 /*     */   public static Block flowerPot;
 /*     */   
 /*     */   public static boolean isBlockVSupport(Block block) {
-/* 239 */     return (block == woodSupportV || block == woodSupportV2);
+/* 241 */     return (block == woodSupportV || block == woodSupportV2);
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public static boolean isBlockHSupport(Block block) {
-/* 244 */     return (block == woodSupportH || block == woodSupportH2);
+/* 246 */     return (block == woodSupportH || block == woodSupportH2);
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public static boolean isBlockAFence(Block block) {
-/* 249 */     return (block == fence || block == fence2 || BlockFence.func_149825_a(block));
+/* 251 */     return (block == fence || block == fence2 || BlockFence.func_149825_a(block));
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public static boolean canFenceConnectTo(Block block) {
-/* 254 */     return (isBlockAFence(block) || block == fenceGate || block == fenceGate2);
+/* 256 */     return (isBlockAFence(block) || block == fenceGate || block == fenceGate2);
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public static boolean isArmourStand(Block block) {
-/* 259 */     return (block == armorStand || block == armorStand2);
+/* 261 */     return (block == armorStand || block == armorStand2);
 /*     */   }
 /*     */ }
 

@@ -13,12 +13,12 @@
 /*    */ public class SlotCookableFoodOnly
 /*    */   extends SlotSize
 /*    */ {
-/* 16 */   private List<EnumFoodGroup> excpetionsFG = new ArrayList<EnumFoodGroup>();
+/* 16 */   private List<EnumFoodGroup> exceptionsFG = new ArrayList<EnumFoodGroup>();
 /* 17 */   private List<EnumFoodGroup> inclusionsFG = new ArrayList<EnumFoodGroup>();
 /*    */   
 /*    */   public SlotCookableFoodOnly(IInventory iinventory, int i, int j, int k) {
 /* 20 */     super(iinventory, i, j, k);
-/* 21 */     setSize(EnumSize.SMALL);
+/* 21 */     setSize(EnumSize.MEDIUM);
 /*    */   }
 /*    */ 
 /*    */ 
@@ -29,7 +29,7 @@
 /* 29 */       EnumFoodGroup efg = ((ICookableFood)itemstack.func_77973_b()).getFoodGroup();
 /* 30 */       if (efg == null)
 /* 31 */         return false; 
-/* 32 */       boolean except = this.excpetionsFG.contains(efg);
+/* 32 */       boolean except = this.exceptionsFG.contains(efg);
 /* 33 */       boolean include = (this.inclusionsFG.contains(efg) || this.inclusionsFG.isEmpty());
 /* 34 */       if (except || !include)
 /* 35 */         return false; 
@@ -42,7 +42,7 @@
 /*    */   
 /*    */   public SlotCookableFoodOnly addFGException(EnumFoodGroup... ex) {
 /* 44 */     for (int i = 0; i < ex.length; i++)
-/* 45 */       this.excpetionsFG.add(ex[i]); 
+/* 45 */       this.exceptionsFG.add(ex[i]); 
 /* 46 */     return this;
 /*    */   }
 /*    */ 

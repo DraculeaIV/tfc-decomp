@@ -11,17 +11,16 @@
 /*      */ import com.bioxx.tfc.TileEntities.TEBerryBush;
 /*      */ import com.bioxx.tfc.TileEntities.TEBlastFurnace;
 /*      */ import com.bioxx.tfc.TileEntities.TEBloom;
-/*      */ import com.bioxx.tfc.TileEntities.TEBloomery;
 /*      */ import com.bioxx.tfc.TileEntities.TECrop;
 /*      */ import com.bioxx.tfc.TileEntities.TEFarmland;
 /*      */ import com.bioxx.tfc.TileEntities.TEFruitLeaves;
-/*      */ import com.bioxx.tfc.TileEntities.TEFruitTreeWood;
 /*      */ import com.bioxx.tfc.TileEntities.TEIngotPile;
 /*      */ import com.bioxx.tfc.TileEntities.TELoom;
 /*      */ import com.bioxx.tfc.TileEntities.TEMetalTrapDoor;
 /*      */ import com.bioxx.tfc.TileEntities.TEOilLamp;
 /*      */ import com.bioxx.tfc.TileEntities.TEOre;
 /*      */ import com.bioxx.tfc.TileEntities.TESmokeRack;
+/*      */ import com.bioxx.tfc.TileEntities.TEWorldItem;
 /*      */ import com.bioxx.tfc.api.Constant.Global;
 /*      */ import com.bioxx.tfc.api.Crafting.BarrelPreservativeRecipe;
 /*      */ import com.bioxx.tfc.api.Crafting.BarrelRecipe;
@@ -41,6 +40,7 @@
 /*      */ import mcp.mobius.waila.api.IWailaRegistrar;
 /*      */ import net.minecraft.block.Block;
 /*      */ import net.minecraft.inventory.IInventory;
+/*      */ import net.minecraft.item.Item;
 /*      */ import net.minecraft.item.ItemStack;
 /*      */ import net.minecraft.nbt.NBTTagCompound;
 /*      */ import net.minecraft.nbt.NBTTagList;
@@ -217,1077 +217,1150 @@
 /*  217 */     else if (TFC_Core.isSoilWAILA(block)) {
 /*  218 */       currenttip = soilBody(itemStack, currenttip, accessor, config);
 /*      */     }
-/*  220 */     else if (tileEntity instanceof TESpawnMeter) {
-/*  221 */       currenttip = spawnMeterBody(itemStack, currenttip, accessor, config);
+/*  220 */     else if (tileEntity instanceof TEWorldItem) {
+/*  221 */       currenttip = worldBody(itemStack, currenttip, accessor, config);
 /*      */     }
-/*  223 */     else if (block == TFCBlocks.torch) {
-/*  224 */       currenttip = torchBody(itemStack, currenttip, accessor, config);
+/*  223 */     else if (tileEntity instanceof TESpawnMeter) {
+/*  224 */       currenttip = spawnMeterBody(itemStack, currenttip, accessor, config);
+/*      */     }
+/*  226 */     else if (block == TFCBlocks.torch) {
+/*  227 */       currenttip = torchBody(itemStack, currenttip, accessor, config);
 /*      */     } 
-/*  226 */     return currenttip;
+/*  229 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */ 
 /*      */   
 /*      */   public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  232 */     return currenttip;
+/*  235 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */ 
 /*      */   
 /*      */   public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
-/*  238 */     if (te != null)
-/*  239 */       te.func_145841_b(tag); 
-/*  240 */     return tag;
+/*  241 */     if (te != null)
+/*  242 */       te.func_145841_b(tag); 
+/*  243 */     return tag;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public static void callbackRegister(IWailaRegistrar reg) {
-/*  245 */     reg.addConfig("TerraFirmaCraft", "tfc.oreQuality");
+/*  248 */     reg.addConfig("TerraFirmaCraft", "tfc.oreQuality");
 /*      */     
-/*  247 */     reg.registerStackProvider(new WAILAData(), BlockAnvil.class);
-/*  248 */     reg.registerBodyProvider(new WAILAData(), TEAnvil.class);
-/*  249 */     reg.registerNBTProvider(new WAILAData(), TEAnvil.class);
+/*  250 */     reg.registerStackProvider(new WAILAData(), BlockAnvil.class);
+/*  251 */     reg.registerBodyProvider(new WAILAData(), TEAnvil.class);
+/*  252 */     reg.registerNBTProvider(new WAILAData(), TEAnvil.class);
 /*      */     
-/*  251 */     reg.registerHeadProvider(new WAILAData(), TEBarrel.class);
-/*  252 */     reg.registerBodyProvider(new WAILAData(), TEBarrel.class);
-/*  253 */     reg.registerNBTProvider(new WAILAData(), TEBarrel.class);
+/*  254 */     reg.registerHeadProvider(new WAILAData(), TEBarrel.class);
+/*  255 */     reg.registerBodyProvider(new WAILAData(), TEBarrel.class);
+/*  256 */     reg.registerNBTProvider(new WAILAData(), TEBarrel.class);
 /*      */     
-/*  255 */     reg.registerStackProvider(new WAILAData(), TEBerryBush.class);
-/*  256 */     reg.registerBodyProvider(new WAILAData(), TEBerryBush.class);
-/*  257 */     reg.registerNBTProvider(new WAILAData(), TEBerryBush.class);
+/*  258 */     reg.registerStackProvider(new WAILAData(), TEBerryBush.class);
+/*  259 */     reg.registerBodyProvider(new WAILAData(), TEBerryBush.class);
+/*  260 */     reg.registerNBTProvider(new WAILAData(), TEBerryBush.class);
 /*      */     
-/*  259 */     reg.registerBodyProvider(new WAILAData(), TEBlastFurnace.class);
-/*  260 */     reg.registerNBTProvider(new WAILAData(), TEBlastFurnace.class);
+/*  262 */     reg.registerBodyProvider(new WAILAData(), TEBlastFurnace.class);
+/*  263 */     reg.registerNBTProvider(new WAILAData(), TEBlastFurnace.class);
 /*      */     
-/*  262 */     reg.registerStackProvider(new WAILAData(), TEBloom.class);
-/*  263 */     reg.registerBodyProvider(new WAILAData(), TEBloom.class);
-/*  264 */     reg.registerNBTProvider(new WAILAData(), TEBloom.class);
+/*  265 */     reg.registerStackProvider(new WAILAData(), TEBloom.class);
+/*  266 */     reg.registerBodyProvider(new WAILAData(), TEBloom.class);
+/*  267 */     reg.registerNBTProvider(new WAILAData(), TEBloom.class);
 /*      */     
-/*  266 */     reg.registerBodyProvider(new WAILAData(), TEBloomery.class);
-/*  267 */     reg.registerNBTProvider(new WAILAData(), TEBloomery.class);
+/*  269 */     reg.registerBodyProvider(new WAILAData(), TEBloomery.class);
+/*  270 */     reg.registerNBTProvider(new WAILAData(), TEBloomery.class);
 /*      */     
-/*  269 */     reg.registerStackProvider(new WAILAData(), BlockCharcoal.class);
-/*  270 */     reg.registerStackProvider(new WAILAData(), BlockClay.class);
-/*  271 */     reg.registerStackProvider(new WAILAData(), BlockClayGrass.class);
-/*  272 */     reg.registerStackProvider(new WAILAData(), BlockCobble.class);
+/*  272 */     reg.registerStackProvider(new WAILAData(), BlockCharcoal.class);
+/*  273 */     reg.registerStackProvider(new WAILAData(), BlockClay.class);
+/*  274 */     reg.registerStackProvider(new WAILAData(), BlockClayGrass.class);
+/*  275 */     reg.registerStackProvider(new WAILAData(), BlockCobble.class);
 /*      */     
-/*  274 */     reg.registerStackProvider(new WAILAData(), TECrop.class);
-/*  275 */     reg.registerBodyProvider(new WAILAData(), TECrop.class);
-/*  276 */     reg.registerNBTProvider(new WAILAData(), TECrop.class);
+/*  277 */     reg.registerStackProvider(new WAILAData(), TECrop.class);
+/*  278 */     reg.registerBodyProvider(new WAILAData(), TECrop.class);
+/*  279 */     reg.registerNBTProvider(new WAILAData(), TECrop.class);
 /*      */     
-/*  278 */     reg.registerStackProvider(new WAILAData(), BlockCustomDoor.class);
+/*  281 */     reg.registerStackProvider(new WAILAData(), BlockCustomDoor.class);
 /*      */     
-/*  280 */     reg.registerBodyProvider(new WAILAData(), TEFarmland.class);
-/*  281 */     reg.registerNBTProvider(new WAILAData(), TEFarmland.class);
+/*  283 */     reg.registerBodyProvider(new WAILAData(), TEFarmland.class);
+/*  284 */     reg.registerNBTProvider(new WAILAData(), TEFarmland.class);
 /*      */     
-/*  283 */     reg.registerBodyProvider(new WAILAData(), TEFirepit.class);
-/*  284 */     reg.registerNBTProvider(new WAILAData(), TEFirepit.class);
+/*  286 */     reg.registerBodyProvider(new WAILAData(), TEFirepit.class);
+/*  287 */     reg.registerNBTProvider(new WAILAData(), TEFirepit.class);
 /*      */     
-/*  286 */     reg.registerBodyProvider(new WAILAData(), TEForge.class);
-/*  287 */     reg.registerNBTProvider(new WAILAData(), TEForge.class);
+/*  289 */     reg.registerBodyProvider(new WAILAData(), TEForge.class);
+/*  290 */     reg.registerNBTProvider(new WAILAData(), TEForge.class);
 /*      */     
-/*  289 */     reg.registerStackProvider(new WAILAData(), TEFruitLeaves.class);
-/*  290 */     reg.registerHeadProvider(new WAILAData(), TEFruitLeaves.class);
-/*  291 */     reg.registerBodyProvider(new WAILAData(), TEFruitLeaves.class);
-/*  292 */     reg.registerNBTProvider(new WAILAData(), TEFruitLeaves.class);
+/*  292 */     reg.registerStackProvider(new WAILAData(), TEFruitLeaves.class);
+/*  293 */     reg.registerHeadProvider(new WAILAData(), TEFruitLeaves.class);
+/*  294 */     reg.registerBodyProvider(new WAILAData(), TEFruitLeaves.class);
+/*  295 */     reg.registerNBTProvider(new WAILAData(), TEFruitLeaves.class);
 /*      */     
-/*  294 */     reg.registerStackProvider(new WAILAData(), TEFruitTreeWood.class);
-/*  295 */     reg.registerHeadProvider(new WAILAData(), TEFruitTreeWood.class);
+/*  297 */     reg.registerStackProvider(new WAILAData(), TEFruitTreeWood.class);
+/*  298 */     reg.registerHeadProvider(new WAILAData(), TEFruitTreeWood.class);
 /*      */     
-/*  297 */     reg.registerStackProvider(new WAILAData(), TEIngotPile.class);
-/*  298 */     reg.registerHeadProvider(new WAILAData(), TEIngotPile.class);
-/*  299 */     reg.registerNBTProvider(new WAILAData(), TEIngotPile.class);
+/*  300 */     reg.registerStackProvider(new WAILAData(), TEIngotPile.class);
+/*  301 */     reg.registerHeadProvider(new WAILAData(), TEIngotPile.class);
+/*  302 */     reg.registerNBTProvider(new WAILAData(), TEIngotPile.class);
 /*      */     
-/*  301 */     reg.registerBodyProvider(new WAILAData(), TELogPile.class);
-/*  302 */     reg.registerNBTProvider(new WAILAData(), TELogPile.class);
+/*  304 */     reg.registerBodyProvider(new WAILAData(), TELogPile.class);
+/*  305 */     reg.registerNBTProvider(new WAILAData(), TELogPile.class);
 /*      */     
-/*  304 */     reg.registerStackProvider(new WAILAData(), TELoom.class);
-/*  305 */     reg.registerBodyProvider(new WAILAData(), TELoom.class);
-/*  306 */     reg.registerNBTProvider(new WAILAData(), TELoom.class);
+/*  307 */     reg.registerStackProvider(new WAILAData(), TELoom.class);
+/*  308 */     reg.registerBodyProvider(new WAILAData(), TELoom.class);
+/*  309 */     reg.registerNBTProvider(new WAILAData(), TELoom.class);
 /*      */     
-/*  308 */     reg.registerStackProvider(new WAILAData(), TEMetalSheet.class);
-/*  309 */     reg.registerNBTProvider(new WAILAData(), TEMetalSheet.class);
+/*  311 */     reg.registerStackProvider(new WAILAData(), TEMetalSheet.class);
+/*  312 */     reg.registerNBTProvider(new WAILAData(), TEMetalSheet.class);
 /*      */     
-/*  311 */     reg.registerStackProvider(new WAILAData(), TEMetalTrapDoor.class);
-/*  312 */     reg.registerBodyProvider(new WAILAData(), TEMetalTrapDoor.class);
-/*  313 */     reg.registerNBTProvider(new WAILAData(), TEMetalTrapDoor.class);
+/*  314 */     reg.registerStackProvider(new WAILAData(), TEMetalTrapDoor.class);
+/*  315 */     reg.registerBodyProvider(new WAILAData(), TEMetalTrapDoor.class);
+/*  316 */     reg.registerNBTProvider(new WAILAData(), TEMetalTrapDoor.class);
 /*      */     
-/*  315 */     reg.registerBodyProvider(new WAILAData(), TENestBox.class);
-/*  316 */     reg.registerNBTProvider(new WAILAData(), TENestBox.class);
+/*  318 */     reg.registerBodyProvider(new WAILAData(), TENestBox.class);
+/*  319 */     reg.registerNBTProvider(new WAILAData(), TENestBox.class);
 /*      */     
-/*  318 */     reg.registerStackProvider(new WAILAData(), TEOilLamp.class);
-/*  319 */     reg.registerBodyProvider(new WAILAData(), TEOilLamp.class);
-/*  320 */     reg.registerNBTProvider(new WAILAData(), TEOilLamp.class);
+/*  321 */     reg.registerStackProvider(new WAILAData(), TEOilLamp.class);
+/*  322 */     reg.registerBodyProvider(new WAILAData(), TEOilLamp.class);
+/*  323 */     reg.registerNBTProvider(new WAILAData(), TEOilLamp.class);
 /*      */     
-/*  322 */     reg.registerStackProvider(new WAILAData(), TEOre.class);
-/*  323 */     reg.registerHeadProvider(new WAILAData(), TEOre.class);
-/*  324 */     reg.registerBodyProvider(new WAILAData(), TEOre.class);
+/*  325 */     reg.registerStackProvider(new WAILAData(), TEOre.class);
+/*  326 */     reg.registerHeadProvider(new WAILAData(), TEOre.class);
+/*  327 */     reg.registerBodyProvider(new WAILAData(), TEOre.class);
 /*      */     
-/*  326 */     reg.registerStackProvider(new WAILAData(), BlockPartial.class);
-/*  327 */     reg.registerNBTProvider(new WAILAData(), BlockPartial.class);
+/*  329 */     reg.registerStackProvider(new WAILAData(), BlockPartial.class);
+/*  330 */     reg.registerNBTProvider(new WAILAData(), BlockPartial.class);
 /*      */     
-/*  329 */     reg.registerBodyProvider(new WAILAData(), TEPottery.class);
-/*  330 */     reg.registerNBTProvider(new WAILAData(), TEPottery.class);
+/*  332 */     reg.registerBodyProvider(new WAILAData(), TEPottery.class);
+/*  333 */     reg.registerNBTProvider(new WAILAData(), TEPottery.class);
 /*      */     
-/*  332 */     reg.registerBodyProvider(new WAILAData(), TESapling.class);
-/*  333 */     reg.registerNBTProvider(new WAILAData(), TESapling.class);
+/*  335 */     reg.registerBodyProvider(new WAILAData(), TESapling.class);
+/*  336 */     reg.registerNBTProvider(new WAILAData(), TESapling.class);
 /*      */     
-/*  335 */     reg.registerBodyProvider(new WAILAData(), TESluice.class);
-/*  336 */     reg.registerNBTProvider(new WAILAData(), TESluice.class);
+/*  338 */     reg.registerBodyProvider(new WAILAData(), TESluice.class);
+/*  339 */     reg.registerNBTProvider(new WAILAData(), TESluice.class);
 /*      */     
-/*  338 */     reg.registerHeadProvider(new WAILAData(), TESmokeRack.class);
-/*  339 */     reg.registerBodyProvider(new WAILAData(), TESmokeRack.class);
-/*  340 */     reg.registerNBTProvider(new WAILAData(), TESmokeRack.class);
+/*  341 */     reg.registerHeadProvider(new WAILAData(), TESmokeRack.class);
+/*  342 */     reg.registerBodyProvider(new WAILAData(), TESmokeRack.class);
+/*  343 */     reg.registerNBTProvider(new WAILAData(), TESmokeRack.class);
 /*      */     
-/*  342 */     reg.registerBodyProvider(new WAILAData(), TESpawnMeter.class);
-/*  343 */     reg.registerNBTProvider(new WAILAData(), TESpawnMeter.class);
+/*  345 */     reg.registerBodyProvider(new WAILAData(), TESpawnMeter.class);
+/*  346 */     reg.registerNBTProvider(new WAILAData(), TESpawnMeter.class);
 /*      */ 
 /*      */     
-/*  346 */     reg.registerBodyProvider(new WAILAData(), BlockDirt.class);
-/*  347 */     reg.registerBodyProvider(new WAILAData(), BlockSand.class);
-/*  348 */     reg.registerBodyProvider(new WAILAData(), BlockGrass.class);
-/*  349 */     reg.registerBodyProvider(new WAILAData(), BlockGravel.class);
+/*  349 */     reg.registerBodyProvider(new WAILAData(), BlockDirt.class);
+/*  350 */     reg.registerBodyProvider(new WAILAData(), BlockSand.class);
+/*  351 */     reg.registerBodyProvider(new WAILAData(), BlockGrass.class);
+/*  352 */     reg.registerBodyProvider(new WAILAData(), BlockGravel.class);
 /*      */     
-/*  351 */     reg.registerBodyProvider(new WAILAData(), BlockTorch.class);
-/*  352 */     reg.registerNBTProvider(new WAILAData(), BlockTorch.class);
+/*  354 */     reg.registerBodyProvider(new WAILAData(), BlockTorch.class);
+/*  355 */     reg.registerNBTProvider(new WAILAData(), BlockTorch.class);
+/*  356 */     reg.registerStackProvider(new WAILAData(), BlockWaterPlant.class);
+/*  357 */     reg.registerHeadProvider(new WAILAData(), BlockWaterPlant.class);
 /*      */     
-/*  354 */     reg.registerStackProvider(new WAILAData(), BlockWaterPlant.class);
-/*  355 */     reg.registerHeadProvider(new WAILAData(), BlockWaterPlant.class);
-/*      */     
-/*  357 */     reg.registerStackProvider(new WAILAData(), TEWorldItem.class);
-/*  358 */     reg.registerNBTProvider(new WAILAData(), TEWorldItem.class);
+/*  359 */     reg.registerStackProvider(new WAILAData(), TEWorldItem.class);
+/*  360 */     reg.registerNBTProvider(new WAILAData(), TEWorldItem.class);
+/*  361 */     reg.registerBodyProvider(new WAILAData(), TEWorldItem.class);
 /*      */   }
+/*      */ 
 /*      */ 
 /*      */ 
 /*      */   
 /*      */   public ItemStack anvilStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  364 */     Block block = accessor.getBlock();
-/*  365 */     int meta = accessor.getMetadata();
-/*  366 */     int type = BlockAnvil.getAnvilTypeFromMeta(meta);
+/*  368 */     Block block = accessor.getBlock();
+/*  369 */     int meta = accessor.getMetadata();
+/*  370 */     int type = BlockAnvil.getAnvilTypeFromMeta(meta);
 /*      */     
-/*  368 */     return new ItemStack(block, 1, type);
+/*  372 */     return new ItemStack(block, 1, type);
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public ItemStack berryBushStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  373 */     NBTTagCompound tag = accessor.getNBTData();
-/*  374 */     boolean hasFruit = tag.func_74767_n("hasFruit");
-/*  375 */     FloraIndex index = FloraManager.getInstance().findMatchingIndex(BlockBerryBush.metaNames[accessor.getMetadata()]);
+/*  377 */     NBTTagCompound tag = accessor.getNBTData();
+/*  378 */     boolean hasFruit = tag.func_74767_n("hasFruit");
+/*  379 */     FloraIndex index = FloraManager.getInstance().findMatchingIndex(BlockBerryBush.metaNames[accessor.getMetadata()]);
 /*      */     
-/*  377 */     if (hasFruit) {
-/*  378 */       return ItemFoodTFC.createTag(index.getOutput());
+/*  381 */     if (hasFruit) {
+/*  382 */       return ItemFoodTFC.createTag(index.getOutput());
 /*      */     }
-/*  380 */     return null;
+/*  384 */     return null;
 /*      */   }
 /*      */   
 /*      */   public ItemStack cropStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
 /*      */     ItemStack itemstack;
-/*  385 */     NBTTagCompound tag = accessor.getNBTData();
-/*  386 */     int cropId = tag.func_74762_e("cropId");
+/*  389 */     NBTTagCompound tag = accessor.getNBTData();
+/*  390 */     int cropId = tag.func_74762_e("cropId");
 /*      */     
-/*  388 */     CropIndex crop = CropManager.getInstance().getCropFromId(cropId);
+/*  392 */     CropIndex crop = CropManager.getInstance().getCropFromId(cropId);
 /*      */ 
 /*      */     
-/*  391 */     if (crop.output2 != null) {
-/*  392 */       itemstack = new ItemStack(crop.output2);
+/*  395 */     if (crop.output2 != null) {
+/*  396 */       itemstack = new ItemStack(crop.output2);
 /*      */     } else {
-/*  394 */       itemstack = new ItemStack(crop.output1);
+/*  398 */       itemstack = new ItemStack(crop.output1);
 /*      */     } 
-/*  396 */     ItemFoodTFC.createTag(itemstack);
-/*  397 */     return itemstack;
+/*  400 */     ItemFoodTFC.createTag(itemstack);
+/*  401 */     return itemstack;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public ItemStack fruitLeavesStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  402 */     FloraIndex index = FloraManager.getInstance().findMatchingIndex(BlockFruitLeaves.getType(accessor.getBlock(), accessor.getMetadata() % 8));
+/*  406 */     FloraIndex index = FloraManager.getInstance().findMatchingIndex(BlockFruitLeaves.getType(accessor.getBlock(), accessor.getMetadata() % 8));
 /*      */     
-/*  404 */     if (index != null) {
-/*  405 */       return ItemFoodTFC.createTag(index.getOutput());
+/*  408 */     if (index != null) {
+/*  409 */       return ItemFoodTFC.createTag(index.getOutput());
 /*      */     }
-/*  407 */     return null;
+/*  411 */     return null;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public ItemStack fruitTreeWoodStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  412 */     FloraIndex index = FloraManager.getInstance().findMatchingIndex(BlockFruitWood.getType(accessor.getMetadata()));
+/*  416 */     FloraIndex index = FloraManager.getInstance().findMatchingIndex(BlockFruitWood.getType(accessor.getMetadata()));
 /*      */     
-/*  414 */     if (index != null) {
-/*  415 */       return ItemFoodTFC.createTag(index.getOutput());
+/*  418 */     if (index != null) {
+/*  419 */       return ItemFoodTFC.createTag(index.getOutput());
 /*      */     }
-/*  417 */     return null;
+/*  421 */     return null;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public ItemStack ingotPileStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  422 */     NBTTagCompound tag = accessor.getNBTData();
-/*  423 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
+/*  426 */     NBTTagCompound tag = accessor.getNBTData();
+/*  427 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
 /*      */     
-/*  425 */     if (storage[0] != null) {
-/*  426 */       return storage[0];
+/*  429 */     if (storage[0] != null) {
+/*  430 */       return storage[0];
 /*      */     }
-/*  428 */     return null;
+/*  432 */     return null;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public ItemStack loomStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  433 */     NBTTagCompound tag = accessor.getNBTData();
-/*  434 */     boolean finished = tag.func_74767_n("finished");
-/*  435 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
+/*  437 */     NBTTagCompound tag = accessor.getNBTData();
+/*  438 */     boolean finished = tag.func_74767_n("finished");
+/*  439 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
 /*      */     
-/*  437 */     if (finished && storage[1] != null)
+/*  441 */     if (finished && storage[1] != null)
 /*      */     {
-/*  439 */       return storage[1];
+/*  443 */       return storage[1];
 /*      */     }
-/*  441 */     return null;
+/*  445 */     return null;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public ItemStack metalSheetStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  446 */     NBTTagCompound tag = accessor.getNBTData();
-/*  447 */     return ItemStack.func_77949_a(tag.func_74775_l("sheetType"));
+/*  450 */     NBTTagCompound tag = accessor.getNBTData();
+/*  451 */     return ItemStack.func_77949_a(tag.func_74775_l("sheetType"));
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public ItemStack metalTrapDoorStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  452 */     NBTTagCompound tag = accessor.getNBTData();
-/*  453 */     return ItemStack.func_77949_a(tag.func_74775_l("sheetType"));
+/*  456 */     NBTTagCompound tag = accessor.getNBTData();
+/*  457 */     return ItemStack.func_77949_a(tag.func_74775_l("sheetType"));
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public ItemStack oilLampStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  458 */     int meta = accessor.getMetadata();
-/*  459 */     if ((meta & 0x8) != 0) {
-/*  460 */       meta -= 8;
+/*  462 */     int meta = accessor.getMetadata();
+/*  463 */     if ((meta & 0x8) != 0) {
+/*  464 */       meta -= 8;
 /*      */     }
-/*  462 */     return new ItemStack(TFCBlocks.oilLamp, 1, meta);
+/*  466 */     return new ItemStack(TFCBlocks.oilLamp, 1, meta);
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public ItemStack oreStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  467 */     int meta = accessor.getMetadata();
-/*  468 */     TEOre te = (TEOre)accessor.getTileEntity();
-/*  469 */     ItemStack itemstack = null;
+/*  471 */     int meta = accessor.getMetadata();
+/*  472 */     TEOre te = (TEOre)accessor.getTileEntity();
+/*  473 */     ItemStack itemstack = null;
 /*      */     
-/*  471 */     if (accessor.getBlock() == TFCBlocks.ore) {
+/*  475 */     if (accessor.getBlock() == TFCBlocks.ore) {
 /*      */       
-/*  473 */       if (config.getConfig("tfc.oreQuality")) {
-/*  474 */         itemstack = new ItemStack(TFCItems.oreChunk, 1, getOreGrade(te, meta));
+/*  477 */       if (config.getConfig("tfc.oreQuality")) {
+/*  478 */         itemstack = new ItemStack(TFCItems.oreChunk, 1, getOreGrade(te, meta));
 /*      */       } else {
-/*  476 */         itemstack = new ItemStack(TFCItems.oreChunk, 1, meta);
+/*  480 */         itemstack = new ItemStack(TFCItems.oreChunk, 1, meta);
 /*      */       } 
-/*  478 */       if (meta == 14 || meta == 15) {
-/*  479 */         itemstack = new ItemStack(TFCItems.coal);
+/*  482 */       if (meta == 14 || meta == 15) {
+/*  483 */         itemstack = new ItemStack(TFCItems.coal);
 /*      */       }
-/*  481 */       return itemstack;
+/*  485 */       return itemstack;
 /*      */     } 
-/*  483 */     if (accessor.getBlock() == TFCBlocks.ore2) {
+/*  487 */     if (accessor.getBlock() == TFCBlocks.ore2) {
 /*      */       
-/*  485 */       itemstack = new ItemStack(TFCItems.oreChunk, 1, meta + Global.ORE_METAL.length);
-/*  486 */       if (meta == 5) {
-/*  487 */         itemstack = new ItemStack(TFCItems.gemDiamond);
-/*  488 */       } else if (meta == 13) {
-/*  489 */         itemstack = new ItemStack(TFCItems.powder, 1, 4);
+/*  489 */       itemstack = new ItemStack(TFCItems.oreChunk, 1, meta + Global.ORE_METAL.length);
+/*  490 */       if (meta == 5) {
+/*  491 */         itemstack = new ItemStack(TFCItems.gemDiamond);
+/*  492 */       } else if (meta == 13) {
+/*  493 */         itemstack = new ItemStack(TFCItems.powder, 1, 4);
 /*      */       } 
-/*  491 */       return itemstack;
+/*  495 */       return itemstack;
 /*      */     } 
-/*  493 */     if (accessor.getBlock() == TFCBlocks.ore3) {
+/*  497 */     if (accessor.getBlock() == TFCBlocks.ore3) {
 /*      */       
-/*  495 */       itemstack = new ItemStack(TFCItems.oreChunk, 1, meta + Global.ORE_METAL.length + Global.ORE_MINERAL.length);
-/*  496 */       return itemstack;
+/*  499 */       itemstack = new ItemStack(TFCItems.oreChunk, 1, meta + Global.ORE_METAL.length + Global.ORE_MINERAL.length);
+/*  500 */       return itemstack;
 /*      */     } 
 /*      */     
-/*  499 */     return null;
+/*  503 */     return null;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public ItemStack partialStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  504 */     NBTTagCompound tag = accessor.getNBTData();
-/*  505 */     byte metaID = tag.func_74771_c("metaID");
-/*  506 */     int typeID = tag.func_74765_d("typeID");
+/*  508 */     NBTTagCompound tag = accessor.getNBTData();
+/*  509 */     byte metaID = tag.func_74771_c("metaID");
+/*  510 */     int typeID = tag.func_74765_d("typeID");
 /*      */     
-/*  508 */     return new ItemStack(Block.func_149729_e(typeID), 1, metaID);
+/*  512 */     return new ItemStack(Block.func_149729_e(typeID), 1, metaID);
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public ItemStack worldItemStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  513 */     NBTTagCompound tag = accessor.getNBTData();
-/*  514 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
-/*  515 */     return storage[0];
+/*  517 */     NBTTagCompound tag = accessor.getNBTData();
+/*  518 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
+/*  519 */     return storage[0];
 /*      */   }
 /*      */ 
 /*      */ 
 /*      */   
 /*      */   public List<String> barrelHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  521 */     String head = currenttip.get(0);
-/*  522 */     NBTTagCompound tag = accessor.getNBTData();
-/*  523 */     FluidStack fluid = FluidStack.loadFluidStackFromNBT(tag.func_74775_l("fluidNBT"));
+/*  525 */     String head = currenttip.get(0);
+/*  526 */     NBTTagCompound tag = accessor.getNBTData();
+/*  527 */     FluidStack fluid = FluidStack.loadFluidStackFromNBT(tag.func_74775_l("fluidNBT"));
 /*      */     
-/*  525 */     if (fluid != null) {
+/*  529 */     if (fluid != null) {
 /*      */       
-/*  527 */       head = head + " (" + fluid.getLocalizedName() + ")";
-/*  528 */       currenttip.set(0, head);
+/*  531 */       head = head + " (" + fluid.getLocalizedName() + ")";
+/*  532 */       currenttip.set(0, head);
 /*      */     } 
-/*  530 */     return currenttip;
+/*  534 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> fruitLeavesHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  535 */     NBTTagCompound tag = accessor.getNBTData();
-/*  536 */     boolean hasFruit = tag.func_74767_n("hasFruit");
-/*  537 */     String type = BlockFruitLeaves.getType(accessor.getBlock(), accessor.getMetadata());
+/*  539 */     NBTTagCompound tag = accessor.getNBTData();
+/*  540 */     boolean hasFruit = tag.func_74767_n("hasFruit");
+/*  541 */     String type = BlockFruitLeaves.getType(accessor.getBlock(), accessor.getMetadata());
 /*      */     
-/*  539 */     if (!hasFruit) {
-/*  540 */       currenttip.set(0, EnumChatFormatting.WHITE.toString() + TFC_Core.translate("gui." + type));
+/*  543 */     if (!hasFruit) {
+/*  544 */       currenttip.set(0, EnumChatFormatting.WHITE.toString() + TFC_Core.translate("gui." + type));
 /*      */     }
-/*  542 */     return currenttip;
+/*  546 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> fruitTreeWoodHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  547 */     String type = BlockFruitWood.getType(accessor.getMetadata());
+/*  551 */     String type = BlockFruitWood.getType(accessor.getMetadata());
 /*      */     
-/*  549 */     currenttip.set(0, EnumChatFormatting.WHITE.toString() + TFC_Core.translate("gui." + type));
+/*  553 */     currenttip.set(0, EnumChatFormatting.WHITE.toString() + TFC_Core.translate("gui." + type));
 /*      */     
-/*  551 */     return currenttip;
+/*  555 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> ingotPileHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  556 */     String head = currenttip.get(0);
-/*  557 */     currenttip.set(0, head + " " + TFC_Core.translate("gui.pile"));
-/*  558 */     return currenttip;
+/*  560 */     String head = currenttip.get(0);
+/*  561 */     currenttip.set(0, head + " " + TFC_Core.translate("gui.pile"));
+/*  562 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> oreHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  563 */     int meta = accessor.getMetadata();
+/*  567 */     int meta = accessor.getMetadata();
 /*      */     
-/*  565 */     if (accessor.getBlock() == TFCBlocks.ore) {
+/*  569 */     if (accessor.getBlock() == TFCBlocks.ore) {
 /*      */       
-/*  567 */       if (meta == 14)
+/*  571 */       if (meta == 14)
 /*      */       {
-/*  569 */         currenttip.set(0, EnumChatFormatting.WHITE.toString() + TFC_Core.translate("item.Ore.Bituminous Coal.name"));
+/*  573 */         currenttip.set(0, EnumChatFormatting.WHITE.toString() + TFC_Core.translate("item.Ore.Bituminous Coal.name"));
 /*      */       }
-/*  571 */       else if (meta == 15)
+/*  575 */       else if (meta == 15)
 /*      */       {
-/*  573 */         currenttip.set(0, EnumChatFormatting.WHITE.toString() + TFC_Core.translate("item.Ore.Lignite.name"));
+/*  577 */         currenttip.set(0, EnumChatFormatting.WHITE.toString() + TFC_Core.translate("item.Ore.Lignite.name"));
 /*      */       }
 /*      */     
-/*  576 */     } else if (accessor.getBlock() == TFCBlocks.ore2) {
+/*  580 */     } else if (accessor.getBlock() == TFCBlocks.ore2) {
 /*      */       
-/*  578 */       if (meta == 5) {
+/*  582 */       if (meta == 5) {
 /*      */         
-/*  580 */         currenttip.set(0, EnumChatFormatting.WHITE.toString() + TFC_Core.translate("item.Ore.Kimberlite.name"));
+/*  584 */         currenttip.set(0, EnumChatFormatting.WHITE.toString() + TFC_Core.translate("item.Ore.Kimberlite.name"));
 /*      */       }
-/*  582 */       else if (meta == 13) {
+/*  586 */       else if (meta == 13) {
 /*      */         
-/*  584 */         currenttip.set(0, EnumChatFormatting.WHITE.toString() + TFC_Core.translate("item.Ore.Saltpeter.name"));
+/*  588 */         currenttip.set(0, EnumChatFormatting.WHITE.toString() + TFC_Core.translate("item.Ore.Saltpeter.name"));
 /*      */       } 
 /*      */     } 
 /*      */     
-/*  588 */     return currenttip;
+/*  592 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> waterPlantHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  593 */     MovingObjectPosition pos = accessor.getPosition();
-/*  594 */     World world = accessor.getWorld();
-/*  595 */     Block blockDirectlyAbove = world.func_147439_a(pos.field_72311_b, pos.field_72312_c + 1, pos.field_72309_d);
-/*  596 */     boolean airTwoAbove = world.func_147437_c(pos.field_72311_b, pos.field_72312_c + 2, pos.field_72309_d);
+/*  597 */     MovingObjectPosition pos = accessor.getPosition();
+/*  598 */     World world = accessor.getWorld();
+/*  599 */     Block blockDirectlyAbove = world.func_147439_a(pos.field_72311_b, pos.field_72312_c + 1, pos.field_72309_d);
+/*  600 */     boolean airTwoAbove = world.func_147437_c(pos.field_72311_b, pos.field_72312_c + 2, pos.field_72309_d);
 /*      */     
-/*  598 */     if (TFC_Core.isFreshWater(blockDirectlyAbove))
+/*  602 */     if (TFC_Core.isFreshWater(blockDirectlyAbove))
 /*      */     {
-/*  600 */       if (airTwoAbove) {
+/*  604 */       if (airTwoAbove) {
 /*      */         
-/*  602 */         currenttip.set(0, EnumChatFormatting.WHITE.toString() + TFC_Core.translate("tile.Flora.Cat Tails.name"));
+/*  606 */         currenttip.set(0, EnumChatFormatting.WHITE.toString() + TFC_Core.translate("tile.Flora.Cat Tails.name"));
 /*      */       }
 /*      */       else {
 /*      */         
-/*  606 */         currenttip.set(0, EnumChatFormatting.WHITE.toString() + TFC_Core.translate("tile.Flora.Pond Weed.name"));
+/*  610 */         currenttip.set(0, EnumChatFormatting.WHITE.toString() + TFC_Core.translate("tile.Flora.Pond Weed.name"));
 /*      */       } 
 /*      */     }
 /*      */     
-/*  610 */     return currenttip;
+/*  614 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */ 
 /*      */   
 /*      */   public List<String> anvilBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  616 */     NBTTagCompound tag = accessor.getNBTData();
+/*  620 */     NBTTagCompound tag = accessor.getNBTData();
 /*      */     
-/*  618 */     int tier = tag.func_74762_e("Tier");
-/*  619 */     currenttip.add(TFC_Core.translate("gui.tier") + " : " + tier);
+/*  622 */     int tier = tag.func_74762_e("Tier");
+/*  623 */     currenttip.add(TFC_Core.translate("gui.tier") + " : " + tier);
 /*      */     
-/*  621 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
-/*  622 */     ItemStack flux = storage[6];
+/*  625 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
+/*  626 */     ItemStack flux = storage[6];
 /*      */     
-/*  624 */     if (flux != null && flux.func_77973_b() == TFCItems.powder && flux.func_77960_j() == 0 && flux.field_77994_a > 0) {
-/*  625 */       currenttip.add(TFC_Core.translate("item.Powder.Flux.name") + " : " + flux.field_77994_a);
+/*  628 */     if (flux != null && flux.func_77973_b() == TFCItems.powder && flux.func_77960_j() == 0 && flux.field_77994_a > 0) {
+/*  629 */       currenttip.add(TFC_Core.translate("item.Powder.Flux.name") + " : " + flux.field_77994_a);
 /*      */     }
-/*  627 */     return currenttip;
+/*  631 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> barrelBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  632 */     TEBarrel te = (TEBarrel)accessor.getTileEntity();
-/*  633 */     NBTTagCompound tag = accessor.getNBTData();
-/*  634 */     ItemStack[] storage = getStorage(tag, (TileEntity)te);
-/*  635 */     ItemStack inStack = storage[0];
+/*  636 */     TEBarrel te = (TEBarrel)accessor.getTileEntity();
+/*  637 */     NBTTagCompound tag = accessor.getNBTData();
+/*  638 */     ItemStack[] storage = getStorage(tag, (TileEntity)te);
+/*  639 */     ItemStack inStack = storage[0];
 /*      */     
-/*  637 */     Boolean sealed = Boolean.valueOf(te.getSealed());
-/*  638 */     int sealTime = accessor.getNBTInteger(tag, "SealTime");
-/*  639 */     FluidStack fluid = FluidStack.loadFluidStackFromNBT(tag.func_74775_l("fluidNBT"));
-/*  640 */     BarrelRecipe recipe = BarrelManager.getInstance().findMatchingRecipe(inStack, fluid, sealed.booleanValue(), te.getTechLevel());
+/*  641 */     Boolean sealed = Boolean.valueOf(te.getSealed());
+/*  642 */     int sealTime = accessor.getNBTInteger(tag, "SealTime");
+/*  643 */     FluidStack fluid = FluidStack.loadFluidStackFromNBT(tag.func_74775_l("fluidNBT"));
+/*  644 */     BarrelRecipe recipe = BarrelManager.getInstance().findMatchingRecipe(inStack, fluid, sealed.booleanValue(), te.getTechLevel());
 /*      */     
-/*  642 */     if (sealed.booleanValue() && fluid != null && fluid.getFluid() == TFCFluids.MILKCURDLED && (inStack == null || (inStack
-/*  643 */       .func_77973_b() instanceof IFood && ((IFood)inStack.func_77973_b()).getFoodGroup() != EnumFoodGroup.Dairy && ((IFood)inStack.func_77973_b()).isEdible(inStack) && Food.getWeight(inStack) <= 20.0F))) {
-/*  644 */       recipe = (new BarrelRecipe(null, new FluidStack(TFCFluids.MILKCURDLED, 10000), ItemFoodTFC.createTag(new ItemStack(TFCItems.cheese, 1), 160.0F), null)).setMinTechLevel(0);
+/*  646 */     if (sealed.booleanValue() && fluid != null && fluid.getFluid() == TFCFluids.MILKCURDLED && (inStack == null || (inStack
+/*  647 */       .func_77973_b() instanceof IFood && ((IFood)inStack.func_77973_b()).getFoodGroup() != EnumFoodGroup.Dairy && ((IFood)inStack.func_77973_b()).isEdible(inStack) && Food.getWeight(inStack) <= 20.0F))) {
+/*  648 */       recipe = (new BarrelRecipe(null, new FluidStack(TFCFluids.MILKCURDLED, 10000), ItemFoodTFC.createTag(new ItemStack(TFCItems.cheese, 1), 160.0F), null)).setMinTechLevel(0);
 /*      */     }
 /*      */     
-/*  647 */     if (fluid != null)
+/*  651 */     if (fluid != null)
 /*      */     {
-/*  649 */       currenttip.add(fluid.amount + "/" + te.getMaxLiquid() + " mB");
+/*  653 */       currenttip.add(fluid.amount + "/" + te.getMaxLiquid() + " mB");
 /*      */     }
 /*      */ 
 /*      */     
-/*  653 */     if (sealed.booleanValue() && sealTime != 0)
+/*  657 */     if (sealed.booleanValue() && sealTime != 0)
 /*      */     {
-/*  655 */       currenttip.add(TFC_Core.translate("gui.Barrel.SealedOn") + " : " + TFC_Time.getDateStringFromHours(sealTime));
+/*  659 */       currenttip.add(TFC_Core.translate("gui.Barrel.SealedOn") + " : " + TFC_Time.getDateStringFromHours(sealTime));
 /*      */     }
 /*      */ 
 /*      */ 
 /*      */     
-/*  660 */     BarrelPreservativeRecipe preservative = BarrelManager.getInstance().findMatchingPreservativeRepice(te, inStack, fluid, sealed.booleanValue());
+/*  664 */     BarrelPreservativeRecipe preservative = BarrelManager.getInstance().findMatchingPreservativeRepice(te, inStack, fluid, sealed.booleanValue());
 /*      */ 
 /*      */     
-/*  663 */     if (recipe != null) {
+/*  667 */     if (recipe != null) {
 /*      */       
-/*  665 */       if (!(recipe instanceof com.bioxx.tfc.api.Crafting.BarrelBriningRecipe))
+/*  669 */       if (!(recipe instanceof com.bioxx.tfc.api.Crafting.BarrelBriningRecipe))
 /*      */       {
-/*  667 */         currenttip.add(TFC_Core.translate("gui.Output") + " : " + recipe.getRecipeName());
+/*  671 */         currenttip.add(TFC_Core.translate("gui.Output") + " : " + recipe.getRecipeName());
 /*      */       }
-/*  669 */       else if (sealed.booleanValue() && fluid != null && fluid.getFluid() == TFCFluids.BRINE)
+/*  673 */       else if (sealed.booleanValue() && fluid != null && fluid.getFluid() == TFCFluids.BRINE)
 /*      */       {
-/*  671 */         if (inStack != null && inStack.func_77973_b() instanceof IFood && (((IFood)inStack.func_77973_b()).getFoodGroup() == EnumFoodGroup.Fruit || ((IFood)inStack.func_77973_b()).getFoodGroup() == EnumFoodGroup.Vegetable || ((IFood)inStack.func_77973_b()).getFoodGroup() == EnumFoodGroup.Protein || (IFood)inStack.func_77973_b() == TFCItems.cheese) && !Food.isBrined(inStack))
+/*  675 */         if (inStack != null && inStack.func_77973_b() instanceof IFood && (((IFood)inStack.func_77973_b()).getFoodGroup() == EnumFoodGroup.Fruit || ((IFood)inStack.func_77973_b()).getFoodGroup() == EnumFoodGroup.Vegetable || ((IFood)inStack.func_77973_b()).getFoodGroup() == EnumFoodGroup.Protein || (IFood)inStack.func_77973_b() == TFCItems.cheese) && !Food.isBrined(inStack))
 /*      */         {
-/*  673 */           currenttip.add(TFC_Core.translate("gui.barrel.brining"));
+/*  677 */           currenttip.add(TFC_Core.translate("gui.barrel.brining"));
 /*      */         }
 /*      */       }
 /*      */     
-/*  677 */     } else if (sealed.booleanValue() && fluid != null && inStack != null && inStack.func_77973_b() instanceof IFood && fluid.getFluid() == TFCFluids.VINEGAR) {
+/*  681 */     } else if (sealed.booleanValue() && fluid != null && inStack != null && inStack.func_77973_b() instanceof IFood && fluid.getFluid() == TFCFluids.VINEGAR) {
 /*      */       
-/*  679 */       if (!Food.isPickled(inStack) && Food.getWeight(inStack) / fluid.amount <= 160.0F / te.getMaxLiquid()) {
+/*  683 */       if (!Food.isPickled(inStack) && Food.getWeight(inStack) / fluid.amount <= 160.0F / te.getMaxLiquid()) {
 /*      */         
-/*  681 */         if ((((IFood)inStack.func_77973_b()).getFoodGroup() == EnumFoodGroup.Fruit || ((IFood)inStack.func_77973_b()).getFoodGroup() == EnumFoodGroup.Vegetable || ((IFood)inStack.func_77973_b()).getFoodGroup() == EnumFoodGroup.Protein || (IFood)inStack.func_77973_b() == TFCItems.cheese) && Food.isBrined(inStack))
+/*  685 */         if ((((IFood)inStack.func_77973_b()).getFoodGroup() == EnumFoodGroup.Fruit || ((IFood)inStack.func_77973_b()).getFoodGroup() == EnumFoodGroup.Vegetable || ((IFood)inStack.func_77973_b()).getFoodGroup() == EnumFoodGroup.Protein || (IFood)inStack.func_77973_b() == TFCItems.cheese) && Food.isBrined(inStack))
 /*      */         {
-/*  683 */           currenttip.add(TFC_Core.translate("gui.barrel.pickling"));
+/*  687 */           currenttip.add(TFC_Core.translate("gui.barrel.pickling"));
 /*      */         }
 /*      */       }
-/*  686 */       else if (Food.isPickled(inStack) && Food.getWeight(inStack) / fluid.amount <= 160.0F / te.getMaxLiquid() * 2.0F) {
+/*  690 */       else if (Food.isPickled(inStack) && Food.getWeight(inStack) / fluid.amount <= 160.0F / te.getMaxLiquid() * 2.0F) {
 /*      */         
-/*  688 */         currenttip.add(TFC_Core.translate("gui.barrel.preserving"));
+/*  692 */         currenttip.add(TFC_Core.translate("gui.barrel.preserving"));
 /*      */       } 
-/*  690 */     } else if (preservative != null) {
-/*  691 */       currenttip.add(TFC_Core.translate(preservative.getPreservingString()));
+/*  694 */     } else if (preservative != null) {
+/*  695 */       currenttip.add(TFC_Core.translate(preservative.getPreservingString()));
 /*      */     } 
 /*      */     
-/*  694 */     return currenttip;
+/*  698 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> berryBushBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  699 */     FloraIndex index = FloraManager.getInstance().findMatchingIndex(BlockBerryBush.metaNames[accessor.getMetadata()]);
-/*  700 */     currenttip.add(TFC_Time.SEASONS[index.harvestStart] + " - " + TFC_Time.SEASONS[index.harvestFinish]);
-/*  701 */     return currenttip;
+/*  703 */     FloraIndex index = FloraManager.getInstance().findMatchingIndex(BlockBerryBush.metaNames[accessor.getMetadata()]);
+/*  704 */     currenttip.add(TFC_Time.SEASONS[index.harvestStart] + " - " + TFC_Time.SEASONS[index.harvestFinish]);
+/*  705 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> blastFurnaceBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  706 */     TEBlastFurnace te = (TEBlastFurnace)accessor.getTileEntity();
-/*  707 */     NBTTagCompound tag = accessor.getNBTData();
+/*  710 */     TEBlastFurnace te = (TEBlastFurnace)accessor.getTileEntity();
+/*  711 */     NBTTagCompound tag = accessor.getNBTData();
 /*      */     
-/*  709 */     int charcoalCount = tag.func_74762_e("charcoalCount");
-/*  710 */     int oreCount = tag.func_74771_c("oreCount");
-/*  711 */     int stackSize = tag.func_74762_e("maxValidStackSize");
-/*  712 */     float temperature = 0.0F;
+/*  713 */     int charcoalCount = tag.func_74762_e("charcoalCount");
+/*  714 */     int oreCount = tag.func_74771_c("oreCount");
+/*  715 */     int stackSize = tag.func_74762_e("maxValidStackSize");
+/*  716 */     float temperature = 0.0F;
 /*      */     
-/*  714 */     ItemStack[] storage = getStorage(tag, (TileEntity)te);
-/*  715 */     ItemStack oreStack = storage[0];
+/*  718 */     ItemStack[] storage = getStorage(tag, (TileEntity)te);
+/*  719 */     ItemStack oreStack = storage[0];
 /*      */     
-/*  717 */     HeatRegistry manager = HeatRegistry.getInstance();
+/*  721 */     HeatRegistry manager = HeatRegistry.getInstance();
 /*      */     
-/*  719 */     if (oreStack != null) {
+/*  723 */     if (oreStack != null) {
 /*      */       
-/*  721 */       HeatIndex index = manager.findMatchingIndex(oreStack);
-/*  722 */       if (index != null)
+/*  725 */       HeatIndex index = manager.findMatchingIndex(oreStack);
+/*  726 */       if (index != null)
 /*      */       {
-/*  724 */         temperature = TFC_ItemHeat.getTemp(oreStack);
+/*  728 */         temperature = TFC_ItemHeat.getTemp(oreStack);
 /*      */       }
 /*      */     } 
-/*  727 */     String temp = TFC_ItemHeat.getHeatColor(temperature, te.maxFireTempScale);
+/*  731 */     String temp = TFC_ItemHeat.getHeatColor(temperature, te.maxFireTempScale);
 /*      */     
-/*  729 */     currenttip.add(TFC_Core.translate("gui.Bloomery.Charcoal") + " : " + charcoalCount + "/" + (stackSize * 4));
-/*  730 */     currenttip.add(TFC_Core.translate("gui.Bloomery.Ore") + " : " + oreCount + "/" + (stackSize * 4));
+/*  733 */     currenttip.add(TFC_Core.translate("gui.Bloomery.Charcoal") + " : " + charcoalCount + "/" + (stackSize * 4));
+/*  734 */     currenttip.add(TFC_Core.translate("gui.Bloomery.Ore") + " : " + oreCount + "/" + (stackSize * 4));
 /*      */     
-/*  732 */     if (te.storage[1] != null) {
-/*  733 */       currenttip.add(TFC_Core.translate("gui.plans.tuyere") + EnumChatFormatting.GREEN.toString() + " ✔");
+/*  736 */     if (te.storage[1] != null) {
+/*  737 */       currenttip.add(TFC_Core.translate("gui.plans.tuyere") + EnumChatFormatting.GREEN.toString() + " ✔");
 /*      */     } else {
-/*  735 */       currenttip.add(TFC_Core.translate("gui.plans.tuyere") + EnumChatFormatting.RED.toString() + " ✘");
+/*  739 */       currenttip.add(TFC_Core.translate("gui.plans.tuyere") + EnumChatFormatting.RED.toString() + " ✘");
 /*      */     } 
-/*  737 */     if (temperature > 0.0F)
+/*  741 */     if (temperature > 0.0F)
 /*      */     {
-/*  739 */       currenttip.add(temp);
+/*  743 */       currenttip.add(temp);
 /*      */     }
 /*      */     
-/*  742 */     return currenttip;
+/*  746 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> bloomBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  747 */     NBTTagCompound tag = accessor.getNBTData();
-/*  748 */     int size = tag.func_74762_e("size");
+/*  751 */     NBTTagCompound tag = accessor.getNBTData();
+/*  752 */     int size = tag.func_74762_e("size");
 /*      */     
-/*  750 */     currenttip.add(TFC_Core.translate("gui.units") + " : " + size);
-/*  751 */     return currenttip;
+/*  754 */     currenttip.add(TFC_Core.translate("gui.units") + " : " + size);
+/*  755 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> bloomeryBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  756 */     NBTTagCompound tag = accessor.getNBTData();
-/*  757 */     boolean isLit = tag.func_74767_n("isLit");
-/*  758 */     int charcoalCount = tag.func_74762_e("charcoalCount");
-/*  759 */     int oreCount = tag.func_74762_e("oreCount");
+/*  760 */     NBTTagCompound tag = accessor.getNBTData();
+/*  761 */     boolean isLit = tag.func_74767_n("isLit");
+/*  762 */     int charcoalCount = tag.func_74762_e("charcoalCount");
+/*  763 */     int oreCount = tag.func_74762_e("oreCount");
 /*      */     
-/*  761 */     currenttip.add(TFC_Core.translate("gui.Bloomery.Charcoal") + " : " + charcoalCount);
-/*  762 */     currenttip.add(TFC_Core.translate("gui.Bloomery.Ore") + " : " + oreCount);
+/*  765 */     currenttip.add(TFC_Core.translate("gui.Bloomery.Charcoal") + " : " + charcoalCount);
+/*  766 */     currenttip.add(TFC_Core.translate("gui.Bloomery.Ore") + " : " + oreCount);
 /*      */     
-/*  764 */     if (isLit) {
+/*  768 */     if (isLit) {
 /*      */       
-/*  766 */       long hours = tag.func_74763_f("fuelTimeLeft") / 1000L - TFC_Time.getTotalHours();
+/*  770 */       long hours = tag.func_74763_f("fuelTimeLeft") / 1000L - TFC_Time.getTotalHours();
 /*      */       
-/*  768 */       if (hours > 0L) {
+/*  772 */       if (hours > 0L) {
 /*      */         
-/*  770 */         float percent = Helper.roundNumber(Math.min(100.0F - (float)hours / TFCOptions.bloomeryBurnTime * 100.0F, 100.0F), 10.0F);
-/*  771 */         currenttip.add(hours + " " + TFC_Core.translate("gui.hoursRemaining") + " (" + percent + "%)");
+/*  774 */         float percent = Helper.roundNumber(Math.min(100.0F - (float)hours / TFCOptions.bloomeryBurnTime * 100.0F, 100.0F), 10.0F);
+/*  775 */         currenttip.add(hours + " " + TFC_Core.translate("gui.hoursRemaining") + " (" + percent + "%)");
 /*      */       } 
 /*      */     } 
 /*      */     
-/*  775 */     return currenttip;
+/*  779 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> cropBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  780 */     NBTTagCompound tag = accessor.getNBTData();
-/*  781 */     float growth = tag.func_74760_g("growth");
-/*  782 */     int cropId = tag.func_74762_e("cropId");
+/*  784 */     NBTTagCompound tag = accessor.getNBTData();
+/*  785 */     float growth = tag.func_74760_g("growth");
+/*  786 */     int cropId = tag.func_74762_e("cropId");
 /*      */     
-/*  784 */     CropIndex crop = CropManager.getInstance().getCropFromId(cropId);
-/*  785 */     int percentGrowth = (int)Math.min(growth / crop.numGrowthStages * 100.0F, 100.0F);
+/*  788 */     CropIndex crop = CropManager.getInstance().getCropFromId(cropId);
+/*  789 */     int percentGrowth = (int)Math.min(growth / crop.numGrowthStages * 100.0F, 100.0F);
 /*      */     
-/*  787 */     if (percentGrowth < 100) {
-/*  788 */       currenttip.add(TFC_Core.translate("gui.growth") + " : " + percentGrowth + "%");
+/*  791 */     if (percentGrowth < 100) {
+/*  792 */       currenttip.add(TFC_Core.translate("gui.growth") + " : " + percentGrowth + "%");
 /*      */     } else {
-/*  790 */       currenttip.add(TFC_Core.translate("gui.growth") + " : " + TFC_Core.translate("gui.mature"));
+/*  794 */       currenttip.add(TFC_Core.translate("gui.growth") + " : " + TFC_Core.translate("gui.mature"));
 /*      */     } 
-/*  792 */     return currenttip;
+/*  796 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> farmlandBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  797 */     SkillStats.SkillRank rank = TFC_Core.getSkillStats(accessor.getPlayer()).getSkillRank("skill.agriculture");
-/*  798 */     if (rank == SkillStats.SkillRank.Expert || rank == SkillStats.SkillRank.Master) {
+/*  801 */     SkillStats.SkillRank rank = TFC_Core.getSkillStats(accessor.getPlayer()).getSkillRank("skill.agriculture");
+/*  802 */     if (rank == SkillStats.SkillRank.Expert || rank == SkillStats.SkillRank.Master) {
 /*      */       
-/*  800 */       TEFarmland te = (TEFarmland)accessor.getTileEntity();
-/*  801 */       NBTTagCompound tag = accessor.getNBTData();
+/*  804 */       TEFarmland te = (TEFarmland)accessor.getTileEntity();
+/*  805 */       NBTTagCompound tag = accessor.getNBTData();
 /*      */       
-/*  803 */       int[] nutrients = tag.func_74759_k("nutrients");
-/*  804 */       int soilMax = te.getSoilMax();
+/*  807 */       int[] nutrients = tag.func_74759_k("nutrients");
+/*  808 */       int soilMax = te.getSoilMax();
 /*      */       
-/*  806 */       for (int i = 0; i < nutrients.length; i++) {
+/*  810 */       for (int i = 0; i < nutrients.length; i++) {
 /*      */         
-/*  808 */         int percent = Math.max(nutrients[i] * 100 / soilMax, 0);
+/*  812 */         int percent = Math.max(nutrients[i] * 100 / soilMax, 0);
 /*      */         
-/*  810 */         if (i == 0) {
-/*  811 */           currenttip.add(EnumChatFormatting.RED + TFC_Core.translate("gui.Nutrient.A") + " : " + percent + "%");
-/*  812 */         } else if (i == 1) {
-/*  813 */           currenttip.add(EnumChatFormatting.GOLD + TFC_Core.translate("gui.Nutrient.B") + " : " + percent + "%");
-/*  814 */         } else if (i == 2) {
-/*  815 */           currenttip.add(EnumChatFormatting.YELLOW + TFC_Core.translate("gui.Nutrient.C") + " : " + percent + "%");
-/*  816 */         } else if (i == 3 && percent != 0) {
-/*  817 */           currenttip.add(EnumChatFormatting.WHITE + TFC_Core.translate("item.Fertilizer.name") + " : " + percent + "%");
+/*  814 */         if (i == 0) {
+/*  815 */           currenttip.add(EnumChatFormatting.RED + TFC_Core.translate("gui.Nutrient.A") + " : " + percent + "%");
+/*  816 */         } else if (i == 1) {
+/*  817 */           currenttip.add(EnumChatFormatting.GOLD + TFC_Core.translate("gui.Nutrient.B") + " : " + percent + "%");
+/*  818 */         } else if (i == 2) {
+/*  819 */           currenttip.add(EnumChatFormatting.YELLOW + TFC_Core.translate("gui.Nutrient.C") + " : " + percent + "%");
+/*  820 */         } else if (i == 3 && percent != 0) {
+/*  821 */           currenttip.add(EnumChatFormatting.WHITE + TFC_Core.translate("item.Fertilizer.name") + " : " + percent + "%");
 /*      */         } 
 /*      */       } 
 /*      */     } 
-/*  821 */     return currenttip;
+/*  825 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> firepitBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  826 */     NBTTagCompound tag = accessor.getNBTData();
-/*  827 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
+/*  830 */     NBTTagCompound tag = accessor.getNBTData();
+/*  831 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
 /*      */     
-/*  829 */     if (storage != null) {
+/*  833 */     if (storage != null) {
 /*      */       
-/*  831 */       int fuelCount = 0;
-/*  832 */       for (ItemStack is : storage) {
+/*  835 */       int fuelCount = 0;
+/*  836 */       for (ItemStack is : storage) {
 /*      */         
-/*  834 */         if (is != null && is.func_77973_b() != null && (is.func_77973_b() == TFCItems.logs || is.func_77973_b() == Item.func_150898_a(TFCBlocks.peat))) {
-/*  835 */           fuelCount++;
+/*  838 */         if (is != null && is.func_77973_b() != null && (is.func_77973_b() == TFCItems.logs || is.func_77973_b() == Item.func_150898_a(TFCBlocks.peat))) {
+/*  839 */           fuelCount++;
 /*      */         }
 /*      */       } 
-/*  838 */       if (fuelCount > 0) {
-/*  839 */         currenttip.add(TFC_Core.translate("gui.fuel") + " : " + fuelCount + "/4");
+/*  842 */       if (fuelCount > 0) {
+/*  843 */         currenttip.add(TFC_Core.translate("gui.fuel") + " : " + fuelCount + "/4");
 /*      */       }
 /*      */     } 
-/*  842 */     return currenttip;
+/*  846 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> forgeBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  847 */     NBTTagCompound tag = accessor.getNBTData();
-/*  848 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
+/*  851 */     NBTTagCompound tag = accessor.getNBTData();
+/*  852 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
 /*      */     
-/*  850 */     if (storage != null) {
+/*  854 */     if (storage != null) {
 /*      */       
-/*  852 */       int fuelCount = 0;
-/*  853 */       boolean hasMold = false;
+/*  856 */       int fuelCount = 0;
+/*  857 */       boolean hasMold = false;
 /*      */       
-/*  855 */       for (int i = 5; i <= 9; i++) {
+/*  859 */       for (int i = 5; i <= 9; i++) {
 /*      */         
-/*  857 */         if (storage[i] != null && storage[i].func_77973_b() != null && storage[i].func_77973_b() instanceof com.bioxx.tfc.Items.ItemCoal) {
-/*  858 */           fuelCount++;
+/*  861 */         if (storage[i] != null && storage[i].func_77973_b() != null && storage[i].func_77973_b() instanceof com.bioxx.tfc.Items.ItemCoal) {
+/*  862 */           fuelCount++;
 /*      */         }
 /*      */       } 
-/*  861 */       if (fuelCount > 0) {
-/*  862 */         currenttip.add(TFC_Core.translate("gui.fuel") + " : " + fuelCount + "/5");
+/*  865 */       if (fuelCount > 0) {
+/*  866 */         currenttip.add(TFC_Core.translate("gui.fuel") + " : " + fuelCount + "/5");
 /*      */       }
-/*  864 */       for (int j = 10; j <= 13; j++) {
+/*  868 */       for (int j = 10; j <= 13; j++) {
 /*      */         
-/*  866 */         if (storage[j] != null && storage[j].func_77973_b() == TFCItems.ceramicMold && (storage[j]).field_77994_a > 0)
-/*  867 */           hasMold = true; 
+/*  870 */         if (storage[j] != null && storage[j].func_77973_b() == TFCItems.ceramicMold && (storage[j]).field_77994_a > 0)
+/*  871 */           hasMold = true; 
 /*      */       } 
-/*  869 */       if (hasMold) {
-/*  870 */         currenttip.add(TFC_Core.translate("item.Mold.Ceramic Mold.name") + EnumChatFormatting.GREEN.toString() + " ✔");
+/*  873 */       if (hasMold) {
+/*  874 */         currenttip.add(TFC_Core.translate("item.Mold.Ceramic Mold.name") + EnumChatFormatting.GREEN.toString() + " ✔");
 /*      */       } else {
-/*  872 */         currenttip.add(TFC_Core.translate("item.Mold.Ceramic Mold.name") + EnumChatFormatting.RED.toString() + " ✘");
+/*  876 */         currenttip.add(TFC_Core.translate("item.Mold.Ceramic Mold.name") + EnumChatFormatting.RED.toString() + " ✘");
 /*      */       } 
 /*      */     } 
-/*  875 */     return currenttip;
+/*  879 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> fruitLeavesBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  880 */     FloraIndex index = FloraManager.getInstance().findMatchingIndex(BlockFruitLeaves.getType(accessor.getBlock(), accessor.getMetadata()));
-/*  881 */     if (index != null)
-/*  882 */       currenttip.add(TFC_Time.SEASONS[index.harvestStart] + " - " + TFC_Time.SEASONS[index.harvestFinish]); 
-/*  883 */     return currenttip;
+/*  884 */     FloraIndex index = FloraManager.getInstance().findMatchingIndex(BlockFruitLeaves.getType(accessor.getBlock(), accessor.getMetadata()));
+/*  885 */     if (index != null)
+/*  886 */       currenttip.add(TFC_Time.SEASONS[index.harvestStart] + " - " + TFC_Time.SEASONS[index.harvestFinish]); 
+/*  887 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> logPileBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  888 */     NBTTagCompound tag = accessor.getNBTData();
-/*  889 */     Boolean isOnFire = Boolean.valueOf(tag.func_74767_n("isOnFire"));
+/*  892 */     NBTTagCompound tag = accessor.getNBTData();
+/*  893 */     Boolean isOnFire = Boolean.valueOf(tag.func_74767_n("isOnFire"));
 /*      */     
-/*  891 */     if (isOnFire.booleanValue()) {
+/*  895 */     if (isOnFire.booleanValue()) {
 /*      */       
-/*  893 */       int fireTimer = tag.func_74762_e("fireTimer");
-/*  894 */       int hours = (int)(TFCOptions.charcoalPitBurnTime - (float)(TFC_Time.getTotalHours() - fireTimer));
-/*  895 */       currenttip.add(hours + " " + TFC_Core.translate("gui.hoursRemaining") + " (" + Helper.roundNumber(100.0F - hours / TFCOptions.charcoalPitBurnTime * 100.0F, 10.0F) + "%)");
+/*  897 */       int fireTimer = tag.func_74762_e("fireTimer");
+/*  898 */       int hours = (int)(TFCOptions.charcoalPitBurnTime - (float)(TFC_Time.getTotalHours() - fireTimer));
+/*  899 */       currenttip.add(hours + " " + TFC_Core.translate("gui.hoursRemaining") + " (" + Helper.roundNumber(100.0F - hours / TFCOptions.charcoalPitBurnTime * 100.0F, 10.0F) + "%)");
 /*      */     }
 /*      */     else {
 /*      */       
-/*  899 */       ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
-/*  900 */       boolean[] counted = { false, false, false, false };
+/*  903 */       ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
+/*  904 */       boolean[] counted = { false, false, false, false };
 /*      */ 
 /*      */ 
 /*      */ 
 /*      */ 
 /*      */ 
 /*      */       
-/*  907 */       for (int j = 0; j < storage.length; j++) {
+/*  911 */       for (int j = 0; j < storage.length; j++) {
 /*      */         
-/*  909 */         if (storage[j] != null && !counted[j]) {
+/*  913 */         if (storage[j] != null && !counted[j]) {
 /*      */           
-/*  911 */           String log = storage[j].func_82833_r() + " : ";
-/*  912 */           int count = (storage[j]).field_77994_a;
-/*  913 */           for (int k = j + 1; k < storage.length; k++) {
+/*  915 */           String log = storage[j].func_82833_r() + " : ";
+/*  916 */           int count = (storage[j]).field_77994_a;
+/*  917 */           for (int k = j + 1; k < storage.length; k++) {
 /*      */             
-/*  915 */             if (storage[k] != null && storage[j].func_77969_a(storage[k])) {
+/*  919 */             if (storage[k] != null && storage[j].func_77969_a(storage[k])) {
 /*      */               
-/*  917 */               count += (storage[k]).field_77994_a;
-/*  918 */               counted[k] = true;
+/*  921 */               count += (storage[k]).field_77994_a;
+/*  922 */               counted[k] = true;
 /*      */             } 
 /*      */           } 
-/*  921 */           currenttip.add(log + count);
-/*  922 */           counted[j] = true;
+/*  925 */           currenttip.add(log + count);
+/*  926 */           counted[j] = true;
 /*      */         } 
 /*      */       } 
 /*      */     } 
 /*      */     
-/*  927 */     return currenttip;
+/*  931 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> loomBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  932 */     NBTTagCompound tag = accessor.getNBTData();
-/*  933 */     boolean finished = tag.func_74767_n("finished");
-/*  934 */     int wovenStrings = tag.func_74762_e("cloth");
-/*  935 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
+/*  936 */     NBTTagCompound tag = accessor.getNBTData();
+/*  937 */     boolean finished = tag.func_74767_n("finished");
+/*  938 */     int wovenStrings = tag.func_74762_e("cloth");
+/*  939 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
 /*      */     
-/*  937 */     if (!finished && storage[0] != null) {
+/*  941 */     if (!finished && storage[0] != null) {
 /*      */       
-/*  939 */       LoomRecipe recipe = LoomManager.getInstance().findPotentialRecipes(storage[0]);
-/*  940 */       int maxStrings = recipe.getReqSize();
+/*  943 */       LoomRecipe recipe = LoomManager.getInstance().findPotentialRecipes(storage[0]);
+/*  944 */       int maxStrings = recipe.getReqSize();
 /*      */       
-/*  942 */       if ((storage[0]).field_77994_a < maxStrings) {
+/*  946 */       if ((storage[0]).field_77994_a < maxStrings) {
 /*      */         
-/*  944 */         String name = storage[0].func_82833_r() + " : ";
-/*  945 */         currenttip.add(name + (storage[0]).field_77994_a + "/" + maxStrings);
+/*  948 */         String name = storage[0].func_82833_r() + " : ";
+/*  949 */         currenttip.add(name + (storage[0]).field_77994_a + "/" + maxStrings);
 /*      */       }
 /*      */       else {
 /*      */         
-/*  949 */         String name = recipe.getOutItemStack().func_82833_r() + " : ";
-/*  950 */         int percent = (int)(100.0D * wovenStrings / maxStrings);
-/*  951 */         currenttip.add(TFC_Core.translate("gui.weaving") + " " + name + percent + "%");
+/*  953 */         String name = recipe.getOutItemStack().func_82833_r() + " : ";
+/*  954 */         int percent = (int)(100.0D * wovenStrings / maxStrings);
+/*  955 */         currenttip.add(TFC_Core.translate("gui.weaving") + " " + name + percent + "%");
 /*      */       } 
 /*      */     } 
 /*      */     
-/*  955 */     return currenttip;
+/*  959 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> metalTrapDoorBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  960 */     NBTTagCompound tag = accessor.getNBTData();
-/*  961 */     ItemStack sheetStack = ItemStack.func_77949_a(tag.func_74775_l("sheetType"));
+/*  964 */     NBTTagCompound tag = accessor.getNBTData();
+/*  965 */     ItemStack sheetStack = ItemStack.func_77949_a(tag.func_74775_l("sheetType"));
 /*      */     
-/*  963 */     String metalType = BlockMetalTrapDoor.metalNames[sheetStack.func_77960_j() & 0x1F];
-/*  964 */     currenttip.add(TFC_Core.translate("gui.metal." + metalType.replaceAll("\\s", "")));
-/*  965 */     return currenttip;
+/*  967 */     String metalType = BlockMetalTrapDoor.metalNames[sheetStack.func_77960_j() & 0x1F];
+/*  968 */     currenttip.add(TFC_Core.translate("gui.metal." + metalType.replaceAll("\\s", "")));
+/*  969 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> nestBoxBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  970 */     NBTTagCompound tag = accessor.getNBTData();
-/*  971 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
-/*  972 */     int eggCount = 0, fertEggCount = 0;
+/*  974 */     NBTTagCompound tag = accessor.getNBTData();
+/*  975 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
+/*  976 */     int eggCount = 0, fertEggCount = 0;
 /*      */     
-/*  974 */     for (ItemStack is : storage) {
+/*  978 */     for (ItemStack is : storage) {
 /*      */       
-/*  976 */       if (is != null && is.func_77973_b() == TFCItems.egg)
+/*  980 */       if (is != null && is.func_77973_b() == TFCItems.egg)
 /*      */       {
-/*  978 */         if (is.func_77942_o() && is.func_77978_p().func_74764_b("Fertilized")) {
-/*  979 */           fertEggCount++;
+/*  982 */         if (is.func_77942_o() && is.func_77978_p().func_74764_b("Fertilized")) {
+/*  983 */           fertEggCount++;
 /*      */         } else {
-/*  981 */           eggCount++;
+/*  985 */           eggCount++;
 /*      */         } 
 /*      */       }
 /*      */     } 
-/*  985 */     if (eggCount > 0)
-/*  986 */       currenttip.add(TFC_Core.translate("gui.eggs") + " : " + eggCount); 
-/*  987 */     if (fertEggCount > 0) {
-/*  988 */       currenttip.add(TFC_Core.translate("gui.fertEggs") + " : " + fertEggCount);
+/*  989 */     if (eggCount > 0)
+/*  990 */       currenttip.add(TFC_Core.translate("gui.eggs") + " : " + eggCount); 
+/*  991 */     if (fertEggCount > 0) {
+/*  992 */       currenttip.add(TFC_Core.translate("gui.fertEggs") + " : " + fertEggCount);
 /*      */     }
-/*  990 */     return currenttip;
+/*  994 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> oilLampBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/*  995 */     NBTTagCompound tag = accessor.getNBTData();
-/*  996 */     if (tag.func_74764_b("Fuel")) {
+/*  999 */     NBTTagCompound tag = accessor.getNBTData();
+/* 1000 */     if (tag.func_74764_b("Fuel")) {
 /*      */       
-/*  998 */       FluidStack fuel = FluidStack.loadFluidStackFromNBT(tag.func_74775_l("Fuel"));
-/*  999 */       int hours = fuel.amount * TFCOptions.oilLampFuelMult / 8;
-/* 1000 */       if (fuel.getFluid() == TFCFluids.OLIVEOIL) {
-/* 1001 */         currenttip.add(hours + " " + TFC_Core.translate("gui.hoursRemaining") + " (" + Helper.roundNumber(hours / 250.0F * TFCOptions.oilLampFuelMult * 100.0F, 10.0F) + "%)");
-/* 1002 */       } else if (fuel.getFluid() == TFCFluids.LAVA) {
-/* 1003 */         currenttip.add(TFC_Core.translate("gui.infinite") + " " + TFC_Core.translate("gui.hoursRemaining"));
+/* 1002 */       FluidStack fuel = FluidStack.loadFluidStackFromNBT(tag.func_74775_l("Fuel"));
+/* 1003 */       int hours = fuel.amount * TFCOptions.oilLampFuelMult / 8;
+/* 1004 */       if (fuel.getFluid() == TFCFluids.OLIVEOIL) {
+/* 1005 */         currenttip.add(hours + " " + TFC_Core.translate("gui.hoursRemaining") + " (" + Helper.roundNumber(hours / 250.0F * TFCOptions.oilLampFuelMult * 100.0F, 10.0F) + "%)");
+/* 1006 */       } else if (fuel.getFluid() == TFCFluids.LAVA) {
+/* 1007 */         currenttip.add(TFC_Core.translate("gui.infinite") + " " + TFC_Core.translate("gui.hoursRemaining"));
 /*      */       } 
-/* 1005 */     }  return currenttip;
+/* 1009 */     }  return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> oreBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/* 1010 */     int meta = accessor.getMetadata();
+/* 1014 */     int meta = accessor.getMetadata();
 /*      */     
-/* 1012 */     if (accessor.getBlock() == TFCBlocks.ore) {
+/* 1016 */     if (accessor.getBlock() == TFCBlocks.ore) {
 /*      */       
-/* 1014 */       switch (meta) {
+/* 1018 */       switch (meta) {
 /*      */         
 /*      */         case 0:
 /*      */         case 9:
 /*      */         case 13:
-/* 1019 */           currenttip.add(TFC_Core.translate("gui.metal.Copper"));
+/* 1023 */           currenttip.add(TFC_Core.translate("gui.metal.Copper"));
 /*      */           break;
 /*      */         case 1:
-/* 1022 */           currenttip.add(TFC_Core.translate("gui.metal.Gold"));
+/* 1026 */           currenttip.add(TFC_Core.translate("gui.metal.Gold"));
 /*      */           break;
 /*      */         case 2:
-/* 1025 */           currenttip.add(TFC_Core.translate("gui.metal.Platinum") + " - " + TFC_Core.translate("gui.useless"));
+/* 1029 */           currenttip.add(TFC_Core.translate("gui.ore.Platinum"));
 /*      */           break;
 /*      */         case 3:
 /*      */         case 10:
 /*      */         case 11:
-/* 1030 */           currenttip.add(TFC_Core.translate("gui.metal.Iron"));
+/* 1034 */           currenttip.add(TFC_Core.translate("gui.metal.Iron"));
 /*      */           break;
 /*      */         case 4:
-/* 1033 */           currenttip.add(TFC_Core.translate("gui.metal.Silver"));
+/* 1037 */           currenttip.add(TFC_Core.translate("gui.metal.Silver"));
 /*      */           break;
 /*      */         case 5:
-/* 1036 */           currenttip.add(TFC_Core.translate("gui.metal.Tin"));
+/* 1040 */           currenttip.add(TFC_Core.translate("gui.metal.Tin"));
 /*      */           break;
 /*      */         case 6:
-/* 1039 */           currenttip.add(TFC_Core.translate("gui.metal.Lead") + " - " + TFC_Core.translate("gui.useless"));
+/* 1043 */           currenttip.add(TFC_Core.translate("gui.ore.Lead"));
 /*      */           break;
 /*      */         case 7:
-/* 1042 */           currenttip.add(TFC_Core.translate("gui.metal.Bismuth"));
+/* 1046 */           currenttip.add(TFC_Core.translate("gui.metal.Bismuth"));
 /*      */           break;
 /*      */         case 8:
-/* 1045 */           currenttip.add(TFC_Core.translate("gui.metal.Nickel"));
+/* 1049 */           currenttip.add(TFC_Core.translate("gui.metal.Nickel"));
 /*      */           break;
 /*      */         case 12:
-/* 1048 */           currenttip.add(TFC_Core.translate("gui.metal.Zinc"));
+/* 1052 */           currenttip.add(TFC_Core.translate("gui.metal.Zinc"));
 /*      */           break;
 /*      */         case 14:
 /*      */         case 15:
-/* 1052 */           currenttip.add(TFC_Core.translate("item.coal.coal.name"));
-/* 1053 */           return currenttip;
+/* 1056 */           currenttip.add(TFC_Core.translate("item.coal.coal.name"));
+/* 1057 */           return currenttip;
 /*      */       } 
 /*      */       
-/* 1056 */       if (config.getConfig("tfc.oreQuality"))
+/* 1060 */       if (config.getConfig("tfc.oreQuality"))
 /*      */       {
-/* 1058 */         TEOre te = (TEOre)accessor.getTileEntity();
+/* 1062 */         TEOre te = (TEOre)accessor.getTileEntity();
 /*      */         
-/* 1060 */         int ore = getOreGrade(te, meta);
+/* 1064 */         int ore = getOreGrade(te, meta);
 /*      */         
-/* 1062 */         int units = (ore < 14) ? TFCOptions.normalOreUnits : ((ore < 49) ? TFCOptions.richOreUnits : ((ore < 63) ? TFCOptions.poorOreUnits : 0));
-/* 1063 */         if (units > 0) {
-/* 1064 */           currenttip.add(TFC_Core.translate("gui.units") + " : " + units);
+/* 1066 */         int units = (ore < 14) ? TFCOptions.normalOreUnits : ((ore < 49) ? TFCOptions.richOreUnits : ((ore < 63) ? TFCOptions.poorOreUnits : 0));
+/* 1067 */         if (units > 0) {
+/* 1068 */           currenttip.add(TFC_Core.translate("gui.units") + " : " + units);
 /*      */         }
 /*      */       }
 /*      */     
-/* 1068 */     } else if (accessor.getBlock() == TFCBlocks.ore2) {
+/* 1072 */     } else if (accessor.getBlock() == TFCBlocks.ore2) {
 /*      */       
-/* 1070 */       switch (meta) {
+/* 1074 */       switch (meta) {
 /*      */         
 /*      */         case 1:
+/* 1077 */           currenttip.add(TFC_Core.translate("gui.ore.gypsum"));
+/*      */           break;
 /*      */         case 2:
+/* 1080 */           currenttip.add(TFC_Core.translate("gui.ore.satinspar"));
+/*      */           break;
 /*      */         case 3:
+/* 1083 */           currenttip.add(TFC_Core.translate("gui.ore.selenite"));
+/*      */           break;
 /*      */         case 6:
+/* 1086 */           currenttip.add(TFC_Core.translate("gui.ore.petrifiedwood"));
+/*      */           break;
+/*      */         case 7:
+/* 1089 */           currenttip.add(TFC_Core.translate("gui.ore.sulphur"));
+/*      */           break;
 /*      */         case 8:
+/* 1092 */           currenttip.add(TFC_Core.translate("gui.ore.jet"));
+/*      */           break;
 /*      */         case 9:
+/* 1095 */           currenttip.add(TFC_Core.translate("gui.ore.microcline"));
+/*      */           break;
 /*      */         case 10:
+/* 1098 */           currenttip.add(TFC_Core.translate("gui.ore.pitchblende"));
+/*      */           break;
 /*      */         case 14:
-/* 1080 */           currenttip.add(TFC_Core.translate("gui.useless"));
+/* 1101 */           currenttip.add(TFC_Core.translate("gui.ore.serpentine"));
 /*      */           break;
 /*      */         case 5:
-/* 1083 */           currenttip.add(TFC_Core.translate("item.Diamond.Normal.name"));
+/* 1104 */           currenttip.add(TFC_Core.translate("item.Diamond.Normal.name"));
 /*      */           break;
 /*      */         case 11:
 /*      */         case 12:
-/* 1087 */           currenttip.add(TFC_Core.translate("item.redstone.name"));
+/* 1108 */           currenttip.add(TFC_Core.translate("item.redstone.name"));
 /*      */           break;
 /*      */         case 15:
-/* 1090 */           currenttip.add(TFC_Core.translate("item.Fertilizer.name"));
+/* 1111 */           currenttip.add(TFC_Core.translate("item.Fertilizer.name"));
 /*      */           break;
 /*      */       } 
 /*      */     
-/* 1094 */     } else if (accessor.getBlock() == TFCBlocks.ore3) {
+/* 1115 */     } else if (accessor.getBlock() == TFCBlocks.ore3) {
 /*      */       
-/* 1096 */       switch (meta) {
+/* 1117 */       switch (meta) {
 /*      */         
 /*      */         case 0:
-/* 1099 */           currenttip.add(TFC_Core.translate("item.Powder.Flux.name"));
+/* 1120 */           currenttip.add(TFC_Core.translate("item.Powder.Flux.name"));
 /*      */           break;
 /*      */         case 1:
-/* 1102 */           currenttip.add(TFC_Core.translate("gui.useless"));
+/* 1123 */           currenttip.add(TFC_Core.translate("gui.ore.olivine"));
 /*      */           break;
 /*      */       } 
 /*      */     
 /*      */     } 
-/* 1107 */     return currenttip;
+/* 1128 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> potteryBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/* 1112 */     NBTTagCompound tag = accessor.getNBTData();
-/* 1113 */     long burnStart = tag.func_74763_f("burnStart");
-/* 1114 */     int wood = tag.func_74762_e("wood");
-/* 1115 */     int straw = tag.func_74762_e("straw");
+/* 1133 */     NBTTagCompound tag = accessor.getNBTData();
+/* 1134 */     long burnStart = tag.func_74763_f("burnStart");
+/* 1135 */     int wood = tag.func_74762_e("wood");
+/* 1136 */     int straw = tag.func_74762_e("straw");
 /*      */     
-/* 1117 */     if (straw > 0 && straw < 8) {
-/* 1118 */       currenttip.add(TFC_Core.translate("item.Straw.name") + " : " + straw + "/8");
-/* 1119 */     } else if (wood > 0 && wood < 8) {
-/* 1120 */       currenttip.add(TFC_Core.translate("gui.logs") + " : " + wood + "/8");
-/* 1121 */     } else if (burnStart > 0L) {
+/* 1138 */     if (straw > 0 && straw < 8) {
+/* 1139 */       currenttip.add(TFC_Core.translate("item.Straw.name") + " : " + straw + "/8");
+/* 1140 */     } else if (wood > 0 && wood < 8) {
+/* 1141 */       currenttip.add(TFC_Core.translate("gui.logs") + " : " + wood + "/8");
+/* 1142 */     } else if (burnStart > 0L) {
 /*      */       
-/* 1123 */       int hours = (int)(TFCOptions.pitKilnBurnTime - (float)(TFC_Time.getTotalHours() - burnStart / 1000L));
-/* 1124 */       currenttip.add(hours + " " + TFC_Core.translate("gui.hoursRemaining") + " (" + Helper.roundNumber(100.0F - hours / TFCOptions.pitKilnBurnTime * 100.0F, 10.0F) + "%)");
+/* 1144 */       int hours = (int)(TFCOptions.pitKilnBurnTime - (float)(TFC_Time.getTotalHours() - burnStart / 1000L));
+/* 1145 */       currenttip.add(hours + " " + TFC_Core.translate("gui.hoursRemaining") + " (" + Helper.roundNumber(100.0F - hours / TFCOptions.pitKilnBurnTime * 100.0F, 10.0F) + "%)");
 /*      */     } 
 /*      */     
-/* 1127 */     return currenttip;
+/* 1148 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> saplingBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/* 1132 */     NBTTagCompound tag = accessor.getNBTData();
-/* 1133 */     boolean enoughSpace = tag.func_74767_n("enoughSpace");
-/* 1134 */     long growTime = tag.func_74763_f("growTime");
-/* 1135 */     int days = (int)((growTime - TFC_Time.getTotalTicks()) / 24000L);
-/* 1136 */     if (days > 0) {
+/* 1153 */     NBTTagCompound tag = accessor.getNBTData();
+/* 1154 */     boolean enoughSpace = tag.func_74767_n("enoughSpace");
+/* 1155 */     long growTime = tag.func_74763_f("growTime");
+/* 1156 */     int days = (int)((growTime - TFC_Time.getTotalTicks()) / 24000L);
+/* 1157 */     if (days > 0) {
 /*      */       
-/* 1138 */       currenttip.add(days + " " + TFC_Core.translate("gui.daysRemaining"));
+/* 1159 */       currenttip.add(days + " " + TFC_Core.translate("gui.daysRemaining"));
 /*      */     }
-/* 1140 */     else if (!enoughSpace) {
+/* 1161 */     else if (!enoughSpace) {
 /*      */       
-/* 1142 */       currenttip.add(TFC_Core.translate("gui.enoughSpace"));
+/* 1163 */       currenttip.add(TFC_Core.translate("gui.enoughSpace"));
 /*      */     } 
 /*      */     
-/* 1145 */     return currenttip;
+/* 1166 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> sluiceBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/* 1150 */     NBTTagCompound tag = accessor.getNBTData();
-/* 1151 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
-/* 1152 */     int soilAmount = tag.func_74762_e("soilAmount");
+/* 1171 */     NBTTagCompound tag = accessor.getNBTData();
+/* 1172 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
+/* 1173 */     int soilAmount = tag.func_74762_e("soilAmount");
 /*      */     
-/* 1154 */     if (soilAmount == -1) {
-/* 1155 */       currenttip.add(TFC_Core.translate("gui.Sluice.Overworked"));
-/* 1156 */     } else if (soilAmount > 0) {
+/* 1175 */     if (soilAmount == -1) {
+/* 1176 */       currenttip.add(TFC_Core.translate("gui.Sluice.Overworked"));
+/* 1177 */     } else if (soilAmount > 0) {
 /*      */       
-/* 1158 */       currenttip.add(TFC_Core.translate("gui.Sluice.Soil") + " : " + soilAmount + "/50");
+/* 1179 */       currenttip.add(TFC_Core.translate("gui.Sluice.Soil") + " : " + soilAmount + "/50");
 /*      */     } 
 /*      */     
-/* 1161 */     int gemCount = 0, oreCount = 0;
-/* 1162 */     for (ItemStack is : storage) {
+/* 1182 */     int gemCount = 0, oreCount = 0;
+/* 1183 */     for (ItemStack is : storage) {
 /*      */       
-/* 1164 */       if (is != null)
+/* 1185 */       if (is != null)
 /*      */       {
-/* 1166 */         if (is.func_77973_b() instanceof com.bioxx.tfc.Items.ItemGem) {
-/* 1167 */           gemCount++;
-/* 1168 */         } else if (is.func_77973_b() instanceof com.bioxx.tfc.Items.ItemOre) {
-/* 1169 */           oreCount++;
+/* 1187 */         if (is.func_77973_b() instanceof com.bioxx.tfc.Items.ItemGem) {
+/* 1188 */           gemCount++;
+/* 1189 */         } else if (is.func_77973_b() instanceof com.bioxx.tfc.Items.ItemOre) {
+/* 1190 */           oreCount++;
 /*      */         } 
 /*      */       }
 /*      */     } 
-/* 1173 */     if (gemCount > 0)
-/* 1174 */       currenttip.add(TFC_Core.translate("gui.gems") + " : " + gemCount); 
-/* 1175 */     if (oreCount > 0) {
-/* 1176 */       currenttip.add(TFC_Core.translate("gui.Bloomery.Ore") + " : " + oreCount);
+/* 1194 */     if (gemCount > 0)
+/* 1195 */       currenttip.add(TFC_Core.translate("gui.gems") + " : " + gemCount); 
+/* 1196 */     if (oreCount > 0) {
+/* 1197 */       currenttip.add(TFC_Core.translate("gui.Bloomery.Ore") + " : " + oreCount);
 /*      */     }
-/* 1178 */     return currenttip;
+/* 1199 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> smokeRackBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/* 1183 */     NBTTagCompound tag = accessor.getNBTData();
-/* 1184 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
+/* 1204 */     NBTTagCompound tag = accessor.getNBTData();
+/* 1205 */     ItemStack[] storage = getStorage(tag, accessor.getTileEntity());
 /*      */     
-/* 1186 */     for (int i = 0; i < storage.length; i++) {
+/* 1207 */     for (int i = 0; i < storage.length; i++) {
 /*      */       
-/* 1188 */       ItemStack is = storage[i];
-/* 1189 */       if (is != null) {
+/* 1209 */       ItemStack is = storage[i];
+/* 1210 */       if (is != null) {
 /*      */         
-/* 1191 */         int dryHours = 4 - Food.getDried(is);
-/* 1192 */         int smokeHours = 12 - Food.getSmokeCounter(is);
+/* 1212 */         int dryHours = 4 - Food.getDried(is);
+/* 1213 */         int smokeHours = 12 - Food.getSmokeCounter(is);
 /*      */         
-/* 1194 */         if (smokeHours < 12 && !Food.isSmoked(is)) {
+/* 1215 */         if (smokeHours < 12 && !Food.isSmoked(is)) {
 /*      */           
-/* 1196 */           smokeHours++;
-/* 1197 */           float percent = Helper.roundNumber(100.0F - 100.0F * smokeHours / 12.0F, 10.0F);
-/* 1198 */           currenttip.add(TFC_Core.translate("word.smoking") + " " + is.func_82833_r());
-/* 1199 */           currenttip.add("· " + smokeHours + " " + TFC_Core.translate("gui.hoursRemaining") + " (" + percent + "%)");
+/* 1217 */           smokeHours++;
+/* 1218 */           float percent = Helper.roundNumber(100.0F - 100.0F * smokeHours / 12.0F, 10.0F);
+/* 1219 */           currenttip.add(TFC_Core.translate("word.smoking") + " " + is.func_82833_r());
+/* 1220 */           currenttip.add("· " + smokeHours + " " + TFC_Core.translate("gui.hoursRemaining") + " (" + percent + "%)");
 /*      */         }
-/* 1201 */         else if (dryHours < 4 && !Food.isDried(is)) {
+/* 1222 */         else if (dryHours < 4 && !Food.isDried(is)) {
 /*      */           
-/* 1203 */           float percent = Helper.roundNumber(100.0F - 100.0F * dryHours / 4.0F, 10.0F);
-/* 1204 */           currenttip.add(TFC_Core.translate("word.drying") + " " + is.func_82833_r());
-/* 1205 */           currenttip.add("· " + dryHours + " " + TFC_Core.translate("gui.hoursRemaining") + " (" + percent + "%)");
+/* 1224 */           float percent = Helper.roundNumber(100.0F - 100.0F * dryHours / 4.0F, 10.0F);
+/* 1225 */           currenttip.add(TFC_Core.translate("word.drying") + " " + is.func_82833_r());
+/* 1226 */           currenttip.add("· " + dryHours + " " + TFC_Core.translate("gui.hoursRemaining") + " (" + percent + "%)");
 /*      */         } else {
 /*      */           
-/* 1208 */           currenttip.add(is.func_82833_r());
+/* 1229 */           currenttip.add(is.func_82833_r());
 /*      */         } 
 /*      */       } 
 /*      */     } 
-/* 1212 */     return currenttip;
+/* 1233 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> spawnMeterBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/* 1217 */     NBTTagCompound tag = accessor.getNBTData();
-/* 1218 */     int hours = tag.func_74762_e("protectionHours");
+/* 1238 */     NBTTagCompound tag = accessor.getNBTData();
+/* 1239 */     int hours = tag.func_74762_e("protectionHours");
 /*      */     
-/* 1220 */     if (hours > 0)
+/* 1241 */     if (hours > 0)
 /*      */     {
-/* 1222 */       currenttip.add(hours + " " + TFC_Core.translate("gui.hoursRemaining"));
+/* 1243 */       currenttip.add(hours + " " + TFC_Core.translate("gui.hoursRemaining"));
 /*      */     }
 /*      */     
-/* 1225 */     return currenttip;
+/* 1246 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> soilBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/* 1230 */     Block b = accessor.getBlock();
-/* 1231 */     int dam = itemStack.func_77960_j();
-/* 1232 */     if (b == TFCBlocks.dirt2 || b == TFCBlocks.sand2 || TFC_Core.isGrassType2(b) || b == TFCBlocks.gravel2)
+/* 1251 */     Block b = accessor.getBlock();
+/* 1252 */     int dam = itemStack.func_77960_j();
+/* 1253 */     if (b == TFCBlocks.dirt2 || b == TFCBlocks.sand2 || TFC_Core.isGrassType2(b) || b == TFCBlocks.gravel2)
 /*      */     {
-/* 1234 */       dam += 16;
+/* 1255 */       dam += 16;
 /*      */     }
 /*      */     
-/* 1237 */     if (dam < Global.STONE_ALL.length) {
-/* 1238 */       currenttip.add(Global.STONE_ALL[dam]);
+/* 1258 */     if (dam < Global.STONE_ALL.length) {
+/* 1259 */       currenttip.add(Global.STONE_ALL[dam]);
 /*      */     } else {
-/* 1240 */       currenttip.add(EnumChatFormatting.DARK_RED + "Unknown");
+/* 1261 */       currenttip.add(EnumChatFormatting.DARK_RED + "Unknown");
 /*      */     } 
-/* 1242 */     return currenttip;
+/* 1263 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   public List<String> torchBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-/* 1247 */     if (accessor.getMetadata() < 8 && TFCOptions.torchBurnTime != 0) {
+/* 1268 */     if (accessor.getMetadata() < 8 && TFCOptions.torchBurnTime != 0) {
 /*      */       
-/* 1249 */       NBTTagCompound tag = accessor.getNBTData();
-/* 1250 */       long hours = TFCOptions.torchBurnTime - TFC_Time.getTotalHours() - tag.func_74762_e("hourPlaced");
+/* 1270 */       NBTTagCompound tag = accessor.getNBTData();
+/* 1271 */       long hours = TFCOptions.torchBurnTime - TFC_Time.getTotalHours() - tag.func_74762_e("hourPlaced");
 /*      */       
-/* 1252 */       if (hours > 0L)
-/* 1253 */         currenttip.add(hours + " " + TFC_Core.translate("gui.hoursRemaining") + " (" + Helper.roundNumber(100.0F * (float)hours / TFCOptions.torchBurnTime, 10.0F) + "%)"); 
+/* 1273 */       if (hours > 0L)
+/* 1274 */         currenttip.add(hours + " " + TFC_Core.translate("gui.hoursRemaining") + " (" + Helper.roundNumber(100.0F * (float)hours / TFCOptions.torchBurnTime, 10.0F) + "%)"); 
 /*      */     } 
-/* 1255 */     return currenttip;
+/* 1276 */     return currenttip;
+/*      */   }
+/*      */ 
+/*      */   
+/*      */   public List<String> worldBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
+/* 1281 */     int meta = itemStack.func_77960_j();
+/* 1282 */     Item item = itemStack.func_77973_b();
+/*      */     
+/* 1284 */     if (item == TFCItems.smallOreChunk)
+/*      */     {
+/* 1286 */       switch (meta) {
+/*      */         
+/*      */         case 0:
+/*      */         case 9:
+/*      */         case 13:
+/* 1291 */           currenttip.add(TFC_Core.translate("gui.metal.Copper"));
+/*      */           break;
+/*      */         case 1:
+/* 1294 */           currenttip.add(TFC_Core.translate("gui.metal.Gold"));
+/*      */           break;
+/*      */         case 2:
+/* 1297 */           currenttip.add(TFC_Core.translate("gui.metal.Platinum"));
+/*      */           break;
+/*      */         case 3:
+/*      */         case 10:
+/*      */         case 11:
+/* 1302 */           currenttip.add(TFC_Core.translate("gui.metal.Iron"));
+/*      */           break;
+/*      */         case 4:
+/* 1305 */           currenttip.add(TFC_Core.translate("gui.metal.Silver"));
+/*      */           break;
+/*      */         case 5:
+/* 1308 */           currenttip.add(TFC_Core.translate("gui.metal.Tin"));
+/*      */           break;
+/*      */         case 6:
+/* 1311 */           currenttip.add(TFC_Core.translate("gui.metal.Lead"));
+/*      */           break;
+/*      */         case 7:
+/* 1314 */           currenttip.add(TFC_Core.translate("gui.metal.Bismuth"));
+/*      */           break;
+/*      */         case 8:
+/* 1317 */           currenttip.add(TFC_Core.translate("gui.metal.Nickel"));
+/*      */           break;
+/*      */         case 12:
+/* 1320 */           currenttip.add(TFC_Core.translate("gui.metal.Zinc"));
+/*      */           break;
+/*      */         case 14:
+/*      */         case 15:
+/* 1324 */           currenttip.add(TFC_Core.translate("item.coal.coal.name"));
+/* 1325 */           return currenttip;
+/*      */       } 
+/*      */     }
+/* 1328 */     return currenttip;
 /*      */   }
 /*      */ 
 /*      */ 
 /*      */   
 /*      */   private ItemStack[] getStorage(NBTTagCompound tag, TileEntity te) {
-/* 1261 */     if (te instanceof IInventory) {
+/* 1334 */     if (te instanceof IInventory) {
 /*      */       
-/* 1263 */       IInventory inv = (IInventory)te;
-/* 1264 */       NBTTagList tagList = tag.func_150295_c("Items", 10);
-/* 1265 */       ItemStack[] storage = new ItemStack[inv.func_70302_i_()];
-/* 1266 */       for (int i = 0; i < tagList.func_74745_c(); i++) {
+/* 1336 */       IInventory inv = (IInventory)te;
+/* 1337 */       NBTTagList tagList = tag.func_150295_c("Items", 10);
+/* 1338 */       ItemStack[] storage = new ItemStack[inv.func_70302_i_()];
+/* 1339 */       for (int i = 0; i < tagList.func_74745_c(); i++) {
 /*      */         
-/* 1268 */         NBTTagCompound itemTag = tagList.func_150305_b(i);
-/* 1269 */         byte slot = itemTag.func_74771_c("Slot");
-/* 1270 */         if (slot >= 0 && slot < storage.length) {
-/* 1271 */           storage[slot] = ItemStack.func_77949_a(itemTag);
+/* 1341 */         NBTTagCompound itemTag = tagList.func_150305_b(i);
+/* 1342 */         byte slot = itemTag.func_74771_c("Slot");
+/* 1343 */         if (slot >= 0 && slot < storage.length) {
+/* 1344 */           storage[slot] = ItemStack.func_77949_a(itemTag);
 /*      */         }
 /*      */       } 
-/* 1274 */       return storage;
+/* 1347 */       return storage;
 /*      */     } 
 /*      */     
-/* 1277 */     return null;
+/* 1350 */     return null;
 /*      */   }
 /*      */ 
 /*      */   
 /*      */   private int getOreGrade(TEOre te, int ore) {
-/* 1282 */     if (te != null) {
+/* 1355 */     if (te != null) {
 /*      */       
-/* 1284 */       int grade = te.extraData & 0x7;
-/* 1285 */       if (grade == 1) {
-/* 1286 */         ore += 35;
-/* 1287 */       } else if (grade == 2) {
-/* 1288 */         ore += 49;
+/* 1357 */       int grade = te.extraData & 0x7;
+/* 1358 */       if (grade == 1) {
+/* 1359 */         ore += 35;
+/* 1360 */       } else if (grade == 2) {
+/* 1361 */         ore += 49;
 /*      */       } 
-/* 1290 */     }  return ore;
+/* 1363 */     }  return ore;
 /*      */   }
 /*      */ }
 

@@ -228,7 +228,7 @@
 /*     */       
 /* 229 */       if (felsicLava) {
 /*     */         
-/* 231 */         if (rand.nextInt(10) == 0 && typeOfLava == 0) {
+/* 231 */         if (typeOfLava == 0) {
 /* 232 */           world.func_147449_b(x, y, z, Blocks.field_150343_Z);
 /*     */         } else {
 /*     */           

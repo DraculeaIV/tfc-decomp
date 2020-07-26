@@ -26,21 +26,55 @@
 /* 26 */     return (Multimap)HashMultimap.create();
 /*    */   }
 /*    */ 
+/*    */ 
+/*    */   
+/*    */   public boolean func_77630_h(ItemStack itemStack) {
+/* 32 */     return false;
+/*    */   }
+/*    */ 
+/*    */ 
+/*    */   
+/*    */   public boolean func_77651_p() {
+/* 38 */     return true;
+/*    */   }
+/*    */ 
+/*    */ 
+/*    */   
+/*    */   public ItemStack getContainerItem(ItemStack itemStack) {
+/* 44 */     ItemStack container = itemStack.func_77946_l();
+/* 45 */     container.func_77964_b(container.func_77960_j() + 1);
+/* 46 */     container.field_77994_a = 1;
+/* 47 */     return container;
+/*    */   }
+/*    */ 
+/*    */ 
+/*    */   
+/*    */   public boolean hasContainerItem(ItemStack stack) {
+/* 53 */     return true;
+/*    */   }
+/*    */ 
+/*    */ 
+/*    */   
+/*    */   public boolean isRepairable() {
+/* 59 */     return false;
+/*    */   }
+/*    */ 
+/*    */ 
 /*    */   
 /*    */   public EnumItemReach getReach(ItemStack is) {
-/* 31 */     return EnumItemReach.SHORT;
+/* 65 */     return EnumItemReach.SHORT;
 /*    */   }
 /*    */ 
 /*    */ 
 /*    */   
 /*    */   public int func_77639_j() {
-/* 37 */     return 1;
+/* 71 */     return 1;
 /*    */   }
 /*    */ 
 /*    */ 
 /*    */   
 /*    */   public boolean canStack() {
-/* 43 */     return false;
+/* 77 */     return false;
 /*    */   }
 /*    */ }
 

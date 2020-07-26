@@ -35,7 +35,7 @@
 /*     */   implements ICustomCollision
 /*     */ {
 /*     */   public IIcon[] icons;
-/*  38 */   public String[] metalNames = new String[] { "Bismuth", "Bismuth Bronze", "Black Bronze", "Black Steel", "Blue Steel", "Brass", "Bronze", "Copper", "Gold", "Wrought Iron", "Lead", "Nickel", "Pig Iron", "Platinum", "Red Steel", "Rose Gold", "Silver", "Steel", "Sterling Silver", "Tin", "Zinc" };
+/*  38 */   public String[] metalNames = new String[] { "Bismuth", "Bismuth Bronze", "Black Bronze", "Black Steel", "Blue Steel", "Brass", "Bronze", "Copper", "Gold", "Wrought Iron", "Lead", "Nickel", "Pig Iron", "Platinum", "Red Steel", "Rose Gold", "Silver", "Steel", "Sterling Silver", "Tin", "Zinc", "Electrum", "Cupronickel" };
 /*     */ 
 /*     */ 
 /*     */   
@@ -144,106 +144,108 @@
 /* 144 */     TFC_Textures.sheetSterlingSilver = this.icons[18];
 /* 145 */     TFC_Textures.sheetTin = this.icons[19];
 /* 146 */     TFC_Textures.sheetZinc = this.icons[20];
+/* 147 */     TFC_Textures.sheetElectrum = this.icons[21];
+/* 148 */     TFC_Textures.sheetCupronickel = this.icons[22];
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public TileEntity func_149915_a(World var1, int var2) {
-/* 152 */     return (TileEntity)new TEMetalSheet();
+/* 154 */     return (TileEntity)new TEMetalSheet();
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public IIcon func_149691_a(int side, int meta) {
-/* 158 */     if (meta >= 0 && meta < this.icons.length)
-/* 159 */       return this.icons[meta]; 
-/* 160 */     return this.icons[19];
+/* 160 */     if (meta >= 0 && meta < this.icons.length)
+/* 161 */       return this.icons[meta]; 
+/* 162 */     return this.icons[19];
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   @SideOnly(Side.CLIENT)
 /*     */   public IIcon func_149673_e(IBlockAccess access, int i, int j, int k, int meta) {
-/* 167 */     TEMetalSheet te = (TEMetalSheet)access.func_147438_o(i, j, k);
-/* 168 */     if (te != null) {
-/* 169 */       return this.icons[te.metalID];
+/* 169 */     TEMetalSheet te = (TEMetalSheet)access.func_147438_o(i, j, k);
+/* 170 */     if (te != null) {
+/* 171 */       return this.icons[te.metalID];
 /*     */     }
-/* 171 */     return this.icons[19];
+/* 173 */     return this.icons[19];
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void addCollisionBoxesToList(World world, int i, int j, int k, List<Object[]> list) {
-/* 178 */     TEMetalSheet te = (TEMetalSheet)world.func_147438_o(i, j, k);
-/* 179 */     double f0 = 0.0625D;
-/* 180 */     double f1 = 0.9375D;
-/* 181 */     double yMax = 1.0D;
-/* 182 */     double yMin = 0.0D;
+/* 180 */     TEMetalSheet te = (TEMetalSheet)world.func_147438_o(i, j, k);
+/* 181 */     double f0 = 0.0625D;
+/* 182 */     double f1 = 0.9375D;
+/* 183 */     double yMax = 1.0D;
+/* 184 */     double yMin = 0.0D;
 /*     */     
-/* 184 */     if (te.topExists())
-/* 185 */       list.add(new Object[] { AxisAlignedBB.func_72330_a(0.0D, f1, 0.0D, 1.0D, 1.0D, 1.0D), Integer.valueOf(0) }); 
-/* 186 */     if (te.bottomExists())
-/* 187 */       list.add(new Object[] { AxisAlignedBB.func_72330_a(0.0D, 0.0D, 0.0D, 1.0D, f0, 1.0D), Integer.valueOf(1) }); 
-/* 188 */     if (te.northExists())
-/* 189 */       list.add(new Object[] { AxisAlignedBB.func_72330_a(0.0D, yMin, 0.0D, 1.0D, yMax, f0), Integer.valueOf(2) }); 
-/* 190 */     if (te.southExists())
-/* 191 */       list.add(new Object[] { AxisAlignedBB.func_72330_a(0.0D, yMin, f1, 1.0D, yMax, 1.0D), Integer.valueOf(3) }); 
-/* 192 */     if (te.eastExists())
-/* 193 */       list.add(new Object[] { AxisAlignedBB.func_72330_a(0.0D, yMin, 0.0D, f0, yMax, 1.0D), Integer.valueOf(4) }); 
-/* 194 */     if (te.westExists()) {
-/* 195 */       list.add(new Object[] { AxisAlignedBB.func_72330_a(f1, yMin, 0.0D, 1.0D, yMax, 1.0D), Integer.valueOf(5) });
+/* 186 */     if (te.topExists())
+/* 187 */       list.add(new Object[] { AxisAlignedBB.func_72330_a(0.0D, f1, 0.0D, 1.0D, 1.0D, 1.0D), Integer.valueOf(0) }); 
+/* 188 */     if (te.bottomExists())
+/* 189 */       list.add(new Object[] { AxisAlignedBB.func_72330_a(0.0D, 0.0D, 0.0D, 1.0D, f0, 1.0D), Integer.valueOf(1) }); 
+/* 190 */     if (te.northExists())
+/* 191 */       list.add(new Object[] { AxisAlignedBB.func_72330_a(0.0D, yMin, 0.0D, 1.0D, yMax, f0), Integer.valueOf(2) }); 
+/* 192 */     if (te.southExists())
+/* 193 */       list.add(new Object[] { AxisAlignedBB.func_72330_a(0.0D, yMin, f1, 1.0D, yMax, 1.0D), Integer.valueOf(3) }); 
+/* 194 */     if (te.eastExists())
+/* 195 */       list.add(new Object[] { AxisAlignedBB.func_72330_a(0.0D, yMin, 0.0D, f0, yMax, 1.0D), Integer.valueOf(4) }); 
+/* 196 */     if (te.westExists()) {
+/* 197 */       list.add(new Object[] { AxisAlignedBB.func_72330_a(f1, yMin, 0.0D, 1.0D, yMax, 1.0D), Integer.valueOf(5) });
 /*     */     }
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void func_149743_a(World world, int i, int j, int k, AxisAlignedBB aabb, List<AxisAlignedBB> list, Entity entity) {
-/* 202 */     ArrayList<Object[]> l = new ArrayList();
-/* 203 */     addCollisionBoxesToList(world, i, j, k, l);
-/* 204 */     for (Object[] o : l) {
+/* 204 */     ArrayList<Object[]> l = new ArrayList();
+/* 205 */     addCollisionBoxesToList(world, i, j, k, l);
+/* 206 */     for (Object[] o : l) {
 /*     */       
-/* 206 */       AxisAlignedBB a = (AxisAlignedBB)o[0];
-/* 207 */       if (a != null && aabb.func_72326_a(a)) {
-/* 208 */         list.add(a);
+/* 208 */       AxisAlignedBB a = (AxisAlignedBB)o[0];
+/* 209 */       if (a != null && aabb.func_72326_a(a)) {
+/* 210 */         list.add(a);
 /*     */       }
 /*     */     } 
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public MovingObjectPosition func_149731_a(World world, int x, int y, int z, Vec3 player, Vec3 view) {
-/* 215 */     return CollisionRayTraceStandard.collisionRayTrace(this, world, x, y, z, player, view);
+/* 217 */     return CollisionRayTraceStandard.collisionRayTrace(this, world, x, y, z, player, view);
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean func_149747_d(IBlockAccess world, int x, int y, int z, int side) {
-/* 221 */     TEMetalSheet te = (TEMetalSheet)world.func_147438_o(x, y, z);
-/* 222 */     switch (side) {
+/* 223 */     TEMetalSheet te = (TEMetalSheet)world.func_147438_o(x, y, z);
+/* 224 */     switch (side) {
 /*     */       case 0:
-/* 224 */         return te.bottomExists();
-/* 225 */       case 1: return te.topExists();
-/* 226 */       case 2: return te.northExists();
-/* 227 */       case 3: return te.southExists();
-/* 228 */       case 4: return te.eastExists();
-/* 229 */       case 5: return te.westExists();
-/* 230 */     }  return false;
+/* 226 */         return te.bottomExists();
+/* 227 */       case 1: return te.topExists();
+/* 228 */       case 2: return te.northExists();
+/* 229 */       case 3: return te.southExists();
+/* 230 */       case 4: return te.eastExists();
+/* 231 */       case 5: return te.westExists();
+/* 232 */     }  return false;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-/* 237 */     TEMetalSheet te = (TEMetalSheet)world.func_147438_o(x, y, z);
-/* 238 */     switch (side) {
+/* 239 */     TEMetalSheet te = (TEMetalSheet)world.func_147438_o(x, y, z);
+/* 240 */     switch (side) {
 /*     */       case DOWN:
-/* 240 */         return te.bottomExists();
-/* 241 */       case UP: return te.topExists();
-/* 242 */       case NORTH: return te.northExists();
-/* 243 */       case SOUTH: return te.southExists();
-/* 244 */       case EAST: return te.eastExists();
-/* 245 */       case WEST: return te.westExists();
-/* 246 */     }  return false;
+/* 242 */         return te.bottomExists();
+/* 243 */       case UP: return te.topExists();
+/* 244 */       case NORTH: return te.northExists();
+/* 245 */       case SOUTH: return te.southExists();
+/* 246 */       case EAST: return te.eastExists();
+/* 247 */       case WEST: return te.westExists();
+/* 248 */     }  return false;
 /*     */   }
 /*     */ 
 /*     */ 
@@ -276,14 +278,14 @@
 /*     */   
 /*     */   @SideOnly(Side.CLIENT)
 /*     */   public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
-/* 279 */     return true;
+/* 281 */     return true;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   @SideOnly(Side.CLIENT)
 /*     */   public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
-/* 286 */     return (world.func_147439_a(x, y, z) == this);
+/* 288 */     return (world.func_147439_a(x, y, z) == this);
 /*     */   }
 /*     */ }
 

@@ -1,5 +1,4 @@
-/*     */ package com.bioxx.tfc.api;
-/*     */ 
+﻿/*     */ package com.bioxx.tfc.api;
 /*     */ 
 /*     */ 
 /*     */ 
@@ -20,11 +19,13 @@
 /*     */   public static boolean enableFiniteWater;
 /*     */   public static boolean onionsAreGross;
 /*     */   public static boolean generateSmoke;
-/*  23 */   public static String quiverHUDPosition = "bottomleft";
+/*  21 */   public static String quiverHUDPosition = "bottomleft";
 /*     */   public static boolean enableSolidDetailed = true;
-/*  25 */   public static int maxRemovedSolidDetailed = 12;
-/*     */   
+/*  23 */   public static int maxRemovedSolidDetailed = 12;
+/*  24 */   public static int hammerBreakSpeed = 90;
 /*     */   public static boolean enableToolModeIndicator = true;
+/*  26 */   public static int recursionLimit = 220;
+/*     */ 
 /*     */   
 /*  29 */   public static int yearLength = 96;
 /*  30 */   public static float pitKilnBurnTime = 8.0F;

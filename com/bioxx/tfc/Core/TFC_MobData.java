@@ -31,6 +31,10 @@ public class TFC_MobData {
   
   public static final int BEAR_HEALTH = 3000;
   
+  public static final int POLAR_BEAR_DAMAGE = 225;
+  
+  public static final int POLAR_BEAR_HEALTH = 4000;
+  
   public static final int SILVERFISH_DAMAGE = 50;
   
   public static final int SILVERFISH_HEALTH = 50;

@@ -428,232 +428,238 @@
 /*     */   public boolean func_70085_c(EntityPlayer player) {
 /* 429 */     if (!this.field_70170_p.field_72995_K) {
 /*     */       
-/* 431 */       if (player.func_70093_af() && !this.familiarizedToday && canFamiliarize()) {
-/*     */         
-/* 433 */         familiarize(player);
-/* 434 */         return true;
-/*     */       } 
-/*     */       
-/* 437 */       if (getGender() == IAnimal.GenderEnum.FEMALE && this.pregnant)
+/* 431 */       ItemStack bucket = player.field_71071_by.func_70448_g();
+/* 432 */       if (bucket != null && bucket.func_77973_b() == Items.field_151133_ar)
 /*     */       {
-/* 439 */         TFC_Core.sendInfoMessage(player, (IChatComponent)new ChatComponentTranslation("entity.pregnant", new Object[0]));
+/* 434 */         return false;
 /*     */       }
 /*     */       
-/* 442 */       if (getGender() == IAnimal.GenderEnum.FEMALE && isAdult() && this.hasMilkTime < TFC_Time.getTotalTicks() && checkFamiliarity(IAnimal.InteractionEnum.MILK, player)) {
+/* 437 */       if (player.func_70093_af() && !this.familiarizedToday && canFamiliarize()) {
 /*     */         
-/* 444 */         ItemStack heldItem = player.field_71071_by.func_70448_g();
-/* 445 */         if (heldItem != null && heldItem.func_77973_b() == TFCItems.woodenBucketEmpty) {
+/* 439 */         familiarize(player);
+/* 440 */         return true;
+/*     */       } 
+/*     */       
+/* 443 */       if (getGender() == IAnimal.GenderEnum.FEMALE && this.pregnant)
+/*     */       {
+/* 445 */         TFC_Core.sendInfoMessage(player, (IChatComponent)new ChatComponentTranslation("entity.pregnant", new Object[0]));
+/*     */       }
+/*     */       
+/* 448 */       if (getGender() == IAnimal.GenderEnum.FEMALE && isAdult() && this.hasMilkTime < TFC_Time.getTotalTicks() && checkFamiliarity(IAnimal.InteractionEnum.MILK, player)) {
+/*     */         
+/* 450 */         ItemStack heldItem = player.field_71071_by.func_70448_g();
+/* 451 */         if (heldItem != null && heldItem.func_77973_b() == TFCItems.woodenBucketEmpty) {
 /*     */           
-/* 447 */           if (!this.familiarizedToday && this.familiarity <= 35) {
+/* 453 */           if (!this.familiarizedToday && this.familiarity <= 35) {
 /*     */             
-/* 449 */             this.familiarizedToday = true;
-/* 450 */             func_70671_ap().func_75651_a((Entity)player, 0.0F, 0.0F);
-/* 451 */             func_70642_aH();
+/* 455 */             this.familiarizedToday = true;
+/* 456 */             func_70671_ap().func_75651_a((Entity)player, 0.0F, 0.0F);
+/* 457 */             func_70642_aH();
 /*     */           } 
 /*     */           
-/* 454 */           ItemStack milkBucket = new ItemStack(TFCItems.woodenBucketMilk);
-/* 455 */           ItemCustomBucketMilk.createTag(milkBucket, 20.0F);
-/* 456 */           player.field_71071_by.func_70299_a(player.field_71071_by.field_70461_c, milkBucket);
-/* 457 */           this.hasMilkTime = TFC_Time.getTotalTicks() + 24000L;
-/* 458 */           return true;
+/* 460 */           ItemStack milkBucket = new ItemStack(TFCItems.woodenBucketMilk);
+/* 461 */           ItemCustomBucketMilk.createTag(milkBucket, 20.0F);
+/* 462 */           player.field_71071_by.func_70299_a(player.field_71071_by.field_70461_c, milkBucket);
+/* 463 */           this.hasMilkTime = TFC_Time.getTotalTicks() + 24000L;
+/* 464 */           return true;
 /*     */         } 
 /*     */       } 
 /*     */     } 
 /*     */     
-/* 463 */     ItemStack itemstack = player.field_71071_by.func_70448_g();
-/* 464 */     if (itemstack != null && isBreedingItemTFC(itemstack) && checkFamiliarity(IAnimal.InteractionEnum.BREED, player) && func_70874_b() == 0 && !func_70880_s() && (this.familiarizedToday || 
-/* 465 */       !canFamiliarize())) {
+/* 469 */     ItemStack itemstack = player.field_71071_by.func_70448_g();
+/* 470 */     if (itemstack != null && isBreedingItemTFC(itemstack) && checkFamiliarity(IAnimal.InteractionEnum.BREED, player) && func_70874_b() == 0 && !func_70880_s() && (this.familiarizedToday || 
+/* 471 */       !canFamiliarize())) {
 /*     */       
-/* 467 */       if (!player.field_71075_bZ.field_75098_d)
+/* 473 */       if (!player.field_71075_bZ.field_75098_d)
 /*     */       {
-/* 469 */         player.field_71071_by.func_70299_a(player.field_71071_by.field_70461_c, ((ItemFoodTFC)itemstack.func_77973_b()).onConsumedByEntity(player.func_70694_bm(), this.field_70170_p, (EntityLivingBase)this));
+/* 475 */         player.field_71071_by.func_70299_a(player.field_71071_by.field_70461_c, ((ItemFoodTFC)itemstack.func_77973_b()).onConsumedByEntity(player.func_70694_bm(), this.field_70170_p, (EntityLivingBase)this));
 /*     */       }
-/* 471 */       this.hunger += 24000;
-/* 472 */       func_146082_f(player);
-/* 473 */       return true;
-/*     */     } 
-/* 475 */     if (itemstack != null && itemstack.func_77973_b() instanceof com.bioxx.tfc.Items.ItemCustomNameTag && itemstack.func_77942_o() && itemstack.field_77990_d.func_74764_b("ItemName")) {
-/* 476 */       if (trySetName(itemstack.field_77990_d.func_74779_i("ItemName"), player)) {
-/* 477 */         itemstack.field_77994_a--;
-/*     */       }
+/* 477 */       this.hunger += 24000;
+/* 478 */       func_146082_f(player);
 /* 479 */       return true;
+/*     */     } 
+/* 481 */     if (itemstack != null && itemstack.func_77973_b() instanceof com.bioxx.tfc.Items.ItemCustomNameTag && itemstack.func_77942_o() && itemstack.field_77990_d.func_74764_b("ItemName")) {
+/* 482 */       if (trySetName(itemstack.field_77990_d.func_74779_i("ItemName"), player)) {
+/* 483 */         itemstack.field_77994_a--;
+/*     */       }
+/* 485 */       return true;
 /*     */     } 
 /*     */ 
 /*     */     
-/* 483 */     return super.func_70085_c(player);
+/* 489 */     return super.func_70085_c(player);
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean isAdult() {
-/* 490 */     return (getBirthDay() + getNumberOfDaysToAdult() <= TFC_Time.getTotalDays());
+/* 496 */     return (getBirthDay() + getNumberOfDaysToAdult() <= TFC_Time.getTotalDays());
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean func_70877_b(ItemStack par1ItemStack) {
-/* 496 */     return false;
+/* 502 */     return false;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public boolean isBreedingItemTFC(ItemStack item) {
-/* 501 */     return (!this.pregnant && isFood(item));
+/* 507 */     return (!this.pregnant && isFood(item));
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean func_70631_g_() {
-/* 507 */     return !isAdult();
+/* 513 */     return !isAdult();
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean isFood(ItemStack item) {
-/* 513 */     return (item != null && (item.func_77973_b() == TFCItems.wheatGrain || item.func_77973_b() == TFCItems.oatGrain || item.func_77973_b() == TFCItems.riceGrain || item
-/* 514 */       .func_77973_b() == TFCItems.barleyGrain || item.func_77973_b() == TFCItems.ryeGrain || item.func_77973_b() == TFCItems.maizeEar));
+/* 519 */     return (item != null && (item.func_77973_b() == TFCItems.wheatGrain || item.func_77973_b() == TFCItems.oatGrain || item.func_77973_b() == TFCItems.riceGrain || item
+/* 520 */       .func_77973_b() == TFCItems.barleyGrain || item.func_77973_b() == TFCItems.ryeGrain || item.func_77973_b() == TFCItems.maizeEar));
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public boolean isMilkable() {
-/* 519 */     return this.canMilk;
+/* 525 */     return this.canMilk;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public boolean isPregnant() {
-/* 525 */     return this.pregnant;
+/* 531 */     return this.pregnant;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void mate(IAnimal otherAnimal) {
-/* 531 */     if (getGender() == IAnimal.GenderEnum.MALE) {
+/* 537 */     if (getGender() == IAnimal.GenderEnum.MALE) {
 /*     */       
-/* 533 */       otherAnimal.mate(this);
+/* 539 */       otherAnimal.mate(this);
 /*     */       return;
 /*     */     } 
-/* 536 */     this.timeOfConception = TFC_Time.getTotalTicks();
-/* 537 */     this.pregnant = true;
-/* 538 */     func_70875_t();
-/* 539 */     otherAnimal.setInLove(false);
-/* 540 */     this.mateAggroMod = otherAnimal.getAggressionMod();
-/* 541 */     this.mateObedMod = otherAnimal.getObedienceMod();
-/* 542 */     this.mateSizeMod = otherAnimal.getSizeMod();
-/* 543 */     this.mateStrengthMod = otherAnimal.getStrengthMod();
+/* 542 */     this.timeOfConception = TFC_Time.getTotalTicks();
+/* 543 */     this.pregnant = true;
+/* 544 */     func_70875_t();
+/* 545 */     otherAnimal.setInLove(false);
+/* 546 */     this.mateAggroMod = otherAnimal.getAggressionMod();
+/* 547 */     this.mateObedMod = otherAnimal.getObedienceMod();
+/* 548 */     this.mateSizeMod = otherAnimal.getSizeMod();
+/* 549 */     this.mateStrengthMod = otherAnimal.getStrengthMod();
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void func_70636_d() {
-/* 550 */     if (this.hunger > 168000)
+/* 556 */     if (this.hunger > 168000)
 /*     */     {
-/* 552 */       this.hunger = 168000;
+/* 558 */       this.hunger = 168000;
 /*     */     }
-/* 554 */     if (this.hunger > 0)
+/* 560 */     if (this.hunger > 0)
 /*     */     {
-/* 556 */       this.hunger--;
+/* 562 */       this.hunger--;
 /*     */     }
 /*     */     
-/* 559 */     if (func_70880_s()) {
+/* 565 */     if (func_70880_s()) {
 /*     */       
-/* 561 */       func_70875_t();
-/* 562 */       setInLove(true);
+/* 567 */       func_70875_t();
+/* 568 */       setInLove(true);
 /*     */     } 
 /*     */     
-/* 565 */     handleFamiliarityUpdate();
+/* 571 */     handleFamiliarityUpdate();
 /*     */     
-/* 567 */     if (getGender() == IAnimal.GenderEnum.FEMALE && isAdult() && this.hasMilkTime < TFC_Time.getTotalTicks() && checkFamiliarity(IAnimal.InteractionEnum.MILK, (EntityPlayer)null)) {
-/* 568 */       this.canMilk = true;
+/* 573 */     if (getGender() == IAnimal.GenderEnum.FEMALE && isAdult() && this.hasMilkTime < TFC_Time.getTotalTicks() && checkFamiliarity(IAnimal.InteractionEnum.MILK, (EntityPlayer)null)) {
+/* 574 */       this.canMilk = true;
 /*     */     } else {
-/* 570 */       this.canMilk = false;
+/* 576 */       this.canMilk = false;
 /*     */     } 
-/* 572 */     syncData();
-/* 573 */     if (isAdult()) {
+/* 578 */     syncData();
+/* 579 */     if (isAdult()) {
 /*     */       
-/* 575 */       func_70873_a(0);
+/* 581 */       func_70873_a(0);
 /*     */     }
 /*     */     else {
 /*     */       
-/* 579 */       func_70873_a(-1);
+/* 585 */       func_70873_a(-1);
 /*     */     } 
-/* 581 */     if (!this.field_70170_p.field_72995_K && isPregnant())
+/* 587 */     if (!this.field_70170_p.field_72995_K && isPregnant())
 /*     */     {
-/* 583 */       if (TFC_Time.getTotalTicks() >= this.timeOfConception + this.pregnancyRequiredTime) {
+/* 589 */       if (TFC_Time.getTotalTicks() >= this.timeOfConception + this.pregnancyRequiredTime) {
 /*     */         
-/* 585 */         EntityCowTFC baby = (EntityCowTFC)createChildTFC((EntityAgeable)this);
-/* 586 */         baby.func_70012_b(this.field_70165_t, this.field_70163_u, this.field_70161_v, 0.0F, 0.0F);
-/* 587 */         baby.field_70759_as = baby.field_70177_z;
-/* 588 */         baby.field_70761_aq = baby.field_70177_z;
-/* 589 */         this.field_70170_p.func_72838_d((Entity)baby);
-/* 590 */         baby.setAge(TFC_Time.getTotalDays());
-/* 591 */         this.pregnant = false;
+/* 591 */         EntityCowTFC baby = (EntityCowTFC)createChildTFC((EntityAgeable)this);
+/* 592 */         baby.func_70012_b(this.field_70165_t, this.field_70163_u, this.field_70161_v, 0.0F, 0.0F);
+/* 593 */         baby.field_70759_as = baby.field_70177_z;
+/* 594 */         baby.field_70761_aq = baby.field_70177_z;
+/* 595 */         this.field_70170_p.func_72838_d((Entity)baby);
+/* 596 */         baby.setAge(TFC_Time.getTotalDays());
+/* 597 */         this.pregnant = false;
 /*     */       } 
 /*     */     }
 /*     */ 
 /*     */ 
 /*     */ 
 /*     */     
-/* 598 */     TFC_Core.preventEntityDataUpdate = true;
-/* 599 */     super.func_70636_d();
-/* 600 */     TFC_Core.preventEntityDataUpdate = false;
+/* 604 */     TFC_Core.preventEntityDataUpdate = true;
+/* 605 */     super.func_70636_d();
+/* 606 */     TFC_Core.preventEntityDataUpdate = false;
 /*     */     
-/* 602 */     if (this.hunger > 144000 && this.field_70146_Z.nextInt(100) == 0 && func_110143_aJ() < TFC_Core.getEntityMaxHealth((EntityLivingBase)this) && !this.field_70128_L) {
+/* 608 */     if (this.hunger > 144000 && this.field_70146_Z.nextInt(100) == 0 && func_110143_aJ() < TFC_Core.getEntityMaxHealth((EntityLivingBase)this) && !this.field_70128_L) {
 /*     */       
-/* 604 */       func_70691_i(1.0F);
+/* 610 */       func_70691_i(1.0F);
 /*     */     }
-/* 606 */     else if (this.hunger < 144000 && func_70880_s()) {
+/* 612 */     else if (this.hunger < 144000 && func_70880_s()) {
 /*     */       
-/* 608 */       setInLove(false);
+/* 614 */       setInLove(false);
 /*     */     } 
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void func_70037_a(NBTTagCompound nbt) {
-/* 615 */     super.func_70037_a(nbt);
-/* 616 */     this.animalID = nbt.func_74763_f("Animal ID");
-/* 617 */     this.sex = nbt.func_74762_e("Sex");
-/* 618 */     this.sizeMod = nbt.func_74760_g("Size Modifier");
+/* 621 */     super.func_70037_a(nbt);
+/* 622 */     this.animalID = nbt.func_74763_f("Animal ID");
+/* 623 */     this.sex = nbt.func_74762_e("Sex");
+/* 624 */     this.sizeMod = nbt.func_74760_g("Size Modifier");
 /*     */     
-/* 620 */     this.familiarity = nbt.func_74762_e("Familiarity");
-/* 621 */     this.lastFamiliarityUpdate = nbt.func_74763_f("lastFamUpdate");
-/* 622 */     this.familiarizedToday = nbt.func_74767_n("Familiarized Today");
+/* 626 */     this.familiarity = nbt.func_74762_e("Familiarity");
+/* 627 */     this.lastFamiliarityUpdate = nbt.func_74763_f("lastFamUpdate");
+/* 628 */     this.familiarizedToday = nbt.func_74767_n("Familiarized Today");
 /*     */     
-/* 624 */     this.strengthMod = nbt.func_74760_g("Strength Modifier");
-/* 625 */     this.aggressionMod = nbt.func_74760_g("Aggression Modifier");
-/* 626 */     this.obedienceMod = nbt.func_74760_g("Obedience Modifier");
+/* 630 */     this.strengthMod = nbt.func_74760_g("Strength Modifier");
+/* 631 */     this.aggressionMod = nbt.func_74760_g("Aggression Modifier");
+/* 632 */     this.obedienceMod = nbt.func_74760_g("Obedience Modifier");
 /*     */     
-/* 628 */     this.hunger = nbt.func_74762_e("Hunger");
-/* 629 */     this.pregnant = nbt.func_74767_n("Pregnant");
-/* 630 */     this.mateSizeMod = nbt.func_74760_g("MateSize");
-/* 631 */     this.mateStrengthMod = nbt.func_74760_g("MateStrength");
-/* 632 */     this.mateAggroMod = nbt.func_74760_g("MateAggro");
-/* 633 */     this.mateObedMod = nbt.func_74760_g("MateObed");
-/* 634 */     this.timeOfConception = nbt.func_74763_f("ConceptionTime");
-/* 635 */     this.hasMilkTime = nbt.func_74763_f("HasMilkTime");
-/* 636 */     this.canMilk = nbt.func_74767_n("CanMilk");
-/* 637 */     setAge(nbt.func_74762_e("Age"));
+/* 634 */     this.hunger = nbt.func_74762_e("Hunger");
+/* 635 */     this.pregnant = nbt.func_74767_n("Pregnant");
+/* 636 */     this.mateSizeMod = nbt.func_74760_g("MateSize");
+/* 637 */     this.mateStrengthMod = nbt.func_74760_g("MateStrength");
+/* 638 */     this.mateAggroMod = nbt.func_74760_g("MateAggro");
+/* 639 */     this.mateObedMod = nbt.func_74760_g("MateObed");
+/* 640 */     this.timeOfConception = nbt.func_74763_f("ConceptionTime");
+/* 641 */     this.hasMilkTime = nbt.func_74763_f("HasMilkTime");
+/* 642 */     this.canMilk = nbt.func_74767_n("CanMilk");
+/* 643 */     setAge(nbt.func_74762_e("Age"));
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void setAge(int par1) {
-/* 644 */     this.field_70180_af.func_75692_b(15, Integer.valueOf(par1));
+/* 650 */     this.field_70180_af.func_75692_b(15, Integer.valueOf(par1));
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void setAggressionMod(float aggressionMod) {
-/* 651 */     this.aggressionMod = aggressionMod;
+/* 657 */     this.aggressionMod = aggressionMod;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void setAnimalID(long animalID) {
-/* 656 */     this.animalID = animalID;
+/* 662 */     this.animalID = animalID;
 /*     */   }
 /*     */ 
 /*     */ 
@@ -665,23 +671,23 @@
 /*     */ 
 /*     */   
 /*     */   public void setBirthDay(int day) {
-/* 668 */     this.field_70180_af.func_75692_b(15, Integer.valueOf(day));
+/* 674 */     this.field_70180_af.func_75692_b(15, Integer.valueOf(day));
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void setCanMilk(boolean canMilk) {
-/* 673 */     this.canMilk = canMilk;
+/* 679 */     this.canMilk = canMilk;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void setFamiliarity(int familiarity) {
-/* 679 */     this.familiarity = familiarity;
+/* 685 */     this.familiarity = familiarity;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void setFamiliarizedToday(boolean familiarizedToday) {
-/* 684 */     this.familiarizedToday = familiarizedToday;
+/* 690 */     this.familiarizedToday = familiarizedToday;
 /*     */   }
 /*     */ 
 /*     */ 
@@ -693,111 +699,111 @@
 /*     */ 
 /*     */   
 /*     */   public void func_70873_a(int par1) {
-/* 696 */     if (!TFC_Core.preventEntityDataUpdate)
+/* 702 */     if (!TFC_Core.preventEntityDataUpdate)
 /*     */     {
-/* 698 */       this.field_70180_af.func_75692_b(12, Integer.valueOf(par1));
+/* 704 */       this.field_70180_af.func_75692_b(12, Integer.valueOf(par1));
 /*     */     }
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void setHasMilkTime(long hasMilkTime) {
-/* 704 */     this.hasMilkTime = hasMilkTime;
+/* 710 */     this.hasMilkTime = hasMilkTime;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void setHunger(int h) {
-/* 710 */     this.hunger = h;
+/* 716 */     this.hunger = h;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void setInLove(boolean b) {
-/* 716 */     this.inLove = b;
+/* 722 */     this.inLove = b;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void setLastFamiliarityUpdate(long lastFamiliarityUpdate) {
-/* 721 */     this.lastFamiliarityUpdate = lastFamiliarityUpdate;
+/* 727 */     this.lastFamiliarityUpdate = lastFamiliarityUpdate;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void setObedienceMod(float obedienceMod) {
-/* 727 */     this.obedienceMod = obedienceMod;
+/* 733 */     this.obedienceMod = obedienceMod;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void setPregnancyRequiredTime(int pregnancyRequiredTime) {
-/* 732 */     this.pregnancyRequiredTime = pregnancyRequiredTime;
+/* 738 */     this.pregnancyRequiredTime = pregnancyRequiredTime;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void setPregnant(boolean pregnant) {
-/* 737 */     this.pregnant = pregnant;
+/* 743 */     this.pregnant = pregnant;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void setSex(int sex) {
-/* 742 */     this.sex = sex;
+/* 748 */     this.sex = sex;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void setSizeMod(float sizeMod) {
-/* 748 */     this.sizeMod = sizeMod;
+/* 754 */     this.sizeMod = sizeMod;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void setStrengthMod(float strengthMod) {
-/* 754 */     this.strengthMod = strengthMod;
+/* 760 */     this.strengthMod = strengthMod;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void setTimeOfConception(long timeOfConception) {
-/* 759 */     this.timeOfConception = timeOfConception;
+/* 765 */     this.timeOfConception = timeOfConception;
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public void syncData() {
-/* 764 */     if (this.field_70180_af != null)
+/* 770 */     if (this.field_70180_af != null)
 /*     */     {
-/* 766 */       if (!this.field_70170_p.field_72995_K) {
+/* 772 */       if (!this.field_70170_p.field_72995_K) {
 /*     */         
-/* 768 */         this.field_70180_af.func_75692_b(13, Integer.valueOf(this.sex));
+/* 774 */         this.field_70180_af.func_75692_b(13, Integer.valueOf(this.sex));
 /*     */         
-/* 770 */         byte[] values = { TFC_Core.getByteFromSmallFloat(this.sizeMod), TFC_Core.getByteFromSmallFloat(this.strengthMod), TFC_Core.getByteFromSmallFloat(this.aggressionMod), TFC_Core.getByteFromSmallFloat(this.obedienceMod), (byte)this.familiarity, (byte)(this.familiarizedToday ? 1 : 0), (byte)(this.pregnant ? 1 : 0), (byte)(this.canMilk ? 1 : 0) };
+/* 776 */         byte[] values = { TFC_Core.getByteFromSmallFloat(this.sizeMod), TFC_Core.getByteFromSmallFloat(this.strengthMod), TFC_Core.getByteFromSmallFloat(this.aggressionMod), TFC_Core.getByteFromSmallFloat(this.obedienceMod), (byte)this.familiarity, (byte)(this.familiarizedToday ? 1 : 0), (byte)(this.pregnant ? 1 : 0), (byte)(this.canMilk ? 1 : 0) };
 /*     */ 
 /*     */         
-/* 773 */         ByteBuffer buf = ByteBuffer.wrap(values);
-/* 774 */         this.field_70180_af.func_75692_b(22, Integer.valueOf(buf.getInt()));
-/* 775 */         this.field_70180_af.func_75692_b(23, Integer.valueOf(buf.getInt()));
-/* 776 */         this.field_70180_af.func_75692_b(24, String.valueOf(this.timeOfConception));
+/* 779 */         ByteBuffer buf = ByteBuffer.wrap(values);
+/* 780 */         this.field_70180_af.func_75692_b(22, Integer.valueOf(buf.getInt()));
+/* 781 */         this.field_70180_af.func_75692_b(23, Integer.valueOf(buf.getInt()));
+/* 782 */         this.field_70180_af.func_75692_b(24, String.valueOf(this.timeOfConception));
 /*     */       }
 /*     */       else {
 /*     */         
-/* 780 */         this.sex = this.field_70180_af.func_75679_c(13);
+/* 786 */         this.sex = this.field_70180_af.func_75679_c(13);
 /*     */         
-/* 782 */         ByteBuffer buf = ByteBuffer.allocate(8);
-/* 783 */         buf.putInt(this.field_70180_af.func_75679_c(22));
-/* 784 */         buf.putInt(this.field_70180_af.func_75679_c(23));
-/* 785 */         byte[] values = buf.array();
+/* 788 */         ByteBuffer buf = ByteBuffer.allocate(8);
+/* 789 */         buf.putInt(this.field_70180_af.func_75679_c(22));
+/* 790 */         buf.putInt(this.field_70180_af.func_75679_c(23));
+/* 791 */         byte[] values = buf.array();
 /*     */         
-/* 787 */         this.sizeMod = TFC_Core.getSmallFloatFromByte(values[0]);
-/* 788 */         this.strengthMod = TFC_Core.getSmallFloatFromByte(values[1]);
-/* 789 */         this.aggressionMod = TFC_Core.getSmallFloatFromByte(values[2]);
-/* 790 */         this.obedienceMod = TFC_Core.getSmallFloatFromByte(values[3]);
+/* 793 */         this.sizeMod = TFC_Core.getSmallFloatFromByte(values[0]);
+/* 794 */         this.strengthMod = TFC_Core.getSmallFloatFromByte(values[1]);
+/* 795 */         this.aggressionMod = TFC_Core.getSmallFloatFromByte(values[2]);
+/* 796 */         this.obedienceMod = TFC_Core.getSmallFloatFromByte(values[3]);
 /*     */         
-/* 792 */         this.familiarity = values[4];
-/* 793 */         this.familiarizedToday = (values[5] == 1);
-/* 794 */         this.pregnant = (values[6] == 1);
-/* 795 */         this.canMilk = (values[7] == 1);
+/* 798 */         this.familiarity = values[4];
+/* 799 */         this.familiarizedToday = (values[5] == 1);
+/* 800 */         this.pregnant = (values[6] == 1);
+/* 801 */         this.canMilk = (values[7] == 1);
 /*     */ 
 /*     */         
 /*     */         try {
-/* 799 */           this.timeOfConception = Long.parseLong(this.field_70180_af.func_75681_e(24));
-/* 800 */         } catch (NumberFormatException numberFormatException) {}
+/* 805 */           this.timeOfConception = Long.parseLong(this.field_70180_af.func_75681_e(24));
+/* 806 */         } catch (NumberFormatException numberFormatException) {}
 /*     */       } 
 /*     */     }
 /*     */   }
@@ -806,43 +812,43 @@
 /*     */ 
 /*     */   
 /*     */   public boolean trySetName(String name, EntityPlayer player) {
-/* 809 */     if (checkFamiliarity(IAnimal.InteractionEnum.NAME, player)) {
+/* 815 */     if (checkFamiliarity(IAnimal.InteractionEnum.NAME, player)) {
 /*     */       
-/* 811 */       func_94058_c(name);
-/* 812 */       func_94061_f(true);
-/* 813 */       return true;
+/* 817 */       func_94058_c(name);
+/* 818 */       func_94061_f(true);
+/* 819 */       return true;
 /*     */     } 
-/* 815 */     func_85030_a(func_70621_aR(), 6.0F, this.field_70146_Z.nextFloat() / 2.0F + (func_70631_g_() ? 1.25F : 0.75F));
-/* 816 */     return false;
+/* 821 */     func_85030_a(func_70621_aR(), 6.0F, this.field_70146_Z.nextFloat() / 2.0F + (func_70631_g_() ? 1.25F : 0.75F));
+/* 822 */     return false;
 /*     */   }
 /*     */ 
 /*     */ 
 /*     */   
 /*     */   public void func_70014_b(NBTTagCompound nbt) {
-/* 822 */     super.func_70014_b(nbt);
-/* 823 */     nbt.func_74768_a("Sex", this.sex);
-/* 824 */     nbt.func_74772_a("Animal ID", this.animalID);
-/* 825 */     nbt.func_74776_a("Size Modifier", this.sizeMod);
+/* 828 */     super.func_70014_b(nbt);
+/* 829 */     nbt.func_74768_a("Sex", this.sex);
+/* 830 */     nbt.func_74772_a("Animal ID", this.animalID);
+/* 831 */     nbt.func_74776_a("Size Modifier", this.sizeMod);
 /*     */     
-/* 827 */     nbt.func_74768_a("Familiarity", this.familiarity);
-/* 828 */     nbt.func_74772_a("lastFamUpdate", this.lastFamiliarityUpdate);
-/* 829 */     nbt.func_74757_a("Familiarized Today", this.familiarizedToday);
+/* 833 */     nbt.func_74768_a("Familiarity", this.familiarity);
+/* 834 */     nbt.func_74772_a("lastFamUpdate", this.lastFamiliarityUpdate);
+/* 835 */     nbt.func_74757_a("Familiarized Today", this.familiarizedToday);
 /*     */     
-/* 831 */     NBTTagCompound nbt2 = nbt;
-/* 832 */     nbt2.func_74776_a("Strength Modifier", this.strengthMod);
-/* 833 */     nbt2.func_74776_a("Aggression Modifier", this.aggressionMod);
-/* 834 */     nbt2.func_74776_a("Obedience Modifier", this.obedienceMod);
+/* 837 */     NBTTagCompound nbt2 = nbt;
+/* 838 */     nbt2.func_74776_a("Strength Modifier", this.strengthMod);
+/* 839 */     nbt2.func_74776_a("Aggression Modifier", this.aggressionMod);
+/* 840 */     nbt2.func_74776_a("Obedience Modifier", this.obedienceMod);
 /*     */     
-/* 836 */     nbt.func_74768_a("Hunger", this.hunger);
-/* 837 */     nbt.func_74757_a("Pregnant", this.pregnant);
-/* 838 */     nbt.func_74776_a("MateSize", this.mateSizeMod);
-/* 839 */     nbt.func_74776_a("MateStrength", this.mateStrengthMod);
-/* 840 */     nbt.func_74776_a("MateAggro", this.mateAggroMod);
-/* 841 */     nbt.func_74776_a("MateObed", this.mateObedMod);
-/* 842 */     nbt.func_74772_a("ConceptionTime", this.timeOfConception);
-/* 843 */     nbt.func_74768_a("Age", getBirthDay());
-/* 844 */     nbt.func_74772_a("HasMilkTime", this.hasMilkTime);
-/* 845 */     nbt.func_74757_a("CanMilk", this.canMilk);
+/* 842 */     nbt.func_74768_a("Hunger", this.hunger);
+/* 843 */     nbt.func_74757_a("Pregnant", this.pregnant);
+/* 844 */     nbt.func_74776_a("MateSize", this.mateSizeMod);
+/* 845 */     nbt.func_74776_a("MateStrength", this.mateStrengthMod);
+/* 846 */     nbt.func_74776_a("MateAggro", this.mateAggroMod);
+/* 847 */     nbt.func_74776_a("MateObed", this.mateObedMod);
+/* 848 */     nbt.func_74772_a("ConceptionTime", this.timeOfConception);
+/* 849 */     nbt.func_74768_a("Age", getBirthDay());
+/* 850 */     nbt.func_74772_a("HasMilkTime", this.hasMilkTime);
+/* 851 */     nbt.func_74757_a("CanMilk", this.canMilk);
 /*     */   }
 /*     */ }
 

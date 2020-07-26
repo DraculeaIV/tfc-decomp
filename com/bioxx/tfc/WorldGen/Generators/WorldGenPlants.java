@@ -231,7 +231,7 @@
 /*     */ 
 /*     */ 
 /*     */   
-/*     */   private void genBushes(Random random, int chunkX, int chunkZ, World world) {
+/*     */   public void genBushes(Random random, int chunkX, int chunkZ, World world) {
 /* 235 */     if (random.nextInt(12) == 0) {
 /*     */       
 /* 237 */       int xCoord = chunkX + random.nextInt(16) + 8;

@@ -252,24 +252,55 @@
 /*     */   }
 /*     */ 
 /*     */   
+/*     */   public static float getTempDecreaseStorage(ItemStack is) {
+/* 256 */     if (TFCOptions.enableDebugMode)
+/* 257 */       return 0.0F; 
+/* 258 */     return TFCOptions.tempDecreaseMultiplier * getSpecificHeat(is) * 20.0F;
+/*     */   }
+/*     */ 
+/*     */   
 /*     */   public static void handleItemHeat(ItemStack is) {
-/* 256 */     if (is != null)
+/* 263 */     if (is != null)
 /*     */     {
-/* 258 */       if (is.func_77942_o()) {
+/* 265 */       if (is.func_77942_o()) {
 /*     */         
-/* 260 */         NBTTagCompound comp = is.func_77978_p();
-/* 261 */         if (hasTemp(is)) {
+/* 267 */         NBTTagCompound comp = is.func_77978_p();
+/* 268 */         if (hasTemp(is)) {
 /*     */           
-/* 263 */           float temp = getTemp(is);
-/* 264 */           if (temp > 0.0F) {
+/* 270 */           float temp = getTemp(is);
+/* 271 */           if (temp > 0.0F) {
 /*     */             
-/* 266 */             temp -= getTempDecrease(is);
-/* 267 */             comp.func_74776_a("temperature", temp);
+/* 273 */             temp -= getTempDecrease(is);
+/* 274 */             comp.func_74776_a("temperature", temp);
 /*     */           } 
-/* 269 */           if (temp <= 0.0F)
-/* 270 */             comp.func_82580_o("temperature"); 
-/* 271 */           if (comp.func_82582_d()) {
-/* 272 */             is.field_77990_d = null;
+/* 276 */           if (temp <= 0.0F)
+/* 277 */             comp.func_82580_o("temperature"); 
+/* 278 */           if (comp.func_82582_d()) {
+/* 279 */             is.field_77990_d = null;
+/*     */           }
+/*     */         } 
+/*     */       } 
+/*     */     }
+/*     */   }
+/*     */   
+/*     */   public static void handleItemHeatStorage(ItemStack is) {
+/* 287 */     if (is != null)
+/*     */     {
+/* 289 */       if (is.func_77942_o()) {
+/*     */         
+/* 291 */         NBTTagCompound comp = is.func_77978_p();
+/* 292 */         if (hasTemp(is)) {
+/*     */           
+/* 294 */           float temp = getTemp(is);
+/* 295 */           if (temp > 0.0F) {
+/*     */             
+/* 297 */             temp -= getTempDecreaseStorage(is);
+/* 298 */             comp.func_74776_a("temperature", temp);
+/*     */           } 
+/* 300 */           if (temp <= 0.0F)
+/* 301 */             comp.func_82580_o("temperature"); 
+/* 302 */           if (comp.func_82582_d()) {
+/* 303 */             is.field_77990_d = null;
 /*     */           }
 /*     */         } 
 /*     */       } 
@@ -277,34 +308,34 @@
 /*     */   }
 /*     */   
 /*     */   public static Boolean setTemp(ItemStack is, float temp) {
-/* 280 */     if (is != null) {
+/* 311 */     if (is != null) {
 /*     */       
-/* 282 */       if (is.func_77942_o()) {
-/* 283 */         is.func_77978_p().func_74776_a("temperature", temp);
-/* 284 */       } else if (isCookable(is) != -1.0F) {
+/* 313 */       if (is.func_77942_o()) {
+/* 314 */         is.func_77978_p().func_74776_a("temperature", temp);
+/* 315 */       } else if (isCookable(is) != -1.0F) {
 /*     */         
-/* 286 */         NBTTagCompound nbt = new NBTTagCompound();
-/* 287 */         nbt.func_74776_a("temperature", temp);
-/* 288 */         is.func_77982_d(nbt);
+/* 317 */         NBTTagCompound nbt = new NBTTagCompound();
+/* 318 */         nbt.func_74776_a("temperature", temp);
+/* 319 */         is.func_77982_d(nbt);
 /*     */       } 
 /*     */     } else {
 /*     */       
-/* 292 */       return Boolean.valueOf(false);
+/* 323 */       return Boolean.valueOf(false);
 /*     */     } 
-/* 294 */     if (temp <= 0.0F) {
-/* 295 */       removeTempTag(is);
+/* 325 */     if (temp <= 0.0F) {
+/* 326 */       removeTempTag(is);
 /*     */     }
-/* 297 */     return Boolean.valueOf(true);
+/* 328 */     return Boolean.valueOf(true);
 /*     */   }
 /*     */ 
 /*     */   
 /*     */   public static void removeTempTag(ItemStack is) {
-/* 302 */     if (is.func_77942_o() && is.func_77978_p().func_74764_b("temperature"))
+/* 333 */     if (is.func_77942_o() && is.func_77978_p().func_74764_b("temperature"))
 /*     */     {
-/* 304 */       is.func_77978_p().func_82580_o("temperature");
+/* 335 */       is.func_77978_p().func_82580_o("temperature");
 /*     */     }
-/* 306 */     if (is.func_77942_o() && is.func_77978_p().func_82582_d())
-/* 307 */       is.field_77990_d = null; 
+/* 337 */     if (is.func_77942_o() && is.func_77978_p().func_82582_d())
+/* 338 */       is.field_77990_d = null; 
 /*     */   }
 /*     */ }
 

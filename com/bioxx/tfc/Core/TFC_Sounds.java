@@ -53,6 +53,28 @@ public class TFC_Sounds {
   
   public static final String FROG = "terrafirmacraft:mob.frog";
   
+  public static final String PBEARSAY = "terrafirmacraft:mob.polarbear.say";
+  
+  public static final String PBEARCRY = "terrafirmacraft:mob.polarbear.cry";
+  
+  public static final String PBEARHURT = "terrafirmacraft:mob.polarbear.hurt";
+  
+  public static final String PBEARDEATH = "terrafirmacraft:mob.polarbear.death";
+  
+  public static final String CATHITT = "terrafirmacraft:mob.cat.hitt";
+  
+  public static final String CATHISS = "terrafirmacraft:mob.cat.hiss";
+  
+  public static final String CATPURR = "terrafirmacraft:mob.cat.purr";
+  
+  public static final String CATPURREOW = "terrafirmacraft:mob.cat.purreow";
+  
+  public static final String CATMEOW = "terrafirmacraft:mob.cat.meow";
+  
+  public static final String CATCOUGH = "terrafirmacraft:mob.cat.cough";
+  
+  public static final String KITTENMEOW = "terrafirmacraft:mob.kitten.meow";
+  
   public static final String TFCMUSIC = "terrafirmacraft:music.tfc";
 }
 

@@ -153,7 +153,7 @@
 /* 153 */       int temp = fluid.getTemperature();
 /* 154 */       int volume = 0;
 /*     */       
-/* 156 */       if (temp < 385 && fluid != TFCFluids.HOTWATER) {
+/* 156 */       if (temp < 550 && fluid != TFCFluids.HOTWATER) {
 /*     */         
 /* 158 */         world.func_147468_f(i, j, k);
 /* 159 */         if (fluid == TFCFluids.FRESHWATER || fluid == TFCFluids.SALTWATER) {

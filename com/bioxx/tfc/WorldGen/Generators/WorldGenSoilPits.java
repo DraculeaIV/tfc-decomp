@@ -105,32 +105,29 @@
 /* 105 */             for (int yCoord = j - depth; yCoord <= j + depth; yCoord++) {
 /*     */               
 /* 107 */               Block block = world.func_147439_a(xCoord, yCoord, zCoord);
-/* 108 */               if (TFC_Climate.getCacheManager(world) != null) {
+/* 108 */               DataLayer rockLayer1 = TFC_Climate.getCacheManager(world).getRockLayerAt(xCoord, zCoord, 0);
+/* 109 */               if (block == TFCBlocks.dirt || block == TFCBlocks.dirt2) {
 /*     */                 
-/* 110 */                 DataLayer rockLayer1 = TFC_Climate.getCacheManager(world).getRockLayerAt(xCoord, zCoord, 0);
-/* 111 */                 if (block == TFCBlocks.dirt || block == TFCBlocks.dirt2) {
-/*     */                   
-/* 113 */                   world.func_147465_d(xCoord, yCoord, zCoord, TFC_Core.getTypeForClay(block), TFC_Core.getSoilMetaFromStone(rockLayer1.block, rockLayer1.data2), 2);
-/* 114 */                   flag = true;
-/*     */                 }
-/* 116 */                 else if (block == TFCBlocks.grass || block == TFCBlocks.grass2) {
-/*     */                   
-/* 118 */                   world.func_147465_d(xCoord, yCoord, zCoord, TFC_Core.getTypeForClayGrass(block), TFC_Core.getSoilMetaFromStone(rockLayer1.block, rockLayer1.data2), 2);
-/* 119 */                   flag = true;
-/*     */                 } 
+/* 111 */                 world.func_147465_d(xCoord, yCoord, zCoord, TFC_Core.getTypeForClay(block), TFC_Core.getSoilMetaFromStone(rockLayer1.block, rockLayer1.data2), 2);
+/* 112 */                 flag = true;
+/*     */               }
+/* 114 */               else if (block == TFCBlocks.grass || block == TFCBlocks.grass2) {
+/*     */                 
+/* 116 */                 world.func_147465_d(xCoord, yCoord, zCoord, TFC_Core.getTypeForClayGrass(block), TFC_Core.getSoilMetaFromStone(rockLayer1.block, rockLayer1.data2), 2);
+/* 117 */                 flag = true;
 /*     */               } 
 /*     */             } 
-/* 123 */             if (flag && rand.nextInt(15) == 0) {
+/* 120 */             if (flag && rand.nextInt(15) == 0) {
 /*     */               
-/* 125 */               int y = world.func_72825_h(xCoord, zCoord);
-/* 126 */               if (world.func_147437_c(xCoord, y, zCoord) && TFC_Core.isSoil(world.func_147439_a(xCoord, y - 1, zCoord)))
-/* 127 */                 world.func_147465_d(xCoord, y, zCoord, TFCBlocks.flora, 0, 2); 
+/* 122 */               int y = world.func_72825_h(xCoord, zCoord);
+/* 123 */               if (world.func_147437_c(xCoord, y, zCoord) && TFC_Core.isSoil(world.func_147439_a(xCoord, y - 1, zCoord)))
+/* 124 */                 world.func_147465_d(xCoord, y, zCoord, TFCBlocks.flora, 0, 2); 
 /*     */             } 
 /*     */           } 
 /*     */         } 
 /*     */       } 
 /*     */     }
-/* 133 */     return flag;
+/* 130 */     return flag;
 /*     */   }
 /*     */ }
 
